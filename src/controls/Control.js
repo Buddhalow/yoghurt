@@ -5,7 +5,12 @@ import EventEmitter from 'events'
  */
 export default class Control extends EventEmitter {
     constructor(parent) {
+        super()
         this.parent = parent
+        if (parent != null) {
+            this.theme = parent.theme
+            this.graphics = parent.graphics
+        }
         this.controls = {}
         this.bounds = {
             size: {
@@ -18,23 +23,20 @@ export default class Control extends EventEmitter {
             }
         }
     }
-    get desktop() {
-        let parent = this.parent
-        while (parent.parent != null) {
-            parent = parent.parent
+    load() {
+        for (let control of Object.values(this.controls)) {
+            control.load()
         }
-        return parent
     }
-    get theme() {
-        if (this.theme) return this.theme
-        let parent = this.parent
-        while (parent.parent != null && parent.theme == null) {
-            parent = parent.parent
-        }
-        return parent.theme
-    }
+    
     get children() {
         return Object.values(this.controls)
+    }
+    set width(value) {
+        this.bounds.size.width = value
+    }
+    set height(value) {
+        this.bounds.size.height = value
     }
     get width() {
         return this.bounds.size.width
@@ -49,9 +51,22 @@ export default class Control extends EventEmitter {
     }
 
     get y() {
-        return this.bounds.position.y
+        return this.bounds.position.y 
+    }
+    set x(value) {
+        return this.bounds.position.x = value
     }
 
+    set y(value) {
+        return this.bounds.position.y = value
+    }
+    set left(value) {
+        return this.bounds.position.x = value
+    }
+
+    set top(value) {
+        return this.bounds.position.y = value
+    }
     get right() {
         return this.x + this.width
     }
@@ -71,12 +86,12 @@ export default class Control extends EventEmitter {
         return this.bounds.size.height = value
     }
     
-    get x(value) {
-        return this.bounds.position.x = value
+    get x() {
+        return this.bounds.position.x
     }
 
-    get y(value) {
-        return this.bounds.position.y = value
+    get y() {
+        return this.bounds.position.y
     }
 
     get position() {
@@ -100,19 +115,40 @@ export default class Control extends EventEmitter {
      * @param {GraphicsContext} gc The Graphics Context
      */
     render(gc) {
-        gc.translate(this.bounds.position.x, this.bounds.position.y)
-        for (let control of this.controls) {
+        let fillStyle =  this.backgroundColor || this.theme.btnFace
+        gc.setFillStyle(fillStyle)
+        gc.fillRect(0, 0, this.width, this.height)
+        for (let control of Object.values(this.controls)) {
+            gc.translate(control.x, control.y)
+        
             control.render(gc)
+            gc.translate(-control.x, -control.y)
         }
-        gc.translate(-this.bounds.position.x, -this.bounds.position.y)
     }
+    redraw() {
+        let gc = this.graphics
+        gc.translate(this.bounds.position.x, this.bounds.position.y)
+        this.render(gc)
+        gc.translate(-this.bounds.position.x, -this.bounds.position.y)
 
+    }
+    /**
+     * Pack children
+     * 
+     */
+    pack() {
+        // Pack children
+        for (let control of Object.values(this.controls)) {
+            control.pack()
+        }
+    }
     resize() {
-
+        this.pack()
+        
     }
 
     hover(x, y) {
-        for (let control of this.controls) {
+        for (let control of Object.values(this.controls)) {
             if (control.inBounds(x, y)) {
                 control.hover(x - this.x, y - this.y, button)
             }
