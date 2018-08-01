@@ -23,6 +23,24 @@ export default class Control extends EventEmitter {
             }
         }
     }
+    get absoluteX() {
+        let parent = this
+        let x = this.x
+        do {
+            x += parent.x
+            parent = parent.parent
+        } while (parent != null)
+        return x
+    }
+    get absoluteY() {
+        let parent = this
+        let y = this.y
+        do {
+            y += parent.y
+            parent = parent.parent
+        } while( parent != null)
+        return y
+    }
     load() {
         for (let control of Object.values(this.controls)) {
             control.load()
@@ -105,7 +123,7 @@ export default class Control extends EventEmitter {
         return x > this.left && x < this.right
     }
     inBoundsY(y) {
-        return y > this.top && x < this.bottom
+        return y > this.top && y < this.bottom
     }
     inBounds(x, y) {
         return this.inBoundsX(x) && this.inBoundsY(y)
@@ -127,9 +145,11 @@ export default class Control extends EventEmitter {
     }
     redraw() {
         let gc = this.graphics
+        gc.setOrigo(this.absoluteX, this.absoluteY)
         gc.translate(this.bounds.position.x, this.bounds.position.y)
         this.render(gc)
         gc.translate(-this.bounds.position.x, -this.bounds.position.y)
+        gc.setOrigo(0, 0)
 
     }
     /**
@@ -147,7 +167,7 @@ export default class Control extends EventEmitter {
         
     }
 
-    hover(x, y) {
+    hover(x, y, button='left') {
         for (let control of Object.values(this.controls)) {
             if (control.inBounds(x, y)) {
                 control.hover(x - this.x, y - this.y, button)
@@ -165,7 +185,7 @@ export default class Control extends EventEmitter {
      * @param {*} y 
      */
     click(x, y, button='left') {
-        for (let control of this.controls) {
+        for (let control of this.children) {
             if (control.inBounds(x, y)) {
                 control.click(x - this.x, y - this.y, button)
             }
@@ -182,9 +202,11 @@ export default class Control extends EventEmitter {
      * @param {*} y 
      */
     mouseDown(x, y, button='left') {
-        for (let control of this.controls) {
-            if (control.inBounds(x, y)) {
-                control.mouseDown(x - this.x, y - this.y, button)
+        let relativeX = x - this.left
+        let relativeY = y - this.top
+        for (let control of this.children) {
+            if (control.inBounds(relativeX, relativeY)) {
+                control.mouseDown(relativeX, relativeY, button)
             }
         }
         this.emit('mousedown', {
@@ -198,7 +220,7 @@ export default class Control extends EventEmitter {
      * @param {*} y 
      */
     mouseUp(x, y, button='left') {
-        for (let control of this.controls) {
+        for (let control of this.children) {
             if (control.inBounds(x, y)) {
                 control.mouseUp(x - this.x, y - this.y, button)
             }

@@ -26,6 +26,11 @@ export default class CanvasGraphicsContext extends GraphicsContext {
             height: this.canvas.height
         }
     }
+    setOrigo(x, y) {
+
+        this.matrix.x += x 
+        this.matrix.y += y
+    }
     /**
      * Translate the matrix
      * @param {int} x 

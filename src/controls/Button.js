@@ -60,6 +60,7 @@ export default class Button extends Control {
     mouseDown() {
         super.mouseDown()
         this.buttonState = 'pressed'
+        this.redraw()
     }
     mouseUp() {
         super.mouseDown()
