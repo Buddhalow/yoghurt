@@ -8,6 +8,7 @@ export default class Button extends Control {
         this.style = 'normal'
         this.enabled = true
         this.font = new Font('Tahoma', 11)
+        this.focused = false
         
     }
 
@@ -38,11 +39,11 @@ export default class Button extends Control {
                 gc.drawLine(this.width , this.height, 0, this.height)
                 gc.drawLine(this.width, this.height, this.width, 0)
             }
-            if (this.buttonState == 'press') {
+            if (this.buttonState == 'pressed') {
                 gc.setStrokeStyle(this.theme.btnDarkShadow)
-                gc.drawRectangle(this.width - 1, 0, this.width - 1, this.height - 1)
+                gc.strokeRect(1, 0, this.width - 1, this.height - 1)
                 gc.setStrokeStyle(this.theme.btnShadow)
-                gc.drawRectangle(this.width - 2, 1, this.width - 2, this.height - 2)
+                gc.strokeRect(2, 1, this.width - 3, this.height - 3)
             }
             if (this.enabled) {
                 gc.setFillStyle(this.theme.buttonText)
@@ -56,14 +57,19 @@ export default class Button extends Control {
 
             }
         }
+
+        if (this.focused) {
+        
+        }
     }
     mouseDown() {
         super.mouseDown()
         this.buttonState = 'pressed'
-        this.redraw()
+        this.yoghurt.render()
     }
     mouseUp() {
-        super.mouseDown()
+        super.mouseUp()
         this.buttonState = 'normal'
+        this.yoghurt.render()
     }
 }

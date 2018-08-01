@@ -20,7 +20,7 @@ export default class Taskbar extends Control {
         this.startButton.left = 4
         this.startButton.top = 5
         this.startButton.width = 63
-        this.startButton.height = 18
+        this.startButton.height = 20
         this.controls['start'] = this.startButton
     }
 }

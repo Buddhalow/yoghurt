@@ -8,10 +8,14 @@ export default class Control extends EventEmitter {
         super()
         this.parent = parent
         if (parent != null) {
+            if (parent.desktop) this.desktop = parent.desktop
+            if (parent.yoghurt) this.yoghurt = parent.yoghurt
             this.theme = parent.theme
             this.graphics = parent.graphics
         }
+        this.isMoveable = false
         this.controls = {}
+        this.zIndex = 0
         this.bounds = {
             size: {
                 width: 0,
@@ -22,6 +26,14 @@ export default class Control extends EventEmitter {
                 y: 0
             }
         }
+        this.clientBounds = {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+        }
+        this.isMouseDown = false
+        this.isMouseMove = false
     }
     get absoluteX() {
         let parent = this
@@ -168,26 +180,48 @@ export default class Control extends EventEmitter {
     }
 
     hover(x, y, button='left') {
+        let relativeX = x - this.left
+        let relativeY = y - this.top
         for (let control of Object.values(this.controls)) {
-            if (control.inBounds(x, y)) {
-                control.hover(x - this.x, y - this.y, button)
+            if (control.inBounds(relativeX, relativeY)) {
+                control.hover(relativeX, relativeY, button)
             }
+        }
+        if (this.isMoving) {
+            if (!this.move) {
+                this.move = ({
+                    x: relativeX,
+                    y: relativeY
+                })
+            }
+            this.left = x - this.move.x
+            this.top = y - this.move.y
+            this.yoghurt.render()
         }
         this.emit('hover', {
             x: x,
             y: y
         })
     }
-
+    mouseUp(x, y, button='left') {
+        this.stopMove()
+        
+    }
+    stopMoving() {
+        this.move = null
+        this.isMoving = false
+        }
     /**
      * Click
      * @param {*} x 
      * @param {*} y 
      */
     click(x, y, button='left') {
+        let relativeX = x - this.left
+        let relativeY = y - this.top
         for (let control of this.children) {
-            if (control.inBounds(x, y)) {
-                control.click(x - this.x, y - this.y, button)
+            if (control.inBounds(relativeX, relativeY)) {
+                control.click(relativeX, relativeY, button)
             }
         }
         this.emit('click', {
@@ -202,6 +236,8 @@ export default class Control extends EventEmitter {
      * @param {*} y 
      */
     mouseDown(x, y, button='left') {
+        if (this.isMouseDown) return
+        this.isMouseDown = true
         let relativeX = x - this.left
         let relativeY = y - this.top
         for (let control of this.children) {
@@ -220,9 +256,12 @@ export default class Control extends EventEmitter {
      * @param {*} y 
      */
     mouseUp(x, y, button='left') {
+        this.isMouseDown = false
+        let relativeX = x - this.left
+        let relativeY = y - this.top
         for (let control of this.children) {
-            if (control.inBounds(x, y)) {
-                control.mouseUp(x - this.x, y - this.y, button)
+            if (control.inBounds(relativeX, relativeY)) {
+                control.mouseUp(relativeX, relativeY, button)
             }
         }
         this.emit('mouseup', {
@@ -230,4 +269,4 @@ export default class Control extends EventEmitter {
             y: y
         })
     }
-}
+}   

@@ -1,6 +1,7 @@
 import Yoghurt from './yoghurt'
 import CanvasGraphicsContext from './graphics/canvasgraphicscontext';
 import win95Theme from './themes/win95'
+import Window from './controls/Window'
 
 let canvas = document.createElement('canvas')
 canvas.setAttribute('width', '640')
@@ -27,8 +28,21 @@ canvas.addEventListener('mousemove', (e) => {
         e.pageY - e.target.offsetTop
     )
 })
+canvas.addEventListener('mouseup', (e) => {
+    yoghurt.mouseUp(
+        e.pageX - e.target.offsetLeft,
+        e.pageY - e.target.offsetTop
+    )
+})
 
 canvas.style.imageRendering = 'pixelated'
+
+let window = new Window(yoghurt.desktop)
+window.x = 2
+window.y = 2
+window.width = 221
+window.height = 221
+yoghurt.desktop.controls['window'] = window
 
 yoghurt.load()
 

@@ -5,6 +5,8 @@ export default class Desktop extends Control {
     constructor(parent) {
         super(parent)
         this.backgroundColor = this.theme.desktop
+        this.desktop = this
+        this.yoghurt = this.parent
     }
     load() {
         this.emit('load')
@@ -17,7 +19,7 @@ export default class Desktop extends Control {
         this.taskbar.x = 0
         this.taskbar.y = this.height - this.taskbar.height
         this.taskbar.width = this.width
-        this.taskbar.height = 28
+        this.taskbar.height = 30
     
     }
     addWindow(window) {
