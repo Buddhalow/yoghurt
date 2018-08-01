@@ -14,7 +14,7 @@ export default class Taskbar extends Control {
 
     load() {
         super.load()
-
+        
         this.startButton = new Button(this)
         this.startButton.text = 'Start'
         this.startButton.left = 4

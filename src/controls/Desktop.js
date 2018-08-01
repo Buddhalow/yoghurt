@@ -7,7 +7,18 @@ export default class Desktop extends Control {
         this.backgroundColor = this.theme.desktop
         this.desktop = this
         this.yoghurt = this.parent
+        this.windows = {}
+        this.activeWindow = null
     }
+
+    addWindow(id) {
+        let window = new Window(this)
+        this.windows[id] = window
+        this.controls[id] = window
+        this.emit('windowadded')
+        return window
+    }
+
     load() {
         this.emit('load')
         this.taskbar = new Taskbar(this)
