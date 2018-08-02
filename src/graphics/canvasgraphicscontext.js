@@ -47,7 +47,7 @@ export default class CanvasGraphicsContext extends GraphicsContext {
     }
 
     fillText(text, x, y, width=0, height=0) {
-        this.context2d.fillText(text, this.matrix.x + Math.round(x), this.matrix.y + Math.round(y))
+        this.context2d.fillText(text, this.matrix.x + Math.floor(x), this.matrix.y + Math.floor(y))
     }
 
     /**
@@ -57,7 +57,7 @@ export default class CanvasGraphicsContext extends GraphicsContext {
      * @param {*} x2 
      * @param {*} y2 
      */
-    drawLine(x1, y1, x2, y2) {
+    drawLine(x1, y1, x2, y2) { 
         this.context2d.beginPath()
         this.context2d.moveTo(this.matrix.x + Math.floor(x1), this.matrix.y + Math.floor(y1))
         this.context2d.lineTo(this.matrix.x + Math.floor(x2), this.matrix.y + Math.floor(y2))

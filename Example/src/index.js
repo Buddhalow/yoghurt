@@ -1,14 +1,15 @@
 import Yoghurt from '../../src'
 import CanvasGraphicsContext from '../../src/graphics/canvasgraphicscontext';
-import win95Theme from '../../src/themes/win95'
+import windows95Theme from '../../src/themes/windows95'
 import Window from '../../src/controls/Window'
+import windows95Style from '../../src/styles/windows95'
 
 let canvas = document.createElement('canvas')
-canvas.setAttribute('width', '640')
-canvas.setAttribute('height', '480')
+canvas.setAttribute('width', '800')
+canvas.setAttribute('height', '600')
 document.body.appendChild(canvas)
 let gc = new CanvasGraphicsContext(canvas)
-let yoghurt = new Yoghurt(gc, win95Theme)
+let yoghurt = new Yoghurt(gc, windows95Theme, windows95Style)
 
 canvas.addEventListener('click', (e) => {
     yoghurt.click(
@@ -44,8 +45,4 @@ window.width = 221
 window.height = 221
 yoghurt.desktop.controls['window'] = window
 
-
-yoghurt.resize()
-yoghurt.pack()
-yoghurt.load()
-yoghurt.render()
+export default yoghurt

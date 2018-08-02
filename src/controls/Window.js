@@ -2,8 +2,8 @@ import Control from './Control'
 import Header from './Header';
 
 export default class Window extends Control {
-    constructor(parent) {
-        super(parent)
+    constructor(parent, id) {
+        super(parent, id)
         this.menus = {}
         this.top = 28
         this.header = new Header(this)
@@ -17,12 +17,6 @@ export default class Window extends Control {
     close() {
         delete this.parent.controls[this.id]
         this.yoghurt.render()
-    }
-
-    inactivate() {
-        if (this.closeOnInactivate) {
-            this.close()
-        }
     }
 
     startMove(pos) {
@@ -49,8 +43,8 @@ export default class Window extends Control {
         this.header.load()
     }
 
-    mouseDown(x, y, button='left') {
-        if (super.mouseDown(x, y, button)) return true
+    mouseDownAction(x, y, button='left') {
+        if (super.mouseDownAction(x, y, button)) return true
         this.desktop.activeWindow = this
     }
 
@@ -60,6 +54,7 @@ export default class Window extends Control {
      */
     render(gc) {
         super.render(gc)
+        this.style.renderWindow(gc, this)
        
 
     }

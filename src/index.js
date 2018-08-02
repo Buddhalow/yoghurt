@@ -1,9 +1,10 @@
 import Desktop from "./controls/Desktop";
 
 export default class Yoghurt {
-    constructor(graphics, theme) {
+    constructor(graphics, theme, style) {
         this.graphics = graphics
         this._theme = theme
+        this._style = style
         this.desktop = new Desktop(this)
         this.desktop.width = graphics.bounds.width
         this.desktop.height = graphics.bounds.height
@@ -39,5 +40,6 @@ export default class Yoghurt {
     render() {
         this.desktop.render(this.graphics)
     }
-
 }
+
+  

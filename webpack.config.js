@@ -1,26 +1,17 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-module.exports = {
-    entry: ['./src/index.js'],
+ module.exports = {
+    entry: ['./src/example.js'],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
-    resolve: {
+     resolve: {
         extensions: ['.js'],
     },
     devtool: 'source-map',
     plugins: [
         new HtmlWebpackPlugin()
     ],
-    watch: true,
-    devServer: {
-        watchContentBase: true,
-        compress: true,  
-        port: 9001,
-        watchOptions: {
-            ignored: /node_modules/
-        }
-    }
-}  
+    watch: true
+} 

@@ -5,7 +5,7 @@ export default new Theme({
     btnHighlight: '#fff',
     btnLight: '#eee',
     buttonText: '#000',
-    btnShadow: '#888',
+    btnShadow: '#aaa',
     btnDarkShadow: '#000000',
     highlight: '#0000bb',
     highlightText: '#ffffff',

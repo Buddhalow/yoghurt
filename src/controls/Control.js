@@ -1,5 +1,5 @@
 import EventEmitter from 'events'
-
+import Font from '../graphics/font'
 /**
  * Control class
  */
@@ -8,6 +8,7 @@ export default class Control extends EventEmitter {
         super()
         this.id = id
         this.parent = parent
+        this.font = new Font('Tahoma', 11)
         this.isMoveable = false
         this.controls = {}
         this.zIndex = 0
@@ -58,6 +59,13 @@ export default class Control extends EventEmitter {
             parent = parent.parent
         } while (parent != null)
     }
+    get style() {
+        let parent = this
+        do {
+            if (parent._style) return parent._style
+            parent = parent.parent
+        } while (parent != null)
+    }
     get graphics() {
         let parent = this
         do {
@@ -90,6 +98,7 @@ export default class Control extends EventEmitter {
         } while( parent != null)
         return y
     }
+
     load() {
         for (let control of Object.values(this.controls)) {
             control.load()
@@ -146,6 +155,22 @@ export default class Control extends EventEmitter {
     get top() {
         return this.y
     }
+    set bottom(value) {
+        this.y = this.parent.height - value - this.height
+    }
+    set right(value) {
+        this.x = this.parent.width - value - this.width
+    }
+    close() {
+        delete this.parent.controls[this.id]
+        this.yoghurt.render()
+    }
+    inactivate() {
+        if (this.closeOnInactivate) {
+            this.close()
+        }
+    }
+
     set width(value) {
         return this.bounds.size.width = value
     }
@@ -182,26 +207,7 @@ export default class Control extends EventEmitter {
      * @param {GraphicsContext} gc The Graphics Context
      */
     render(gc, fill=true) {
-        let fillStyle =  this.backgroundColor || this.theme.btnFace
-        gc.setFillStyle(fillStyle)
-        if (fill) gc.fillRect(0, 0, this.width, this.height)
-        for (let control of Object.values(this.controls)) {
-            gc.translate(control.x, control.y)
-        
-            control.render(gc)
-            gc.translate(-control.x, -control.y)
-        }
-        if (this.borderStyle === 'bevel') {
-            gc.setStrokeStyle(this.theme.btnHighlight)
-            gc.drawLine(2, 2, this.width, 2)
-            gc.drawLine(2, 2, 2, this.height)
-            gc.setStrokeStyle(this.theme.btnShadow)
-            gc.drawLine(this.width - 1, 0, this.width - 1, this.height - 1)
-            gc.drawLine(0, this.height - 1, this.width - 1, this.height - 1)
-            gc.setStrokeStyle(this.theme.btnDarkShadow)
-            gc.drawLine(this.width, 0, this.width, this.height)
-            gc.drawLine(0, this.height, this.width, this.height)
-        }
+        this.style.renderControl(gc, this, fill)
     }
     redraw() {
         let gc = this.graphics
@@ -209,7 +215,8 @@ export default class Control extends EventEmitter {
         gc.translate(this.bounds.position.x, this.bounds.position.y)
         this.render(gc)
         gc.translate(-this.bounds.position.x, -this.bounds.position.y)
-        gc.setOrigo(0, 0)
+        gc.setOrigo(0, 0) 
+        console.log("D")
 
     }
     /**
@@ -232,7 +239,7 @@ export default class Control extends EventEmitter {
         let relativeY = y - this.top
         for (let control of Object.values(this.controls)) {
             if (control.inBounds(relativeX, relativeY)) {
-                if (control.hover(relativeX, relativeY, button)) return true
+                control.hover(relativeX, relativeY, button)
             }
         }
         if (this.isMoving) {
@@ -267,36 +274,53 @@ export default class Control extends EventEmitter {
     click(x, y, button='left') {
         let relativeX = x - this.left
         let relativeY = y - this.top
+        let foundControl =false
         for (let control of this.children) {
             if (control.inBounds(relativeX, relativeY)) {
-                if (control.click(relativeX, relativeY, button)) return true
+                control.click(relativeX, relativeY, button)
+                foundControl = true
             }
         }
         this.emit('click', {
             x: x,
             y: y
         })
+        if (!foundControl) {
+            this.clickAction(x, y, button)
+        }
     }
     
+    clickAction(x, y, button='left') {
+
+    }
+    mouseDownAction() {
+        if (this.isMouseDown) return false
+        this.isMouseDown = true
+
+    }
+
     /**
      * Click
      * @param {*} x 
      * @param {*} y 
      */
     mouseDown(x, y, button='left') {
-        if (this.isMouseDown) return
-        this.isMouseDown = true
         let relativeX = x - this.left
         let relativeY = y - this.top
+        let foundControl = false
         for (let control of this.children) {
             if (control.inBounds(relativeX, relativeY)) {
-                if (control.mouseDown(relativeX, relativeY, button)) return true
+                control.mouseDown(relativeX, relativeY, button)
+                foundControl = true
             }
         }
         this.emit('mousedown', {
             x: x,
             y: y
         })
+        if (!foundControl) {
+            this.mouseDownAction(x, y, button)
+        }
     }
     /**
      * Click
@@ -309,7 +333,7 @@ export default class Control extends EventEmitter {
         let relativeY = y - this.top
         for (let control of this.children) {
             if (control.inBounds(relativeX, relativeY)) {
-                if (control.mouseUp(relativeX, relativeY, button)) return true
+               control.mouseUp(relativeX, relativeY, button)
             }
         }
         this.emit('mouseup', {

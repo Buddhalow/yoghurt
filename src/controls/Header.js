@@ -10,8 +10,8 @@ export default class Header extends Control {
         this.backgroundColor = this.theme.highlight
         this.font = new Font('Tahoma', 11)
     }
-    mouseDown(x, y, button='left') {
-        if (super.mouseDown(x, y, button)) return true
+    mouseDownAction(x, y, button='left') {
+        if (super.mouseDownAction(x, y, button)) return true
         this.parent.isMoving = true
     }
     mouseUp(x, y, button='left') {
@@ -36,14 +36,7 @@ export default class Header extends Control {
         this.minimizeButton = this.addRightButton('_', 'minimizeButton', 2)
     }
     render(gc) {
-        this.backgroundColor = (this.desktop.activeWindow  == this.parent ? this.theme.highlight : this.theme.inactive)
-        
-        gc.setFillStyle(this.backgroundColor)
-        gc.fillRect(0, 0, this.width, this.height)
-        gc.setFillStyle(this.theme.highlightText)
-        gc.setFont(this.font)
-        gc.fillText(this.label, 25, 16)
-
+        this.style.renderHeader(gc, this, false)
         super.render(gc, false)
     }
-}
+} 

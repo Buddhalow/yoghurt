@@ -2,7 +2,7 @@
     "name": "yoghurt-ui-example",
     "version": "0.2.8",
     "scripts": {
-      "start": "webpack-dev-server --mode development --open",
+      "start": "webpack-dev-server --mode development --inline",
       "build": "webpack --mode development"
     },
     "main": "lib/index.js",

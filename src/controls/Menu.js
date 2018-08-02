@@ -31,21 +31,8 @@ export default class Menu extends Control {
     }
     render(gc) {
         super.render(gc)
-        let itemHeight = 18
-        let i = 0
+        this.style.renderMenu(gc, this)
         
-        gc.setFillStyle('#000')
-        for (let menuitem of this.items) {
-            if (this.selectedIndex == i) {
-                gc.setFillStyle(this.theme.highlight)
-                gc.fillRect(3, i * itemHeight + 4, this.width - 6, itemHeight - 4)
-                gc.setFillStyle('#fff')
-            } else {
-                gc.setFillStyle('#000')
-            }
-            gc.fillText(menuitem.label,12, 12 + i * itemHeight, this.width, itemHeight )
-            i ++
-        }
     }
     hover(x, y, button='left') {
         let relativeX = x - this.left

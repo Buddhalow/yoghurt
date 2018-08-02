@@ -13,23 +13,23 @@ export default class Desktop extends Control {
         this.activeWindow = null    
         this.taskbar = new Taskbar(this, 'taskbar')
         this.controls['taskbar'] = this.taskbar
-        this.controls['menu'] = new Menu(this, 'menu', [
-            {
-                label: 'test'
-            },
-            {
-                label: 'test 2'
-            }
-        ])
-        this.controls['menu'].x = 112
-        this.controls['menu'].y = 112
+
 
     }
+
     addWindow(id) {
-        let window = new Window(this)
-        window.id = id
+        let window = new Window(this, id)
+        this.windows[id] = window
         this.controls[id] = window
-        this.yoghurt.render()
+        this.emit('windowadded')
+        return window
+    }
+
+    addMenu(id, items=[]) {
+        let menu = new Menu(this, id, items)
+        this.controls[id] = menu
+        this.emit('windowadded')
+        return menu
     }
     inactivateAllWindows() {
         for (let window of Object.values(this.controls)) {
@@ -43,19 +43,31 @@ export default class Desktop extends Control {
         this.inactivateAllWindows()        
 
         this.parent.render()
+    }   
+    shadowedText(gc, text, x, y) {
+        gc.setFillStyle('#000')
+        gc.fillText(text, x + 2, y + 2)
+        gc.setFillStyle('#fff')
+        gc.fillText(text, x, y)
+
+    }
+    drawWarning(gc,text) {
+        this.shadowedText(gc, text, 22,22)
+        this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22,22)
+        this.shadowedText(gc, text, 22, this.height -22 - 22)
+        this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22, this.height -22 - 22)
+    }
+    render(gc) {
+        super.render(gc)
+        this.drawWarning(gc, 'Alpha Version')
+        this.shadowedText(gc, 'Yoghurt UI Framework. (C) 2018 Alexander Forselius', this.width - 280, this.height - 82)
+        this.shadowedText(gc, 'Build 0.2.8. For testing purposes only.', this.width - 280, this.height - 62)
     }
 
-    addWindow(id) {
-        let window = new Window(this)
-        this.windows[id] = window
-        this.controls[id] = window
-        this.emit('windowadded')
-        return window
-    }
 
     load() {
         super.load()
-        this.emit('load')
+        this.emit('load') 
     }
     pack() {
         super.pack()
