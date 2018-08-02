@@ -7,7 +7,8 @@ export default new Theme({
     buttonText: '#000',
     btnShadow: '#888',
     btnDarkShadow: '#000000',
-    highlight: '#0000ff',
+    highlight: '#0000bb',
     highlightText: '#ffffff',
+    inactive: '#888',
     desktop: '#208c71'
 })

@@ -1,5 +1,5 @@
 import Control from './Control'
-import { Header } from './Header';
+import Header from './Header';
 
 export default class Window extends Control {
     constructor(parent) {
@@ -9,11 +9,16 @@ export default class Window extends Control {
         this.header = new Header(this)
         this.move = null
         this.controls['header'] = this.header
+        this.borderStyle = 'bevel'
         
     }
 
     startMove(pos) {
        this.move = pos
+    }
+
+    activate() {
+        this.zIndex = 0
     }
 
     stopMove() {
@@ -28,15 +33,22 @@ export default class Window extends Control {
         this.header.pack()
     }
 
+    load() {
+        this.header.load()
+    }
+
+    mouseDown(x, y, button='left') {
+        if (super.mouseDown(x, y, button)) return true
+        this.desktop.activeWindow = this
+    }
+
     /**
      * Render the control
      * @param {GraphicsContext} gc The Graphics Context
      */
     render(gc) {
         super.render(gc)
-        gc.setStrokeStyle('#fff')
-        gc.drawLine(2, 2, this.width, 2)
-        gc.drawLine(2, 2, 2, this.heght)
+       
 
     }
 }

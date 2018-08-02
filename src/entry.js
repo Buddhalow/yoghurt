@@ -44,8 +44,8 @@ window.width = 221
 window.height = 221
 yoghurt.desktop.controls['window'] = window
 
-yoghurt.load()
 
 yoghurt.resize()
 yoghurt.pack()
+yoghurt.load()
 yoghurt.render()

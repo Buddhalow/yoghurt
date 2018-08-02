@@ -41,9 +41,9 @@ export default class Button extends Control {
             }
             if (this.buttonState == 'pressed') {
                 gc.setStrokeStyle(this.theme.btnDarkShadow)
-                gc.strokeRect(1, 0, this.width - 1, this.height - 1)
+                gc.strokeRect(0, 0, this.width, this.height)
                 gc.setStrokeStyle(this.theme.btnShadow)
-                gc.strokeRect(2, 1, this.width - 3, this.height - 3)
+                gc.strokeRect(1, 1, this.width - 2, this.height - 2)
             }
             if (this.enabled) {
                 gc.setFillStyle(this.theme.buttonText)
