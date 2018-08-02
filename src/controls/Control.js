@@ -33,6 +33,9 @@ export default class Control extends EventEmitter {
         this.isMouseMove = false
         this.backgroundColor = this.theme.btnFace
     }
+    focus() {
+        this.desktop.focusedControl = this
+    }
     set desktop(value) {
         this._desktop = value
     }
@@ -44,6 +47,9 @@ export default class Control extends EventEmitter {
     }
     set theme(value) {
         this._theme = value
+    }
+    get isFocused() {
+        return this.desktop.focusedControl == this
     }
     get desktop() {
         let parent = this
@@ -163,6 +169,7 @@ export default class Control extends EventEmitter {
     }
     close() {
         delete this.parent.controls[this.id]
+        
         this.yoghurt.render()
     }
     inactivate() {
@@ -291,7 +298,7 @@ export default class Control extends EventEmitter {
     }
     
     clickAction(x, y, button='left') {
-
+        this.emit('click', x, y, button)
     }
     mouseDownAction() {
         if (this.isMouseDown) return false

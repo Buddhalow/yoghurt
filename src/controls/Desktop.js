@@ -13,7 +13,7 @@ export default class Desktop extends Control {
         this.activeWindow = null    
         this.taskbar = new Taskbar(this, 'taskbar')
         this.controls['taskbar'] = this.taskbar
-
+        this.focusedControl = null
 
     }
 
@@ -59,9 +59,9 @@ export default class Desktop extends Control {
     }
     render(gc) {
         super.render(gc)
-        this.drawWarning(gc, 'Alpha Version')
+        this.drawWarning(gc, 'Alpha Version'.toUpperCase())
         this.shadowedText(gc, 'Yoghurt UI Framework. (C) 2018 Alexander Forselius', this.width - 280, this.height - 82)
-        this.shadowedText(gc, 'Build 0.2.8. For testing purposes only.', this.width - 280, this.height - 62)
+        this.shadowedText(gc, 'Build 0.2.8. For testing purposes only.', this.width - 205, this.height - 62)
     }
 
 

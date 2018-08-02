@@ -23,6 +23,7 @@ export default class Button extends Control {
     mouseDown(x, y, button) {
         super.mouseDown(x, y, button)
         this.buttonState = 'pressed'
+        this.focus()
         this.yoghurt.render()
     }
     mouseUp(x, y, button) {

@@ -17,8 +17,8 @@ class Windows95Style extends Style {
     renderButton(gc, control) {
         // Draws button
         gc.setFont(control.font)
-        let textPositionX = control.x + (control.width / 2) - (gc.measureText(control.text).width / 2)
-        let textPositionY = control.y + (control.height / 2) - (control.font.size / 2) + 2
+        let textPositionX = (control.width / 2) - (gc.measureText(control.text).width / 2)
+        let textPositionY = (control.height / 2) - (control.font.size / 2) + 8
 
         if (control.buttonState == 'pressed') {
             textPositionX += 2
@@ -61,8 +61,19 @@ class Windows95Style extends Style {
             }
         }
 
-        if (control.focused) {
-        
+        if (control.isFocused) {
+            gc.setLineDash([2])
+            gc.setStrokeStyle('#000')
+            gc.setLineDash([2])
+            if (control.buttonState == 'pressed') {
+                gc.strokeRect(4, 4, control.width - 7, control.height - 7)
+
+            } else {
+                gc.strokeRect(3, 3, control.width - 6, control.height - 6)
+            }
+            gc.setLineDash([1])
+            gc.strokeRect(-1, -1, control.width + 2, control.height + 2)
+            gc.setLineDash([1])
         }
     } 
     renderWindow(gc, control, fill=true) {

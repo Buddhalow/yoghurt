@@ -22,7 +22,7 @@ export default class Header extends Control {
         let button = new Button(this)
         button.width = 20
         button.height = 20
-        button.text = ''
+        button.text = text
         button.x = this.width - 25 - pos * 22
   
         button.y = 4

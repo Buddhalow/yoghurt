@@ -28,6 +28,17 @@ export default class Taskbar extends Control {
             
             let menu = this.parent.addMenu('startmenu', [
                 {
+                    label: 'Programs',
+                    items: [
+                        {
+                            label: "Welcome"
+                        }
+                    ]
+                },
+                {
+                    label: 'Settings'
+                },
+                {
                     label: 'Find'
                 },
                 {
@@ -37,8 +48,8 @@ export default class Taskbar extends Control {
                     label: 'Exit'
                 }
             ])
-            menu.bottom = 32
-            menu.x = 8
+            menu.bottom = 28
+            menu.x = 2
             this.yoghurt.render()
         })
         let tray = new Tray(this, 'tray')

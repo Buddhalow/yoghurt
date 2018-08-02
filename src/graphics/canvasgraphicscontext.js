@@ -26,6 +26,11 @@ export default class CanvasGraphicsContext extends GraphicsContext {
             height: this.canvas.height
         }
     }
+    setLineDash(dash) {
+
+        if (dash != null)
+        this.context2d.setLineDash(dash)
+    }
     setOrigo(x, y) {
 
         this.matrix.x += x 
