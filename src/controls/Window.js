@@ -10,7 +10,19 @@ export default class Window extends Control {
         this.move = null
         this.controls['header'] = this.header
         this.borderStyle = 'bevel'
+        this.closeOnInactivate = false
         
+    }
+
+    close() {
+        delete this.parent.controls[this.id]
+        this.yoghurt.render()
+    }
+
+    inactivate() {
+        if (this.closeOnInactivate) {
+            this.close()
+        }
     }
 
     startMove(pos) {

@@ -1,17 +1,25 @@
 {
-  "name": "yoghurt",
+  "name": "yoghurt-ui",
   "version": "0.1.0",
   "scripts": {
-    "start": "webpack-dev-server --mode development --open",
-    "build": "webpack --mode development"
+    "clean": "rimraf lib",
+    "build": "babel src --out-dir lib",
+    "prepublish": "npm run clean && npm run build"
   },
+  "main": "lib/index.js",
   "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-eslint": "^7.2.1",
+    "eslint": "^3.19.0",
     "html-webpack-plugin": "^3.2.0",
+    "rimraf": "^2.5.2",
     "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2017": "^6.24.1",
     "events": "^3.0.0"
   }
 }

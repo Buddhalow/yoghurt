@@ -4,8 +4,9 @@ import EventEmitter from 'events'
  * Control class
  */
 export default class Control extends EventEmitter {
-    constructor(parent) {
+    constructor(parent, id) {
         super()
+        this.id = id
         this.parent = parent
         this.isMoveable = false
         this.controls = {}

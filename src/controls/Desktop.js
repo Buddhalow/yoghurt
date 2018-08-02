@@ -3,17 +3,17 @@ import Taskbar from './Taskbar'
 import Menu from './Menu';
 
 export default class Desktop extends Control {
-    constructor(parent) {
-        super(parent)
+    constructor(parent, id) {
+        super(parent, id)
         this.backgroundColor = this.theme.desktop
         this.graphics = parent.graphics
         this.desktop = this
         this.yoghurt = this.parent
         this.windows = {}
         this.activeWindow = null    
-        this.taskbar = new Taskbar(this)
+        this.taskbar = new Taskbar(this, 'taskbar')
         this.controls['taskbar'] = this.taskbar
-        this.controls['menu'] = new Menu(this, [
+        this.controls['menu'] = new Menu(this, 'menu', [
             {
                 label: 'test'
             },
@@ -25,10 +25,22 @@ export default class Desktop extends Control {
         this.controls['menu'].y = 112
 
     }
+    addWindow(id) {
+        let window = new Window(this)
+        window.id = id
+        this.controls[id] = window
+        this.yoghurt.render()
+    }
+    inactivateAllWindows() {
+        for (let window of Object.values(this.controls)) {
+            window.inactivate()
+        }
+        this.activeWindow = null
+    }
 
     mouseDown(x, y, button='left') {
         if (super.mouseDown(x, y, button)) return true
-        this.activeWindow = null
+        this.inactivateAllWindows()        
 
         this.parent.render()
     }

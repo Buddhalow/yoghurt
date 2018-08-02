@@ -1,8 +1,8 @@
 import Control from './Control'
 
 export default class Menu extends Control {
-    constructor(parent, items) {
-        super(parent)
+    constructor(parent, id, items) {
+        super(parent, id)
         this.items = items || []
         this.borderStyle = 'bevel'
         this.selectedIndex = -1
@@ -15,7 +15,7 @@ export default class Menu extends Control {
         } catch (e) {
 
         }
-        this.close()
+        this.close()    
     }
     alignSize() {
         let gc = this.graphics

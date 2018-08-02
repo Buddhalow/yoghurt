@@ -2,8 +2,8 @@ import Control from './Control'
 import Font from '../graphics/font'
 
 export default class Button extends Control {
-    constructor(parent) {
-        super(parent)
+    constructor(parent, id) {
+        super(parent, id)
         this.buttonState = 'normal'
         this.style = 'normal'
         this.enabled = true
@@ -43,7 +43,7 @@ export default class Button extends Control {
                 gc.setStrokeStyle(this.theme.btnDarkShadow)
                 gc.strokeRect(0, 0, this.width, this.height)
                 gc.setStrokeStyle(this.theme.btnShadow)
-                gc.strokeRect(1, 1, this.width - 2, this.height - 2)
+                gc.strokeRect(1, 1, this.width - 2  , this.height - 2)
             }
             if (this.enabled) {
                 gc.setFillStyle(this.theme.buttonText)
