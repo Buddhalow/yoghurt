@@ -4,7 +4,7 @@ An non-HTML based UI Framework that emulates Windows 95 User interface. For no p
 
 Support me on Patreon
 
-[![Become a patreon](https://raw.githubusercontent.com/Buddhalow/yoghurt/master/docs/images/become_a_patron_button.png)][https://www.patreon.com/bePatron?u=12455664]
+[![Become a Patreon](https://raw.githubusercontent.com/Buddhalow/yoghurt/master/docs/images/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=12455664)
 
 
 " data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
