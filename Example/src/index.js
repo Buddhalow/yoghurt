@@ -53,14 +53,14 @@ let window = new Window(yoghurt.desktop, 'window', 640, 480, {
 window.title = 'Welcome to Yoghurt!'
 yoghurt.desktop.controls['window'] = window
 
-window.content.controls['start'] = new Label(window, 'label')
+window.content.controls['start'] = new Label(window.content, 'label')
 window.content.controls['start'].text = 'Welcome to Yoghurt OS Demo!'
 window.content.controls['start'].width = 320
 window.content.controls['start'].width = 120
 window.content.controls['start'].x = 12
 window.content.controls['start'].y = 52  
-window.content.controls['ok'] = new Button(window, 'ok')
-window.content.controls['ok'].bottom = 52
+window.content.controls['ok'] = new Button(window.content, 'ok')
+window.content.controls['ok'].top= 220
 window.content.controls['ok'].left = 82
 window.content.controls['ok'].width = 122
 window.content.controls['ok'].height = 28
@@ -72,7 +72,7 @@ window.content.controls['ok'].on('click', (e) => {
 
 window.x = 222
 window.y = 111
-window.width = 321
+window.width = 321  
 window.height = 321
 
 yoghurt.resize()

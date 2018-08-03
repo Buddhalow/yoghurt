@@ -11,7 +11,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
     },
     devtool: 'source-map',
     plugins: [
-        new HtmlWebpackPlugin()
+        new HtmlWebpackPlugin(),
+        new GhPagesWebpackPlugin({
+            path: './dist',
+            options: {
+                message: 'Update Home Page',
+                user: {
+                    name: 'Alexander Forselius',
+                    email: 'alexander.forselius@buddhalow.com'
+                }
+            }
+        })
     ],
     watch: true
 } 
