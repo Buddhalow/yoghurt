@@ -2,10 +2,10 @@
   "name": "yoghurt-ui",
   "version": "0.1.0",
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "babel src --out-dir dist",
     "prepublish": "npm run clean && npm run build"
   },
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "devDependencies": {
     "babel-cli": "^6.6.5",
     "babel-eslint": "^7.2.1",
@@ -24,5 +24,6 @@
     "moment": "^2.22.2",
     "numeral": "^2.0.6"
   },
+  "license": "MIT",
   "watch": true
 }

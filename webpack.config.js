@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const GhPagesWebpackPlugin = require('gh-pages-webpack-plugin');
+
  module.exports = {
     entry: ['./src/example.js'],
     output: {
@@ -11,17 +13,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
     },
     devtool: 'source-map',
     plugins: [
-        new HtmlWebpackPlugin(),
-        new GhPagesWebpackPlugin({
-            path: './dist',
-            options: {
-                message: 'Update Home Page',
-                user: {
-                    name: 'Alexander Forselius',
-                    email: 'alexander.forselius@buddhalow.com'
-                }
-            }
-        })
+        new HtmlWebpackPlugin()
     ],
     watch: true
 } 
