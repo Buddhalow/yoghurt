@@ -15,8 +15,21 @@ export default class CanvasGraphicsContext extends GraphicsContext {
             x: 0,
             y: 0
         }
-        this.context2d.webkitImageSmoothingEnabled = false
+        this.context2d.webkitImageSmoothingEnabled = false  
         this.context2d.translate(0.5, 0.5)
+    }
+    resetClip() {
+        this.context2d.resetClip()
+    }
+    save() {
+        this.context2d.save()
+    }
+    clip(x, y, width, height) {
+        this.context2d.rect(this.matrix.x + x, this.matrix.y + y, width, height)
+        this.context2d.clip()
+    }
+    restore() {
+        this.context2d.restore()
     }
 
     get bounds() {

@@ -6,11 +6,13 @@ import { resolve } from '../../node_modules/uri-js';
  */
 export default class Control extends EventEmitter {
     constructor(parent, id) {
-        super()
+        super(parent)
         this.id = id
         this.parent = parent
         this.font = new Font('Tahoma', 11)
         this.isMoveable = false
+        this.move = null
+        this.resizePos = null
         this.controls = {}
         this.zIndex = 0
         this.borderStyle = 'none'
@@ -37,7 +39,22 @@ export default class Control extends EventEmitter {
         this.isVisible = true
         this.acceptButton = null
         this.cancelButton = null
+        this.isResizing = false
     }
+
+    startResize(pos) {
+        this.resizePos = pos
+    }
+    stopResize() {
+        this.resizePos = null
+    }
+    stopMove() {
+        this.move = null
+    }
+    startMove(pos) {
+       this.move = pos
+    }
+    
 
     clickAction(x, y, button='left') {
         this.emit('click', x, y, button)
@@ -163,9 +180,11 @@ export default class Control extends EventEmitter {
     }
     set width(value) {
         this.bounds.size.width = value
+        this.resize()
     }
     set height(value) {
         this.bounds.size.height = value
+        this.resize()
     }
     get width() {
         return this.bounds.size.width
@@ -223,13 +242,6 @@ export default class Control extends EventEmitter {
             this.close()
         }
     }
-
-    set width(value) {
-        return this.bounds.size.width = value
-    }
-    set height(value) {
-        return this.bounds.size.height = value
-    }
     
     get x() {
         return this.bounds.position.x
@@ -260,7 +272,19 @@ export default class Control extends EventEmitter {
      * @param {GraphicsContext} gc The Graphics Context
      */
     render(gc, fill=true) {
+        gc.save()
+        gc.clip(0, 0, this.width, this.height)
+        let fillStyle =  this.backgroundColor || this.theme.btnFace
+        gc.setFillStyle(fillStyle)
+        if (fill) gc.fillRect(0, 0, this.width, this.height)
+        for (let _control of Object.values(this.controls)) {
+            gc.translate(_control.x, _control.y)
+        
+            _control.render(gc)
+            gc.translate(-_control.x, -_control.y)
+        }
         this.style.renderControl(gc, this, fill)
+        gc.restore()        
     }
     redraw() {
         let gc = this.graphics
@@ -379,7 +403,7 @@ export default class Control extends EventEmitter {
             y: y
         })
         if (!foundControl) {
-            this.mouseDownAction(x, y, button)
+            this.mouseDownAction(relativeX, relativeY, button)
         }
     }
     /**

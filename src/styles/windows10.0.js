@@ -87,6 +87,27 @@ class Windows95Style extends Style {
         gc.setFont(control.font) 
         gc.fillText(control.label, 25, 16)
     }
+    renderMenuBar(gc, control) {
+        let left = 0
+        for (let menuId of Object.keys(control.menus)) {
+            let menu = control.menus[menuId]
+            if (control.selectedMenu === menu) {
+                gc.setFillStyle(control.style.highlightText)
+                gc.fillRect(left , 0, gc.measureText(menu.label).width + control.paddingHorizontal, control.height)
+                gc.setFillStyle(control.style.highlight)
+            } else {
+                gc.setFillStyle('black')
+            }
+            gc.fillText(
+                menu.label,
+                left + control.paddingHorizontal,
+                0,
+                gc.measureText(menu.label).width + control.paddingHorizontal * 2,
+                this.height
+            )
+            left += c.measureText(menu.label).width + control.paddingHorizontal
+        }
+    }
     renderControl(gc, control, fill=true) {
         let fillStyle =  control.backgroundColor || control.theme.btnFace
         gc.setFillStyle(fillStyle)

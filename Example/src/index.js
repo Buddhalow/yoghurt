@@ -45,30 +45,35 @@ canvas.addEventListener('mouseup', (e) => {
 
 canvas.style.imageRendering = 'pixelated'
 
-let window = new Window(yoghurt.desktop, 'window')
+let window = new Window(yoghurt.desktop, 'window', 640, 480, {
+    'file': {
+        label: 'Test'
+    }
+})
+window.title = 'Welcome to Yoghurt!'
+yoghurt.desktop.controls['window'] = window
+
+window.content.controls['start'] = new Label(window, 'label')
+window.content.controls['start'].text = 'Welcome to Yoghurt OS Demo!'
+window.content.controls['start'].width = 320
+window.content.controls['start'].width = 120
+window.content.controls['start'].x = 12
+window.content.controls['start'].y = 52  
+window.content.controls['ok'] = new Button(window, 'ok')
+window.content.controls['ok'].bottom = 52
+window.content.controls['ok'].left = 82
+window.content.controls['ok'].width = 122
+window.content.controls['ok'].height = 28
+window.content.controls['ok'].text = 'OK'
+window.content.backgroundColor = 'white'
+window.content.controls['ok'].on('click', (e) => {
+    window.close()
+})
+
 window.x = 222
 window.y = 111
 window.width = 321
 window.height = 321
-window.title = 'Welcome to Yoghurt!'
-yoghurt.desktop.controls['window'] = window
-
-window.controls['start'] = new Label(window, 'label')
-window.controls['start'].text = 'Welcome to Yoghurt OS Demo!'
-window.controls['start'].width = 320
-window.controls['start'].width = 120
-window.controls['start'].x = 12
-window.controls['start'].y = 52  
-window.controls['ok'] = new Button(window, 'ok')
-window.controls['ok'].bottom = 52
-window.controls['ok'].left = 82
-window.controls['ok'].width = 122
-window.controls['ok'].height = 28
-window.controls['ok'].text = 'OK'
-window.controls['ok'].on('click', (e) => {
-    window.close()
-})
-
 
 yoghurt.resize()
 yoghurt.pack()

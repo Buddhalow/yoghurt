@@ -64,7 +64,7 @@ class Windows95Style extends Style {
         if (control.isFocused) {
             gc.setLineDash([2])
             gc.setStrokeStyle('#000')
-            gc.setLineDash([2])
+            gc.setLineDash([1, 2    ])
             if (control.buttonState == 'pressed') {
                 gc.strokeRect(4, 4, control.width - 7, control.height - 7)
 
@@ -76,6 +76,27 @@ class Windows95Style extends Style {
             gc.setLineDash([1])
         }
     } 
+    renderMenuBar(gc, control) {
+        let left = 0
+        for (let menuId of Object.keys(control.menus)) {
+            let menu = control.menus[menuId]
+            if (control.selectedMenu === menu) {
+                gc.setFillStyle(control.style.highlightText)
+                gc.fillRect(left , 0, gc.measureText(menu.label).width + control.paddingHorizontal, control.height)
+                gc.setFillStyle(control.style.highlight)
+            } else {
+                gc.setFillStyle('#000')
+            }
+            gc.fillText(
+                menu.label,
+                left + control.paddingHorizontal,
+                22,
+                gc.measureText(menu.label).width + control.paddingHorizontal * 2,
+                this.height
+            )
+            left += gc.measureText(menu.label).width + control.paddingHorizontal
+        }
+    }
     renderWindow(gc, control, fill=true) {
 
     }
@@ -109,15 +130,7 @@ class Windows95Style extends Style {
         gc.fillText(control.label, 25, 16)
     }
     renderControl(gc, control, fill=true) {
-        let fillStyle =  control.backgroundColor || control.theme.btnFace
-        gc.setFillStyle(fillStyle)
-        if (fill) gc.fillRect(0, 0, control.width, control.height)
-        for (let _control of Object.values(control.controls)) {
-            gc.translate(_control.x, _control.y)
         
-            _control.render(gc)
-            gc.translate(-_control.x, -_control.y)
-        }
         if (control.borderStyle === 'bevel') {
             gc.setStrokeStyle(control.theme.btnHighlight)
             gc.drawLine(2, 2, control.width, 2)
