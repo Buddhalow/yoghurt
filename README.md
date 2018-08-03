@@ -1,10 +1,16 @@
 # Yoghurt
 
-An non-HTML based UI Framework that emulates Windows 95 User interface. For no practical purpose, just for experimentation
+An non-HTML based UI Framework that emulates Windows 95 User interface. For no practical purpose, just for experimentation.
+
+
 
 ## Long description
 
 This is just for fun and interesting I am trying to create an UI framework from ground based on ES6 classes that are rendered as components in the canvas
+
+Please note it does not make use of DOM or HTML, and is just a lab.
+
+It is not intended to be compatible with Win32 API or something. 
 
 ## Getting Started
 
