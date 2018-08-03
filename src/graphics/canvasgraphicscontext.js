@@ -15,6 +15,7 @@ export default class CanvasGraphicsContext extends GraphicsContext {
             x: 0,
             y: 0
         }
+        this.context2d.webkitImageSmoothingEnabled = false
         this.context2d.translate(0.5, 0.5)
     }
 

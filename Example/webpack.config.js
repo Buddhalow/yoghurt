@@ -18,7 +18,7 @@ module.exports = {
     devServer: {
         watchContentBase: true,
         compress: true,  
-        port: 9001,
+        port: 8080,
         watchOptions: {
             ignored: /node_modules/
         }

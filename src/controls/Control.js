@@ -1,5 +1,6 @@
 import EventEmitter from 'events'
 import Font from '../graphics/font'
+import { resolve } from '../../node_modules/uri-js';
 /**
  * Control class
  */
@@ -13,6 +14,7 @@ export default class Control extends EventEmitter {
         this.controls = {}
         this.zIndex = 0
         this.borderStyle = 'none'
+        this.isPressing = false
         this.bounds = {
             size: {
                 width: 0,
@@ -32,6 +34,51 @@ export default class Control extends EventEmitter {
         this.isMouseDown = false
         this.isMouseMove = false
         this.backgroundColor = this.theme.btnFace
+        this.isVisible = true
+        this.acceptButton = null
+        this.cancelButton = null
+    }
+
+    clickAction(x, y, button='left') {
+        this.emit('click', x, y, button)
+        if (button === 'left') {
+            this.emit('command', x, y, button)
+            if (this.parent && this.parent.oktButton === this) {
+                this.parent.emit('modalResult', 'ok')
+            }
+            if (this.parent && this.parent.cancelButton === this) {
+                this.parent.emit('modalResult', 'ok')
+            }
+            if (this.dialogResult) {
+                this.parent.emit('modalResult', this.dialogResult)
+            }
+        }
+    }
+
+    async showModal() {
+        this.parent.controls[this.id] = this
+        this.show()
+        let result = await new Promise((resolve, fail) => {
+            this.on('modalResult', (result) => {
+                resolve(result)
+            })
+        })
+        this.close()
+        return result
+    }
+    remove(control) {
+        delete this.controls[control.id]
+    }
+    add(control) {
+        this.controls[control] = control
+    }
+    hide() {
+        this.isVisible = false
+        this.yoghurt.render()
+    }
+    show() {
+        this.isVisible = true
+        this.yoghurt.render()
     }
     focus() {
         this.desktop.focusedControl = this
@@ -168,8 +215,7 @@ export default class Control extends EventEmitter {
         this.x = this.parent.width - value - this.width
     }
     close() {
-        delete this.parent.controls[this.id]
-        
+        delete this.parent.controls[this.id] 
         this.yoghurt.render()
     }
     inactivate() {
@@ -241,12 +287,23 @@ export default class Control extends EventEmitter {
         
     }
 
+    mouseLeave(x, y, button) {
+        this.emit('mouseleave', x, y, button)
+    }
+
     hover(x, y, button='left') {
         let relativeX = x - this.left
         let relativeY = y - this.top
+        if (this.isMouseDown) this.buttonState = 'pressed'
         for (let control of Object.values(this.controls)) {
             if (control.inBounds(relativeX, relativeY)) {
+                control.isHovered = true
                 control.hover(relativeX, relativeY, button)
+            } else {
+                if (control.isHovered) {
+                    control.mouseLeave(relativeX, relativeY, button)
+                }
+                control.isHovered = false
             }
         }
         if (this.isMoving) {
@@ -295,10 +352,6 @@ export default class Control extends EventEmitter {
         if (!foundControl) {
             this.clickAction(x, y, button)
         }
-    }
-    
-    clickAction(x, y, button='left') {
-        this.emit('click', x, y, button)
     }
     mouseDownAction() {
         if (this.isMouseDown) return false

@@ -11,6 +11,7 @@ export default class Window extends Control {
         this.controls['header'] = this.header
         this.borderStyle = 'bevel'
         this.closeOnInactivate = false
+        this.showInTaskbar = false
         
     }
 
@@ -26,7 +27,6 @@ export default class Window extends Control {
     activate() {
         this.zIndex = 0
     }
-
     stopMove() {
         this.move = null
     }

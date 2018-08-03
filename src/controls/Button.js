@@ -11,10 +11,10 @@ export default class Button extends Control {
         
         
     }
-    clickAction(x, y, button='left') {
-        this.emit('click', x, y, button)
+    mouseLeave(x, y, button='left') {
+        this.buttonState = 'normal'
+        this.yoghurt.render()
     }
-
     render(gc) {
         super.render(gc)
         this.style.renderButton(gc, this)
