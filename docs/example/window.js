@@ -5,4 +5,4 @@ var rect = {
 }
 let canvas = document.querySelector('canvas')
 canvas.width = rect.height;
-canvas.height = rect.height;
+canvas.height = rect.width;
