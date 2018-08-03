@@ -1,7 +1,7 @@
 
 var rect = {
-    width: window2.innerWidth,
-    height: window2.innerHeight
+    width: window.innerWidth,
+    height: window.innerHeight
 }
 canvas.width = rect.height;
 canvas.height = rect.height;
