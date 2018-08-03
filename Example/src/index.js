@@ -8,10 +8,13 @@ import windows1Style from '../../src/styles/windows1.0'
 import Label from '../../src/controls/Label';
 import Button from '../../src/controls/Button';
 
+
 let canvas = document.createElement('canvas')
 canvas.setAttribute('width', '800')
 canvas.setAttribute('height', '600')
 document.body.appendChild(canvas)
+
+
 document.body.style.display = 'flex'
 document.body.style.alignItems = 'center'
 document.body.style.justifyContent = 'center'
