@@ -1,6 +1,9 @@
 import Desktop from "./controls/Desktop";
 import { EventEmitter } from "events";
 
+/**
+ * The entry point of the Yoghurt UI Framework
+ */
 export default class Yoghurt extends EventEmitter {
     constructor(graphics, theme, style) {
         super()

@@ -1,10 +1,20 @@
 import Window from '../controls/Window'
+import Control from '../controls';
 
 
 /**
- * Application
+ * The Application class is a subclass of the {Window} class that will provide an starter kit for application windows.  
+ * @extends {Window}
  */
 export default class App extends Window {
+    /**
+     * 
+     * @param {Control} parent The parent control
+     * @param {String} id 
+     * @param {String} type 
+     * @param {*} DocumentType 
+     * @param {*} ViewType 
+     */
     constructor(parent, id, type='mdi', DocumentType, ViewType) {
         super(parent, id)
         this.view = null

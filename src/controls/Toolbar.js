@@ -1,7 +1,18 @@
 import Control from '.'
 import Button from './Button';
 
+/**
+ * Represents a toolbar component
+ * @extends {Control}
+ * @class
+ */
 export default class ToolBar extends Control {
+    /**
+     * 
+     * @param {Control} parent 
+     * @param {String} id 
+     * @param {Object} toolbar 
+     */
     constructor(parent, id, toolbar) {
         super(parent, id)
         this.buttonStyle = this.parent.buttonStyle
@@ -20,6 +31,11 @@ export default class ToolBar extends Control {
             this.addButton(button)
         }
     }
+
+     /**
+     * Add a button to the toolbar
+     * @param {Object} button The x coordinate of the pointer
+     */
     addButton(button) {
         let button = new Button(this, button.id)
         this.controls[button.id] = button
@@ -31,6 +47,12 @@ export default class ToolBar extends Control {
         this.pack()
     }
 
+    /**
+     * Orders the children
+     * @param {Int} x The x coordinate of the pointer
+     * @param {Int} y The y coordinate of the pointer
+     * @param {String} button The button
+     **/
     pack() {
         let i = 0
         let left = 0

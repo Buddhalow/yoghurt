@@ -2,9 +2,17 @@ import EventEmitter from 'events'
 import Font from '../graphics/font'
 import { resolve } from 'uri-js';
 /**
- * Control class
+ * The {Control} class is the parent class of all graphical entities in the yoghurt user interface.
+ * @class
+ * @extends {EventEmitter}
+ * 
  */
 export default class Control extends EventEmitter {
+    /**
+     * Creates a new instance of the control
+     * @param {Control} parent The parent control
+     * @param {String} id An unique id of the instance of the control
+     */
     constructor(parent, id) {
         super(parent)
         this.id = id
@@ -43,6 +51,9 @@ export default class Control extends EventEmitter {
         this.isResizing = false
     }
 
+    /**
+     * Gets the text of the control
+     */
     get text() {
         if (this._text != null) {
             return this._text
@@ -50,6 +61,11 @@ export default class Control extends EventEmitter {
             return this.id
         }
     }
+
+    /**
+     * Sets the text of the control
+     * @param {String} value The string to set
+     */
 
     set text(value) {
         this._text = value
@@ -106,11 +122,19 @@ export default class Control extends EventEmitter {
         this.isVisible = false
         this.yoghurt.render()
     }
+
+    /**
+     * Show the control
+     */
     show() {
         this.isVisible = true
         this.yoghurt.render()
         if (!this.isLoaded) this.load()
     }
+
+    /**
+     * Focus the control
+     */
     focus() {
         this.desktop.focusedControl = this
     }
@@ -129,6 +153,9 @@ export default class Control extends EventEmitter {
     get isFocused() {
         return this.desktop.focusedControl == this
     }
+    /**
+     * Get the underlying desktop of the tree this component belongs to
+     */
     get desktop() {
         let parent = this
         do {
@@ -136,6 +163,9 @@ export default class Control extends EventEmitter {
             parent = parent.parent
         } while (parent != null)
     }
+    /**
+     * Returns the {Yoghurt} instance that hosts the system
+     */
     get yoghurt() {
         let parent = this
         do {
@@ -150,6 +180,10 @@ export default class Control extends EventEmitter {
             parent = parent.parent
         } while (parent != null)
     }
+
+    /**
+     * Returns an instance of the {GraphicsContext} associated with the session
+     */
     get graphics() {
         let parent = this
         do {
@@ -157,6 +191,9 @@ export default class Control extends EventEmitter {
             parent = parent.parent
         } while (parent != null)
     }
+    /**
+     * Returns the {Theme} that is currently used
+     */
     get theme() {
         let parent = this
         do {
@@ -164,6 +201,10 @@ export default class Control extends EventEmitter {
             parent = parent.parent
         } while (parent != null)
     }
+
+    /**
+     * Gets the absolute X position in coordinates relative to the viewport (canvas)
+     */
     get absoluteX() {
         let parent = this
         let x = this.x
@@ -173,6 +214,10 @@ export default class Control extends EventEmitter {
         } while (parent != null)
         return x
     }
+
+    /**
+     * Gets the absolute Y position in coordinates relative to the viewport (canvas)
+     */
     get absoluteY() {
         let parent = this
         let y = this.y
@@ -201,18 +246,32 @@ export default class Control extends EventEmitter {
         this.bounds.size.height = value
         this.resize()
     }
+
+    /**
+     * Gets the width of the element
+     */
     get width() {
         return this.bounds.size.width
     }
 
+
+    /**
+     * Gets the height of the element
+     */
     get height() {
         return this.bounds.size.height
     }
     
+    /**
+     * Gets the relative x position of the element relative to the parent
+     */
     get x() {
         return this.bounds.position.x
     }
 
+    /**
+     * Gets the relative y position of the element relative to the parent
+     */
     get y() {
         return this.bounds.position.y 
     }
@@ -230,24 +289,47 @@ export default class Control extends EventEmitter {
     set top(value) {
         return this.bounds.position.y = value
     }
+
+    /**
+     * Gets the x position of the element relative to the parent's right side
+     */
     get right() {
         return this.x + this.width
     }
+
+    /**
+     * Gets the x position of the element relative to the parent's bottom side
+     */
     get bottom() {
         return this.y + this.height
     }
+
     get left() {
         return this.x
     }
     get top() {
         return this.y
     }
+
+    /**
+     * Sets the x position of the element relative to the parent's bottom side
+     */
     set bottom(value) {
         this.y = this.parent.height - value - this.height
     }
+
+    /**
+     * Sets the x position of the element relative to the parent's right side
+     */
+    
     set right(value) {
         this.x = this.parent.width - value - this.width
     }
+
+
+    /**
+     * Close the element
+     */
     close() {
         delete this.parent.controls[this.id] 
         this.yoghurt.render()
@@ -283,7 +365,7 @@ export default class Control extends EventEmitter {
         return this.inBoundsX(x) && this.inBoundsY(y)
     }
     /**
-     * Render the control
+     * Renders the control
      * @param {GraphicsContext} gc The Graphics Context
      */
     render(gc, fill=true) {
@@ -301,6 +383,9 @@ export default class Control extends EventEmitter {
         this.style.renderControl(gc, this, fill)
         gc.restore()        
     }
+    /**
+     * @deprecated
+     */
     redraw() {
         let gc = this.graphics
         gc.setOrigo(this.absoluteX, this.absoluteY)
@@ -321,14 +406,25 @@ export default class Control extends EventEmitter {
             control.pack()
         }
     }
+
+    /**
+     * Resizes the control
+     */
     resize() {
         this.pack()
         
     }
 
+    /**
+     * Invoked when the mouse leave
+     */
     mouseLeave(x, y, button) {
         this.emit('mouseleave', x, y, button)
     }
+
+    /**
+     * Invoked when the mouse pointer moves above the control
+     */
 
     hover(x, y, button='left') {
         let relativeX = x - this.left
@@ -361,6 +457,11 @@ export default class Control extends EventEmitter {
             y: y
         })
     }
+    
+
+    /**
+     * Invoked when the mouse button upe
+     */
     mouseUp(x, y, button='left') {
         this.stopMove()
         
@@ -370,9 +471,10 @@ export default class Control extends EventEmitter {
         this.isMoving = false
         }
     /**
-     * Click
-     * @param {*} x 
-     * @param {*} y 
+     * Invoked when the mouse clicks
+     * @param {Int} x The x coordinate of the pointer
+     * @param {Int} y The y coordinate of the pointer
+     * @param {String} button The button
      */
     click(x, y, button='left') {
         let relativeX = x - this.left
@@ -397,11 +499,11 @@ export default class Control extends EventEmitter {
         this.isMouseDown = true
 
     }
-
     /**
-     * Click
-     * @param {*} x 
-     * @param {*} y 
+     * Invoked when the mouse press
+     * @param {Int} x The x coordinate of the pointer
+     * @param {Int} y The y coordinate of the pointer
+     * @param {String} button The button
      */
     mouseDown(x, y, button='left') {
         let relativeX = x - this.left
@@ -420,12 +522,14 @@ export default class Control extends EventEmitter {
         if (!foundControl) {
             this.mouseDownAction(relativeX, relativeY, button)
         }
-    }
+    } 
+    
     /**
-     * Click
-     * @param {*} x 
-     * @param {*} y 
-     */
+    * Invoked when the mouse up
+    * @param {Int} x The x coordinate of the pointer
+    * @param {Int} y The y coordinate of the pointer
+    * @param {String} button The button
+    */
     mouseUp(x, y, button='left') {
         this.isMouseDown = false
         let relativeX = x - this.left
