@@ -58,7 +58,7 @@ export default class Desktop extends Control {
         this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22, this.height -22 - 22)
     }
     render(gc) {
-
+        this.unrender()
         gc.setFillStyle(this.theme.desktop)
         gc.fillRect(0, 0, this.width, this.height)
         this.drawWarning(gc, 'Alpha Version'.toUpperCase())

@@ -49,8 +49,8 @@ export default class Control extends EventEmitter {
         this.acceptButton = null
         this.cancelButton = null
         this.isResizing = false
+        this.$hasBeenRendered = false
     }
-
     /**
      * Gets the text of the control
      */
@@ -121,6 +121,7 @@ export default class Control extends EventEmitter {
     hide() {
         this.isVisible = false
         this.yoghurt.render()
+        this.unrender()
     }
 
     /**
@@ -209,6 +210,7 @@ export default class Control extends EventEmitter {
         let parent = this
         let x = this.x
         do {
+            if (!isNaN(parent.x))
             x += parent.x
             parent = parent.parent
         } while (parent != null)
@@ -222,6 +224,7 @@ export default class Control extends EventEmitter {
         let parent = this
         let y = this.y
         do {
+            if (!isNaN(parent.y))
             y += parent.y
             parent = parent.parent
         } while( parent != null)
@@ -332,6 +335,8 @@ export default class Control extends EventEmitter {
      */
     close() {
         delete this.parent.controls[this.id] 
+        debugger
+        this.unrender()
         this.yoghurt.render()
     }
     inactivate() {
@@ -364,6 +369,13 @@ export default class Control extends EventEmitter {
     inBounds(x, y) {
         return this.inBoundsX(x) && this.inBoundsY(y)
     }
+    unrender() {
+        this.$hasBeenRendered = false
+        for (let _control of Object.values(this.controls)) {
+           
+            _control.unrender()
+        }
+    }
     /**
      * Renders the control
      * @param {GraphicsContext} gc The Graphics Context
@@ -382,6 +394,8 @@ export default class Control extends EventEmitter {
         }
         this.style.renderControl(gc, this, fill)
         gc.restore()        
+        this.$hasBeenRendered = true
+        
     }
     /**
      * @deprecated

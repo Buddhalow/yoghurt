@@ -1,6 +1,7 @@
 import App from '../../../src/apps'
 import Label from '../../../src/controls/Label'
 import Button from '../../../src/controls/Button'
+import TextBox from '../../../src/controls/TextBox';
 
 export default class DemoApp extends App {
     constructor(parent, id) {
@@ -29,6 +30,13 @@ export default class DemoApp extends App {
             this.close()
         })
 
+        this.content.controls['textbox'] = new TextBox(this, 'textbox')
+        this.content.controls['textbox'].width = 100
+        this.content.controls['textbox'].height = 38
+        this.content.controls['textbox'].left = 28
+        this.content.controls['textbox'].top = 28
+        this.content.controls['textbox'].text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut interdum quam.'
+        this.content.controls['textbox'].show()
         this.x = 222
         this.y = 111
         this.width = 321  

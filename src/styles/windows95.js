@@ -25,6 +25,67 @@ class Windows95Style extends Style {
         gc.drawLine(control.width, control.height, control.width, 0)
         gc.fillText(control.label, textPositionX, textPositionY)
     }
+
+    drawBevel(gc, control) {
+        gc.setStrokeStyle(control.theme.btnHighlight)
+        gc.drawLine(0, 0, control.width, 0)
+        gc.drawLine(0, 0, 0, control.height)
+        gc.setStrokeStyle(control.theme.btnLight)
+        gc.drawLine(1, 1, control.width, 1)
+        gc.drawLine(1, 1, 1, control.height - 1)
+        gc.setStrokeStyle(control.theme.btnShadow)
+        gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+        gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+        gc.setStrokeStyle(control.theme.btnDarkShadow)
+        gc.drawLine(control.width , control.height, 0, control.height)
+        gc.drawLine(control.width, control.height, control.width, 0)
+    }
+    drawInset(gc, control) {
+        gc.drawLine(0, 0, control.width, 0)
+        gc.drawLine(0, 0, 0, control.height)
+        gc.setStrokeStyle(control.theme.btnShadow)
+        gc.drawLine(1, 1, control.width, 1)
+        gc.drawLine(1, 1, 1, control.height - 1)
+        gc.setStrokeStyle(control.theme.btnLight)
+        gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+        gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+        gc.setStrokeStyle(control.theme.btnHighlight)
+        gc.drawLine(control.width , control.height, 0, control.height)
+        gc.drawLine(control.width, control.height, control.width, 0)
+    }
+
+    renderTextBox(gc, control) {
+        this.drawInset(gc, control)
+        gc.setFont(control.font)
+        let x = 0
+        let y = 0
+        let left =  2
+        let top = 12
+        let textSize = control.font.size
+        for (let char of control.text) {
+            let width = gc.measureText(char).width
+            if (x >= control.selection.start && x <= control.selection.end && control.selection.end != control.selection.start ) {
+                gc.setFillStyle(control.style.highlight)
+                gc.fillRect(left, top, width, textSize) // Fill mark
+                gc.setFillStyle(control.style.highlightText)
+            } else {
+                gc.setFillStyle(control.style.text)
+            }
+            gc.fillText(char, left, top)
+            if (x == control.selection.end) {
+                gc.setStrokeStyle(control.style.text)
+                if (control.isBlink) {
+                    gc.drawLine(left, top, left, control.height - 2)
+                }
+            }
+
+            left += width
+            if (left > control.width) {
+                left = 0
+                top += textSize
+            }
+        }        
+    }
     renderButton(gc, control) {
         // Draws button
         gc.setFont(control.font)

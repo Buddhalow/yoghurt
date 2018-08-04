@@ -29,6 +29,8 @@ export default class Window extends Control {
     }
     close() {
         delete this.parent.controls[this.id]
+        console.log('Closing ' + this.id)
+        this.unrender()
         this.yoghurt.render()
     }
 

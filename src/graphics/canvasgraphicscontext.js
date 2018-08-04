@@ -7,9 +7,10 @@ export default class CanvasGraphicsContext extends GraphicsContext {
     constructor(yoghurt, canvas) {
         super(yoghurt)
         this.canvas = canvas
-        
+        this.canvas.style.position = 'relative'
         this.context2d = canvas.getContext('2d')
         this.context2d.lineWidth = 1
+
         this.font = new Font('Tahoma', 11, false, false)
         this.matrix = {
             x: 0,
