@@ -1,4 +1,4 @@
-import Control from './Control'
+import Control from '.'
 import Button from './Button';
 import Font from '../graphics/font';
 
@@ -20,19 +20,19 @@ export default class Header extends Control {
     }
     addRightButton(text, id, pos) {
         let button = new Button(this)
-        button.width = 20
-        button.height = 20
+        button.width = 13
+        button.height = 13
         button.text = text
-        button.x = this.width - 25 - pos * 22
+        button.x = this.width - 16 - pos * 16
   
-        button.y = 4
+        button.y = 3
         this.controls[id] = button
         this.rightButtons.push(button)
     }
     load() {
         super.load()
         this.closeButton = this.addRightButton('x', 'closeButton', 0)
-        this.maximizeButton = this.addRightButton('O', 'maximizeButton', 1)
+        this.maximizeButton = this.addRightButton('o', 'maximizeButton', 1)
         this.minimizeButton = this.addRightButton('_', 'minimizeButton', 2)
     }
     render(gc) {

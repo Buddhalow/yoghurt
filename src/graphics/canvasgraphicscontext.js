@@ -4,8 +4,8 @@ import Font from './font'
  * Represents a graphics context
  */
 export default class CanvasGraphicsContext extends GraphicsContext {
-    constructor(canvas) {
-        super()
+    constructor(yoghurt, canvas) {
+        super(yoghurt)
         this.canvas = canvas
         
         this.context2d = canvas.getContext('2d')
@@ -17,6 +17,35 @@ export default class CanvasGraphicsContext extends GraphicsContext {
         }
         this.context2d.webkitImageSmoothingEnabled = false  
         this.context2d.translate(0.5, 0.5)
+    }
+    drawImage(image, x, y, width, height, x2, y2, w2, h2) {
+        this.context2d.drawImage(image, this.matrix.x + x, this.matrix.y + y, width, height, x2, y2, w2, h2)
+    }   
+    load() {
+        this.canvas.addEventListener('click', (e) => {
+            this.yoghurt.click(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.yoghurt.mouseDown(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
+        this.canvas.addEventListener('mousemove', (e) => {
+            this.yoghurt.hover(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
+        this.canvas.addEventListener('mouseup', (e) => {
+            this.yoghurt.mouseUp(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
     }
     resetClip() {
         this.context2d.resetClip()

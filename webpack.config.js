@@ -1,5 +1,5 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('../../../Library/Caches/typescript/2.9/node_modules/@types/html-webpack-plugin');
 const GhPagesWebpackPlugin = require('gh-pages-webpack-plugin');
 
  module.exports = {

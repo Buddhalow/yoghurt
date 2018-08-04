@@ -1,4 +1,4 @@
-import Control from './Control'
+import Control from '.'
 import Button from './Button'
 import Menu from './Menu';
 import Tray from './Tray'
@@ -16,19 +16,15 @@ export default class Taskbar extends Control {
 
     load() {
         super.load()
-
+        this.yoghurt.on('servicechanged', () => this.pack())
         this.startButton = new Button(this)
         this.startButton.text = 'Start'
-        this.startButton.left = 4
-        this.startButton.top = 5
-        this.startButton.width = 63
-        this.startButton.height = 20
         this.controls['start'] = this.startButton
         this.startButton.on('mousedown', (event) => {
             
             let menu = this.parent.addMenu('startmenu', [
                 {
-                    label: 'Programs',
+                    label: 'Apps',
                     items: [
                         {
                             label: "Welcome"
@@ -58,10 +54,25 @@ export default class Taskbar extends Control {
         setInterval(() => {
             tray.label = moment().format('LT')
         }, 60000)
-        tray.width = 55
-        tray.height = 22
-        tray.right = 12
-        tray.bottom = 3
+        this.tray = tray
+        this.pack()
         this.yoghurt.render()
+    }
+    pack() {
+        super.pack()
+        if (this.startButton) {
+            this.startButton.left = 4
+            this.startButton.top = 5
+            this.startButton.width = 63
+            this.startButton.height = 20
+        
+        }
+        if (this.tray) {
+            let tray = this.tray
+            tray.height = 22
+            tray.width = (Object.values(this.yoghurt.services).length * 18) + 60
+            tray.right = 12
+            tray.bottom = 3
+        }
     }
 }   

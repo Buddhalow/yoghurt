@@ -18,33 +18,13 @@ document.body.appendChild(canvas)
 document.body.style.display = 'flex'
 document.body.style.alignItems = 'center'
 document.body.style.justifyContent = 'center'
-let gc = new CanvasGraphicsContext(canvas)
+let gc = new CanvasGraphicsContext(null, canvas)
 let yoghurt = new Yoghurt(gc, windows95Theme, windows95Style)
+gc.yoghurt = yoghurt
 
-canvas.addEventListener('click', (e) => {
-    yoghurt.click(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
-canvas.addEventListener('mousedown', (e) => {
-    yoghurt.mouseDown(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
-canvas.addEventListener('mousemove', (e) => {
-    yoghurt.hover(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
-canvas.addEventListener('mouseup', (e) => {
-    yoghurt.mouseUp(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
+setInterval(() => {
+    yoghurt.resize()
+}, 100)
 
 canvas.style.imageRendering = 'pixelated'
 

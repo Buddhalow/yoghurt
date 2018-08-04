@@ -1,2 +1,2 @@
-  import yoghurtExample from '../Example/src/index'
+  import yoghurtExample from '../Example/src'
 

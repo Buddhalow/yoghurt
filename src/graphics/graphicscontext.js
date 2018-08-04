@@ -10,4 +10,10 @@ export default class GraphicsContext {
     translate(x, y) {
 
     }
+    init() {
+        
+    }
+    constructor(yoghurt) {
+        this.yoghurt = yoghurt
+    }
 } 

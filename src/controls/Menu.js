@@ -1,4 +1,4 @@
-import Control from './Control'
+import Control from '.'
 
 export default class Menu extends Control {
     constructor(parent, id, items) {
@@ -10,11 +10,14 @@ export default class Menu extends Control {
         this.alignSize()
     }
     click(x, y, button='left') {
+        let item = this.items[this.selectedIndex]
         try {
-            this.items[this.selectedIndex].callback(this)
+            item.callback(this)
+            
         } catch (e) {
 
         }
+        this.parent.emit('action', item.id)
         this.close()    
     }
     alignSize() {

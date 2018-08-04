@@ -1,16 +1,32 @@
 import Desktop from "./controls/Desktop";
+import { EventEmitter } from "events";
 
-export default class Yoghurt {
+export default class Yoghurt extends EventEmitter {
     constructor(graphics, theme, style) {
+        super()
         this.graphics = graphics
         this._theme = theme
         this._style = style
         this.desktop = new Desktop(this)
         this.desktop.width = graphics.bounds.width
         this.desktop.height = graphics.bounds.height
+        this.services = {}
+        this.on('servicechanged', () => {
+            this.render()
+        })
         
     }
+    registerService(service) {
+        this.services[service.id] = service
+        service.on('started', () => {
+            this.emit('servicechanged')
+        })
+        service.on('stopped', () => {
+            this.emit('servicechanged')
+        })
+    }
     load() {
+        this.graphics.load()
         this.desktop.load()
     }
     pack() {

@@ -1,11 +1,11 @@
-import Control from './Control'
+import Control from '.'
 import Taskbar from './Taskbar'
 import Menu from './Menu';
 
 export default class Desktop extends Control {
     constructor(parent, id) {
         super(parent, id)
-        this.backgroundColor = this.theme.desktop
+        this.backgroundColor = 'transparent'
         this.graphics = parent.graphics
         this.desktop = this
         this.yoghurt = this.parent
@@ -58,10 +58,13 @@ export default class Desktop extends Control {
         this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22, this.height -22 - 22)
     }
     render(gc) {
-        super.render(gc)
+
+        gc.setFillStyle(this.theme.desktop)
+        gc.fillRect(0, 0, this.width, this.height)
         this.drawWarning(gc, 'Alpha Version'.toUpperCase())
         this.shadowedText(gc, 'Yoghurt UI Framework. (C) 2018 Alexander Forselius', this.width - 280, this.height - 82)
         this.shadowedText(gc, 'Build 0.2.8. For testing purposes only.', this.width - 205, this.height - 62)
+        super.render(gc)
     }
 
 

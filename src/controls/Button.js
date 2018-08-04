@@ -1,4 +1,4 @@
-import Control from './Control'
+import Control from '.'
 import Font from '../graphics/font'
 
 export default class Button extends Control {

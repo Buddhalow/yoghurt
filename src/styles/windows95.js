@@ -2,8 +2,19 @@ import Style from '.'
 
 class Windows95Style extends Style {
     renderTray(gc, control) {
+
+        let services = Object.values(control.yoghurt.services).filter(s => s.isActive)
+        let left = 0
+        let iconSize = 18
+        for (let service of services) {
+            gc.drawImage(service.icon, left, 2, iconSize, iconSize, 0, 0, service.icon.width, service.icon.height) 
+          
+            left += iconSize
+            left++
+        }
+
         gc.setFont(control.font)
-        let textPositionX = (control.width / 2) - (gc.measureText(control.text).width / 2)
+        let textPositionX = left + (gc.measureText(control.text).width / 2)
         let textPositionY = (control.height / 2)
         gc.setStrokeStyle(control.theme.btnShadow)
         gc.setFillStyle(control.theme.buttonText)
@@ -76,8 +87,11 @@ class Windows95Style extends Style {
             gc.setLineDash([1])
         }
     } 
+    renderToolBar(gc, control) {
+    }
     renderMenuBar(gc, control) {
         let left = 0
+        if (control.menus)
         for (let menuId of Object.keys(control.menus)) {
             let menu = control.menus[menuId]
             if (control.selectedMenu === menu) {
@@ -127,7 +141,7 @@ class Windows95Style extends Style {
         gc.fillRect(0, 0, control.width, control.height)
         gc.setFillStyle(control.theme.highlightText)
         gc.setFont(control.font) 
-        gc.fillText(control.label, 25, 16)
+        gc.fillText(control.text || control.parent.text, 25, 12)
     }
     renderControl(gc, control, fill=true) {
         

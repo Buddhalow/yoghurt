@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import Font from '../graphics/font'
-import { resolve } from '../../node_modules/uri-js';
+import { resolve } from 'uri-js';
 /**
  * Control class
  */
@@ -17,6 +17,7 @@ export default class Control extends EventEmitter {
         this.zIndex = 0
         this.borderStyle = 'none'
         this.isPressing = false
+        this.isLoaded = false
         this.bounds = {
             size: {
                 width: 0,
@@ -40,6 +41,18 @@ export default class Control extends EventEmitter {
         this.acceptButton = null
         this.cancelButton = null
         this.isResizing = false
+    }
+
+    get text() {
+        if (this._text != null) {
+            return this._text
+        } else {
+            return this.id
+        }
+    }
+
+    set text(value) {
+        this._text = value
     }
 
     startResize(pos) {
@@ -96,6 +109,7 @@ export default class Control extends EventEmitter {
     show() {
         this.isVisible = true
         this.yoghurt.render()
+        if (!this.isLoaded) this.load()
     }
     focus() {
         this.desktop.focusedControl = this
@@ -170,6 +184,7 @@ export default class Control extends EventEmitter {
     }
 
     load() {
+        if (this.isLoaded) return
         for (let control of Object.values(this.controls)) {
             control.load()
         }

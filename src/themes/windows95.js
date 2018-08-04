@@ -9,6 +9,8 @@ export default new Theme({
     btnDarkShadow: '#000000',
     highlight: '#0000bb',
     highlightText: '#ffffff',
-    inactive: '#888',
-    desktop: '#208c71'
+    inactive: '#394dcd',
+    desktop: '#208c71',
+    backgroundColor: '#fff',
+    color: '#000'
 })

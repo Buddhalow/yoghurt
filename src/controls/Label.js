@@ -1,4 +1,4 @@
-import Control from './Control'
+import Control from '.'
 
 export default class Label extends Control {
     constructor(parent, id) {

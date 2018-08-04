@@ -1,4 +1,4 @@
- import Control from './Control'
+ import Control from '.'
 
  export default class MenuBar extends Control {
      constructor(parent, id, menus={}) {
@@ -6,6 +6,9 @@
         this.menus = menus
         this.selectedMenu = null
         this.paddingHorizontal = 28
+        this.on('action', (actionId) => {
+            this.parent.emit('action', actionId)
+        })
      }
      render(gc) {
         super.render(gc)
