@@ -72,7 +72,7 @@ export default class Taskbar extends Control {
                     label: 'Exit'
                 }
             ])
-            menu.bottom = 28
+            menu.bottom = 23
             menu.x = 2
             this.yoghurt.render()
         })

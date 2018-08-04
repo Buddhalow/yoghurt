@@ -58,7 +58,7 @@ export default class Window extends Control {
             y += this.toolbarPanel.height
         }
         this.content.left = 2
-        this.content.top = y + 1
+        this.content.top = y + 20
         this.content.width = this.width - 4
         this.content.height = this.height - y * 2
         super.pack()
