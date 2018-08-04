@@ -6,9 +6,6 @@ Support me on Patreon
 
 [![Become a Patreon](https://raw.githubusercontent.com/Buddhalow/yoghurt/master/docs/images/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=12455664)
 
-
-" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
-
 ## Long description
 
 This is just for fun and interesting I am trying to create an UI framework from ground based on ES6 classes that are rendered as components in the canvas
