@@ -70,20 +70,82 @@ class Windows95Style extends Style {
                 gc.fillText(control.text, textPositionX, textPositionY)
 
             }
-        }
+        
 
-        if (control.isFocused) {
+            
+        }
+        
+        if (control.buttonStyle == 'tool') {
+            if (control.buttonState == 'normal') {
+                if (control.isChecked) {
+                    gc.setFillStyle('white')
+                    gc.fillRect(0, 0, control.width, control.height)
+                    gc.setStrokeStyle(control.theme.btnDarkShadow)
+                    gc.drawLine(0, 0, control.width, 0)
+                    gc.drawLine(0, 0, 0, control.height)
+                    gc.setStrokeStyle(control.theme.btnShadow)
+                    gc.drawLine(1, 1, control.width, 1)
+                    gc.drawLine(1, 1, 1, control.height - 1)
+                    gc.setStrokeStyle(control.theme.btnLight)
+                    gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+                    gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+                    gc.setStrokeStyle(control.theme.btnHighlight)
+                    gc.drawLine(control.width , control.height, 0, control.height)
+                    gc.drawLine(control.width, control.height, control.width, 0)
+                } else {
+                    gc.setStrokeStyle(control.theme.btnHighlight)
+                    gc.drawLine(0, 0, control.width, 0)
+                    gc.drawLine(0, 0, 0, control.height)
+                    gc.setStrokeStyle(control.theme.btnLight)
+                    gc.drawLine(1, 1, control.width, 1)
+                    gc.drawLine(1, 1, 1, control.height - 1)
+                    gc.setStrokeStyle(control.theme.btnShadow)
+                    gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+                    gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+                    gc.setStrokeStyle(control.theme.btnDarkShadow)
+                    gc.drawLine(control.width , control.height, 0, control.height)
+                    gc.drawLine(control.width, control.height, control.width, 0)
+                }
+            }
+            if (control.buttonState == 'pressed') {
+                gc.setStrokeStyle(control.theme.btnDarkShadow)
+                gc.drawLine(0, 0, control.width, 0)
+                gc.drawLine(0, 0, 0, control.height)
+                gc.setStrokeStyle(control.theme.btnShadow)
+                gc.drawLine(1, 1, control.width, 1)
+                gc.drawLine(1, 1, 1, control.height - 1)
+                gc.setStrokeStyle(control.theme.btnLight)
+                gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+                gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+                gc.setStrokeStyle(control.theme.btnHighlight)
+                gc.drawLine(control.width , control.height, 0, control.height)
+                gc.drawLine(control.width, control.height, control.width, 0)
+            }
+            if (control.enabled) {
+                gc.setFillStyle(control.theme.buttonText)
+                gc.fillText(control.text, textPositionX, textPositionY)
+            } else {
+                gc.setFont(new Font('Tahoma', 8))
+                gc.setFillStyle(control.theme.btnHilight)
+                gc.fillText(control.text, textPositionX - 1, textPositionY - 1)
+                gc.setFillStyle(control.theme.btnShadow)
+                gc.fillText(control.text, textPositionX, textPositionY)
+
+            }
+        }
+        if (control.isFocused && control.isFocusable) {
             gc.setLineDash([2])
             gc.setStrokeStyle('#000')
             gc.setLineDash([1, 2    ])
             if (control.buttonState == 'pressed') {
-                gc.strokeRect(4, 4, control.width - 7, control.height - 7)
+                gc.strokeRect(4, 4, control.width - 8, control.height - 8)
 
             } else {
-                gc.strokeRect(3, 3, control.width - 6, control.height - 6)
+                gc.strokeRect(3, 3, control.width - 7, control.height - 7)
             }
             gc.setLineDash([1])
-            gc.strokeRect(-1, -1, control.width + 2, control.height + 2)
+            if (control.buttonStyle === 'normal')
+                gc.strokeRect(-1, -1, control.width + 2, control.height + 2)
             gc.setLineDash([1])
         }
     } 

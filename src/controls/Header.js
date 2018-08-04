@@ -23,6 +23,8 @@ export default class Header extends Control {
         button.width = 13
         button.height = 13
         button.text = text
+        button.buttonStyle = 'tool'
+        button.isFocusable = false
         button.x = this.width - 16 - pos * 16
   
         button.y = 3

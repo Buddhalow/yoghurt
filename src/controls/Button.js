@@ -8,7 +8,8 @@ export default class Button extends Control {
         this.buttonStyle = 'normal'
         this.enabled = true
         this.focused = false 
-        
+        this.isChecked = false    
+        this.isFocusable = true
         
     }
     mouseLeave(x, y, button='left') {

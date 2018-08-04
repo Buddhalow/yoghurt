@@ -7,6 +7,10 @@ import moment from 'moment'
 export default class Taskbar extends Control {
     constructor(parent, id) {
         super(parent, id)
+        this.windowIds = []
+        this.parent.on('windowadded', () => {
+            this.renderWindowButtons.bind(this)()
+        })
     }
 
     render(gc) {
@@ -14,11 +18,35 @@ export default class Taskbar extends Control {
         this.style.renderTaskbar(gc, this)
     }
 
+    renderWindowButtons() {
+        for (let windowId of this.windowIds) {
+            delete this.controls[windowId]
+        }
+        let left = this.startButton.width + this.startButton.left + 6
+        for (let windowId of Object.keys(this.parent.controls)) {
+            let window = this.parent.controls[windowId]
+            if (window.klass === 'window' && window.showInTaskBar) {
+                let btnId = 'btn.window$' + windowId
+                let windowButton = new Button(this, btnId)
+                windowButton.buttonStyle = 'tool'
+                windowButton.width = this.graphics.measureText(window.text).width * 2 + 2
+                windowButton.height = this.height - 10
+                windowButton.top = 5
+                windowButton.left = left
+                windowButton.text = window.text
+                windowButton.isChecked = true
+                left += windowButton.width + 8
+                this.controls[btnId] = windowButton
+            }
+        }
+    }
+
     load() {
         super.load()
         this.yoghurt.on('servicechanged', () => this.pack())
         this.startButton = new Button(this)
         this.startButton.text = 'Start'
+        this.startButton.buttonStyle = 'tool'
         this.controls['start'] = this.startButton
         this.startButton.on('mousedown', (event) => {
             

@@ -14,7 +14,7 @@ export default class Window extends Control {
         this.controls['header'] = this.header
         this.borderStyle = 'bevel'
         this.closeOnInactivate = false
-        this.showInTaskbar = false
+        this.showInTaskBar = true
         this.content = new Control(this, 'content')
         this.controls['content'] = this.content
         this.width = width
@@ -25,12 +25,16 @@ export default class Window extends Control {
             this.toolbarPanel = new ToolBarPanel(this, 'toolbarpanel')
             this.controls['toolbarpanel'] = this.toolbarPanel
         }
+        this.klass = 'window'
     }
     close() {
         delete this.parent.controls[this.id]
         this.yoghurt.render()
     }
 
+    show() {
+        super.show()
+    }
 
     activate() {
         this.zIndex = 0
@@ -61,7 +65,9 @@ export default class Window extends Control {
     }
 
     load() {
+        if (this.isLoaded) return
         this.header.load()
+        this.yoghurt.desktop.emit('windowadded', this)
     }
 
     mouseDownAction(x, y, button='left') {
