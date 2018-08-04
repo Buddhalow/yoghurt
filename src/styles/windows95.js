@@ -214,6 +214,7 @@ class Windows95Style extends Style {
     }
     renderMenuBar(gc, control) {
         let left = 0
+        console.log(control)
         if (control.menus)
         for (let menuId of Object.keys(control.menus)) {
             let menu = control.menus[menuId]
@@ -225,7 +226,7 @@ class Windows95Style extends Style {
                 gc.setFillStyle('#000')
             }
             gc.fillText(
-                menu.label,
+                menu.label || menu.id,
                 left + control.paddingHorizontal,
                 22,
                 gc.measureText(menu.label).width + control.paddingHorizontal * 2,

@@ -27,6 +27,15 @@ export default class Window extends Control {
         }
         this.klass = 'window'
     }
+    get menus() {
+        return this._menus
+    }
+    set menus(value) {
+        this._menus = value
+        if (!this.menubar) return
+        this.menubar.menus = value
+        this.yoghurt.render()
+    }
     close() {
         delete this.parent.controls[this.id]
         console.log('Closing ' + this.id)
@@ -51,7 +60,8 @@ export default class Window extends Control {
         this.header.pack()
         y += this.header.height
         this.menubar = new MenuBar(this, 'menubar', this.menus)
-        this.menubar.top = this.header.height
+        this.menubar.height = 10
+        this.menubar.top = y
         y += this.menubar.height
         if (this.toolbarPanel) {
             this.toolbarPanel.y = y
