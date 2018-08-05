@@ -14,6 +14,7 @@ export default class ListView extends Control {
             x: 0,
             y: 0
         }
+        this.borderStyle = 'inset'
         this.backgroundColor = 'white'
     }
 

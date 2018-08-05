@@ -12,7 +12,12 @@ export default class Header extends Control {
     }
     mouseDownAction(x, y, button='left') {
         if (super.mouseDownAction(x, y, button)) return true
-        this.parent.isMoving = true
+        let relativeX = x - this.left
+        let relativeY = y - this.top
+        this.parent.startMove({
+            x: relativeX,
+            y: relativeY    
+        })
     }
     mouseUp(x, y, button='left') {
         super.mouseUp(x, y, button)
@@ -26,7 +31,7 @@ export default class Header extends Control {
         button.buttonStyle = 'tool'
         button.isFocusable = false
         button.x = this.width - 16 - pos * 16
-  
+        
         button.y = 3
         this.controls[id] = button
         this.rightButtons.push(button)
@@ -36,6 +41,14 @@ export default class Header extends Control {
         this.closeButton = this.addRightButton('x', 'closeButton', 0)
         this.maximizeButton = this.addRightButton('o', 'maximizeButton', 1)
         this.minimizeButton = this.addRightButton('_', 'minimizeButton', 2)
+    }
+    pack() {
+        super.pack()
+        for (let i = 0; i < this.rightButtons.length; i++) {
+            let button = this.rightButtons[i]
+            button.x = this.width - 16 - i * 16
+
+        }
     }
     render(gc) {
         this.style.renderHeader(gc, this, false)

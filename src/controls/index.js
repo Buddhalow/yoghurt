@@ -19,8 +19,10 @@ export default class Control extends EventEmitter {
         this.parent = parent
         this.font = new Font('Tahoma', 11)
         this.isMoveable = false
+        this.focusedControl = null
         this.move = null
         this.resizePos = null
+        this.canBeResized = false
         this.controls = {}
         this.zIndex = 0
         this.borderStyle = 'none'
@@ -50,6 +52,8 @@ export default class Control extends EventEmitter {
         this.cancelButton = null
         this.isResizing = false
         this.$hasBeenRendered = false
+        
+        
     }
     /**
      * Gets the text of the control
@@ -71,19 +75,42 @@ export default class Control extends EventEmitter {
         this._text = value
     }
 
+    startMoveControl(obj) { 
+        this.moveControl = obj
+    }
+    startResizeControl(obj) {
+        this.resizeControl = obj
+    }
+    stopMoveControl() {
+        this.moveControl = null
+    }
+    stopResizeControl() {
+        this.resizeControl = null
+    }
     startResize(pos) {
-        this.resizePos = pos
+        console.log("Starting resizing")
+        this.parent.startResizeControl(pos)
     }
     stopResize() {
-        this.resizePos = null
+        this.parent.stopResizeControl()
     }
     stopMove() {
-        this.move = null
+        this.parent.stopMoveControl()
     }
     startMove(pos) {
-       this.move = pos
+        pos.control = this
+        this.parent.startMoveControl(pos)
     }
-    
+
+    bringToFront() {
+        this.parent.bringControlToFront(this)
+    }
+    bringControlToFront(window) {
+        if (window.klass != 'window') return
+        delete this.controls[window.id]
+        this.controls[window.id] = window
+        this.yoghurt.render()
+    }
 
     clickAction(x, y, button='left') {
         this.emit('click', x, y, button)
@@ -138,6 +165,8 @@ export default class Control extends EventEmitter {
      */
     focus() {
         this.desktop.focusedControl = this
+        this.bringToFront()
+        this.yoghurt.render()
     }
     set desktop(value) {
         this._desktop = value
@@ -335,7 +364,7 @@ export default class Control extends EventEmitter {
      */
     close() {
         delete this.parent.controls[this.id] 
-        debugger
+        console.log('Closing ' + this.id)
         this.unrender()
         this.yoghurt.render()
     }
@@ -436,6 +465,10 @@ export default class Control extends EventEmitter {
         this.emit('mouseleave', x, y, button)
     }
 
+    hoverAction() {
+
+    }
+
     /**
      * Invoked when the mouse pointer moves above the control
      */
@@ -444,10 +477,27 @@ export default class Control extends EventEmitter {
         let relativeX = x - this.left
         let relativeY = y - this.top
         if (this.isMouseDown) this.buttonState = 'pressed'
+        let foundControl = false
+
+        if (this.resizeControl != null) {
+            this.resizeControl.control.width = relativeX + 2 - this.resizeControl.control.x
+            this.resizeControl.control.height = relativeY + 2 - this.resizeControl.control.y
+            this.resizeControl.control.pack()
+            this.yoghurt.render()
+        }
+
+        if (this.moveControl != null) {
+            this.moveControl.control.x = relativeX - this.moveControl.x
+            this.moveControl.control.y = relativeY - this.moveControl.y
+            this.yoghurt.render()
+            
+        }
+
         for (let control of Object.values(this.controls)) {
             if (control.inBounds(relativeX, relativeY)) {
                 control.isHovered = true
                 control.hover(relativeX, relativeY, button)
+                this.foundControl = true
             } else {
                 if (control.isHovered) {
                     control.mouseLeave(relativeX, relativeY, button)
@@ -455,21 +505,14 @@ export default class Control extends EventEmitter {
                 control.isHovered = false
             }
         }
-        if (this.isMoving) {
-            if (!this.move) {
-                this.move = ({
-                    x: relativeX,
-                    y: relativeY
-                })
-            }
-            this.left = x - this.move.x
-            this.top = y - this.move.y
-            this.yoghurt.render()
-        }
         this.emit('hover', {
             x: x,
             y: y
         })
+        if (!foundControl) {
+            this.hoverAction(relativeX, relativeY, button)
+            
+        }
     }
     
 
@@ -478,7 +521,11 @@ export default class Control extends EventEmitter {
      */
     mouseUp(x, y, button='left') {
         this.stopMove()
+        this.stopResize()
         
+    }
+    stopResize() {
+        this.resizePos = null
     }
     stopMoving() {
         this.move = null
@@ -504,6 +551,7 @@ export default class Control extends EventEmitter {
             x: x,
             y: y
         })
+        
         if (!foundControl) {
             this.clickAction(x, y, button)
         }
@@ -534,7 +582,22 @@ export default class Control extends EventEmitter {
             y: y
         })
         if (!foundControl) {
+            let parent = this
+            while (parent != null && parent.klass !== 'window')  {
+                parent = parent.parent
+            } 
+            if (parent != null)
+            parent.focus()
+            if (parent != null) parent.focus()
             this.mouseDownAction(relativeX, relativeY, button)
+            if (this.canBeResized && relativeX > this.width - 6 && relativeY > this.height - 6) {
+         
+                this.startResize({
+                    x: relativeX,
+                    y: relativeY,
+                    control: this
+                })
+            }
         }
     } 
     
@@ -553,6 +616,14 @@ export default class Control extends EventEmitter {
                control.mouseUp(relativeX, relativeY, button)
             }
         }
+        if (this.parent.stopMoveControl instanceof Function)
+        this.parent.stopMoveControl()
+        if (this.parent.stopResizeControl instanceof Function)
+        this.parent.stopResizeControl()
+        if (this.stopMoveControl instanceof Function)
+        this.stopMoveControl()
+        if (this.stopResizeControl instanceof Function)
+        this.stopResizeControl()
         this.emit('mouseup', {
             x: x,
             y: y

@@ -25,6 +25,7 @@ export default class Window extends Control {
             this.toolbarPanel = new ToolBarPanel(this, 'toolbarpanel')
             this.controls['toolbarpanel'] = this.toolbarPanel
         }
+        this.canBeResized = true
         this.klass = 'window'
     }
     close() {
@@ -34,6 +35,7 @@ export default class Window extends Control {
         this.yoghurt.render()
     }
 
+
     show() {
         super.show()
     }
@@ -42,6 +44,7 @@ export default class Window extends Control {
         this.zIndex = 0
     }
     pack() {
+        super.pack()
         let y = 0
         this.header.x = 4
         this.header.y = 4
@@ -70,6 +73,7 @@ export default class Window extends Control {
         if (this.isLoaded) return
         this.header.load()
         this.yoghurt.desktop.emit('windowadded', this)
+        this.focus()
     }
 
     mouseDownAction(x, y, button='left') {

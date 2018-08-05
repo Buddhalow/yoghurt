@@ -17,11 +17,18 @@ export default class Desktop extends Control {
 
     }
 
-    addWindow(id) {
-        let window = new Window(this, id)
-        this.windows[id] = window
-        this.controls[id] = window
+    bringControlToFront(window) {
+        super.bringControlToFront(window)
+
+        delete this.controls['taskbar']
+        this.controls['taskbar'] = this.taskbar
+    }
+
+    addWindow(window) {
+        this.windows[window.id] = window
+        this.controls[window.id] = window
         this.emit('windowadded')
+        window.focus()
         return window
     }
 

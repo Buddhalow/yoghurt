@@ -279,6 +279,10 @@ class Windows95Style extends Style {
             gc.drawLine(control.width, 0, control.width, control.height)
             gc.drawLine(0, control.height, control.width, control.height)
         }
+        if (control.borderStyle === 'inset') {
+            this.drawInset(gc, control)
+            
+        }
     }
 }
 
