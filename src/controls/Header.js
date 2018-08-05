@@ -9,14 +9,15 @@ export default class Header extends Control {
         this.rightButtons = []
         this.backgroundColor = this.theme.highlight
         this.font = new Font('Tahoma', 11)
+        this.fill = true
+        this.klass = 'header'
     }
     mouseDownAction(x, y, button='left') {
         if (super.mouseDownAction(x, y, button)) return true
-        let relativeX = x - this.left
-        let relativeY = y - this.top
+     
         this.parent.startMove({
-            x: relativeX,
-            y: relativeY    
+            x: x,
+            y: y    
         })
     }
     mouseUp(x, y, button='left') {
@@ -51,7 +52,9 @@ export default class Header extends Control {
         }
     }
     render(gc) {
-        this.style.renderHeader(gc, this, false)
+        this.backgroundColor = (this.desktop.activeWindow  == this.parent ? this.theme.highlight : this.theme.inactive)
+  
         super.render(gc, false)
+        this.style.renderHeader(gc, this, false)
     }
 } 

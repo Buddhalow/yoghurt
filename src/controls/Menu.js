@@ -1,9 +1,9 @@
 import Control from '.'
 
 export default class Menu extends Control {
-    constructor(parent, id, items) {
+    constructor(parent, id, menu) {
         super(parent, id)
-        this.items = items || []
+        this.menu = menu
         this.borderStyle = 'bevel'
         this.selectedIndex = -1
         this.borderStyle = 'bevel'
@@ -11,7 +11,7 @@ export default class Menu extends Control {
     }
 
     click(x, y, button='left') {
-        let item = this.items[this.selectedIndex]
+        let item = this.menu.items[this.selectedIndex]
         try {
             item.callback(this)
             
@@ -24,14 +24,14 @@ export default class Menu extends Control {
     alignSize() {
         let gc = this.graphics
         let maxSize = 0
-        for (let item of this.items) {
+        for (let item of this.menu.items) {
             let width = gc.measureText(item.label).width + 22
             if (width > maxSize) {
                 maxSize = width
             }
         }
         this.width = maxSize + 12
-        this.height = this.items.length * 18 + 4
+        this.height = this.menu.items.length * 18 + 4
     }
     render(gc) {
         super.render(gc)
@@ -39,12 +39,10 @@ export default class Menu extends Control {
         
     }
     hover(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
         let itemHeight = 18
         this.selectedIndex = -1
-        for (let i = 0; i < this.items.length; i++) {
-            if (relativeY > i * itemHeight && relativeY < i * itemHeight + itemHeight) {
+        for (let i = 0; i < this.menu.items.length; i++) {
+            if (y > i * itemHeight && y < i * itemHeight + itemHeight) {
                 this.selectedIndex = i
                 this.yoghurt.render()
             }

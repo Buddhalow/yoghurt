@@ -218,21 +218,25 @@ class Windows95Style extends Style {
         if (control.menus)
         for (let menuId of Object.keys(control.menus)) {
             let menu = control.menus[menuId]
-            if (control.selectedMenu === menu) {
-                gc.setFillStyle(control.style.highlightText)
-                gc.fillRect(left , 0, gc.measureText(menu.label).width + control.paddingHorizontal, control.height)
-                gc.setFillStyle(control.style.highlight)
+            if (control.selectedMenu)
+            console.log(control.selectedMenu.menu.id, menu.id, control.selectedMenu.menu.id === menu.id)
+            if (control.selectedMenu && control.selectedMenu.menu.id === menu.id) {
+                gc.setFillStyle(control.theme.highlightText)
+                gc.fillRect(left , 0, gc.measureText(menu.label || menu.id).width + control.paddingHorizontal * 2, control.height)
+                gc.setFillStyle(control.theme.highlight)
+                gc.fillRect(left, 0, gc.measureText(menu.label || menu.id).width + control.paddingHorizontal * 2, control.height)
+                gc.setFillStyle('#fff')
             } else {
                 gc.setFillStyle('#000')
             }
             gc.fillText(
                 menu.label || menu.id,
                 left + control.paddingHorizontal,
-                22,
-                gc.measureText(menu.label).width + control.paddingHorizontal * 2,
-                this.height
+                12,
+                gc.measureText(menu.label || menu.id).width + control.paddingHorizontal,
+                control.height
             )
-            left += gc.measureText(menu.label).width + control.paddingHorizontal
+            left +=  control.paddingHorizontal + gc.measureText(menu.label || menu.id).width + control.paddingHorizontal
         }
     }
     renderWindow(gc, control, fill=true) {
@@ -247,7 +251,7 @@ class Windows95Style extends Style {
         let i = 0
         
         gc.setFillStyle('#000')
-        for (let menuitem of control.items) {
+        for (let menuitem of control.menu.items) {
             if (control.selectedIndex == i) {
                 gc.setFillStyle(control.theme.highlight)
                 gc.fillRect(3, i * itemHeight + 4, control.width - 6, itemHeight - 4)
@@ -255,14 +259,12 @@ class Windows95Style extends Style {
             } else {
                 gc.setFillStyle('#000')
             }
-            gc.fillText(menuitem.label,12, 12 + i * itemHeight, control.width, itemHeight )
+            gc.fillText(menuitem.label || menuitem.id,12, 12 + i * itemHeight, control.width, itemHeight )
             i ++
         }
     } 
     renderHeader(gc, control, fill=true) {
-        control.backgroundColor = (control.desktop.activeWindow  == control.parent ? control.theme.highlight : control.theme.inactive)
-        gc.setFillStyle(control.backgroundColor)
-        gc.fillRect(0, 0, control.width, control.height)
+        
         gc.setFillStyle(control.theme.highlightText)
         gc.setFont(control.font) 
         gc.fillText(control.text || control.parent.text, 25, 12)

@@ -26,81 +26,67 @@ export default class App extends Window {
             this.menus = {
                 file: {
                     id: 'file',
-                    items: {
-                        new: {
+                    items: [
+                        {
                             id: 'new'
                         },
-                        open: {
+                        {
                             id: 'open'
                         },
-                        save: {
+                        {
                             id: 'save'
                         },
-                        print: {
+                        {
                             id: 'print'
                         },
-                        exit: {
+                        {
                             id: 'exit'
                         }
-                    }
+                    ]
                 },
                 edit: {
                     id: 'edit',
-                    items: {
-                        undo: {
+                    items: [
+                        {
                             id: 'undo'
                         },
-                        redo: {
+                        {
                             id: 'redo'
                         },
-                        sep: {
+                        {
                             id: '-'
                         }
-                    }
+                    ]
                 },
                 window: {
                     id: 'window',
-                    items: {
-
-                    }
+                    items: []
                 },
                 help: {
                     id: 'help',
-                    items: {
-
-                    }
+                    items: []
                 }
             }
             this.toolbars = {
                 file: {
                     id: 'file',
-                    items: {
-                        new: {
+                    items: [
+                        {
                             id: 'new'
                         },
-                        open: {
+                        {
                             id: 'open'
                         },
-                        save: {
+                        {
                             id: 'save'
                         },
-                        print: {
+                        {
                             id: 'print'
                         },
-                        exit: {
+                        {
                             id: 'exit'
-                        },
-                        undo: {
-                            id: 'undo'
-                        },
-                        redo: {
-                            id: 'redo'
-                        },
-                        sep1: {
-                            id: 'sep1'
                         }
-                        
-                    }
+                    ]
                 }
             }    
             this.on('action', (actionId) => this.action(actionId))
@@ -109,31 +95,31 @@ export default class App extends Window {
             this.menus = {
                 file: {
                     id: 'file',
-                    items: {
-                        new: {
+                    items: [
+                        {
                             id: 'new'
                         },
-                        open: {
+                        {
                             id: 'open'
                         },
-                        save: {
+                        {
                             id: 'save'
                         },
-                        print: {
+                        {
                             id: 'print'
                         },
-                        exit: {
+                        {
                             id: 'exit'
                         }
-                    }
+                    ]
                 },
                 help: {
                     id: 'help',
-                    items: {
-                        about: {
+                    items: [
+                        {
                             id: 'about'
                         }
-                    }
+                    ]
                 }
             }
             console.log(this.menus)

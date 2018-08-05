@@ -96,7 +96,7 @@ export default class CanvasGraphicsContext extends GraphicsContext {
     }
 
     fillText(text, x, y, width=0, height=0) {
-        this.context2d.fillText(text, this.matrix.x + Math.floor(x), this.matrix.y + Math.floor(y))
+        this.context2d.fillText(text, this.matrix.x + (x), this.matrix.y + (y))
     }
 
     /**

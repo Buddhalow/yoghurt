@@ -10,21 +10,15 @@ export default class Window extends Control {
         super(parent, id, width, height)
         this.menus = menus
         this.top = 28
-        this.header = new Header(this)
-        this.controls['header'] = this.header
+        
         this.borderStyle = 'bevel'
         this.closeOnInactivate = false
         this.showInTaskBar = true
-        this.content = new Control(this, 'content')
-        this.controls['content'] = this.content
+        
         this.width = width
         this.height = height
-        this.controls['menubar'] = this.menubar
         this.toolbars = toolbars
-        if (toolbars) {
-            this.toolbarPanel = new ToolBarPanel(this, 'toolbarpanel')
-            this.controls['toolbarpanel'] = this.toolbarPanel
-        }
+        
         this.canBeResized = true
         this.klass = 'window'
     }
@@ -54,28 +48,46 @@ export default class Window extends Control {
     }
     pack() {
         super.pack()
+        if (!this.header) {
+            this.header = new Header(this)
+            this.controls['header'] = this.header
+        }
+        if (!this.content) {
+        this.content = new Control(this, 'content')
+        this.controls['content'] = this.content
+        }
+        if (!this.menubar) {
+            this.menubar = new MenuBar(this, 'menubar', this.menus)
+            this.controls['menubar'] = this.menubar
+        }
         let y = 0
         this.header.x = 4
         this.header.y = 4
-        y = 4
+        y += 4
+        
         this.header.height = 19
         this.header.width = this.width - 8
         this.header.pack()
         y += this.header.height
-        this.menubar = new MenuBar(this, 'menubar', this.menus)
-        this.menubar.height = 10
-        this.menubar.top = y
+        this.menubar.width = this.width - 8
+        this.menubar.height = 20
+        this.menubar.x = 4
+        this.menubar.y = y
         y += this.menubar.height
-        if (this.toolbarPanel) {
+        if (this.toolbars != null) {
+            if(!this.toolbarPanel) {
+                this.toolbarPanel = new ToolBarPanel(this, 'toolbarpanel')
+                this.controls['toolbarpanel'] = this.toolbarPanel
+            }
             this.toolbarPanel.y = y
             this.toolbarPanel.height = 18
             this.toolbarPanel.width = this.width - 4
             y += this.toolbarPanel.height
-        }
+        } 
         this.content.left = 2
-        this.content.top = y + 20
+        this.content.top = y
         this.content.width = this.width - 4
-        this.content.height = this.height - y * 2
+        this.content.height = this.height - y
         super.pack()
     }
 

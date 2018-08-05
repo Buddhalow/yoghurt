@@ -7,43 +7,12 @@ export default class DemoApp extends App {
     constructor(parent, id) {
         super(parent, id)
         this.text = 'Welcome to Yoghurt!'
-        this.menus = {
-            file: {
-                id: 'file',
-                items: {
-                    new: {
-                        id: 'new'
-                    },
-                    open: {
-                        id: 'open'
-                    },
-                    save: {
-                        id: 'save'
-                    },
-                    print: {
-                        id: 'print'
-                    },
-                    exit: {
-                        id: 'exit'
-                    }
-                }
-            },
-            help: {
-                id: 'help',
-                items: {
-                    about: {
-                        id: 'about'
-                    }
-                }
-            }
-        }
-        console.log(this.menus)
     }
     load() {
         super.load()
         this.left = 200
         this.top = 200
-
+        
         this.content.controls['start'] = new Label(this.content, 'label')
         this.content.controls['start'].text = 'Welcome to Yoghurt OS Demo!'
         this.content.controls['start'].width = 320
@@ -65,7 +34,7 @@ export default class DemoApp extends App {
         this.content.controls['textbox'].width = 100
         this.content.controls['textbox'].height = 38
         this.content.controls['textbox'].left = 28
-        this.content.controls['textbox'].top = 28
+        this.content.controls['textbox'].top =  28
         this.content.controls['textbox'].text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut interdum quam.'
         this.content.controls['textbox'].show()
         this.x = 222

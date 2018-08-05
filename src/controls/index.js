@@ -412,9 +412,9 @@ export default class Control extends EventEmitter {
     render(gc, fill=true) {
         gc.save()
         gc.clip(0, 0, this.width, this.height)
-        let fillStyle =  this.backgroundColor || this.theme.btnFace
+        let fillStyle =  this.backgroundColor
         gc.setFillStyle(fillStyle)
-        if (fill) gc.fillRect(0, 0, this.width, this.height)
+        gc.fillRect(0, 0, this.width, this.height)
         for (let _control of Object.values(this.controls)) {
             gc.translate(_control.x, _control.y)
         
@@ -422,9 +422,25 @@ export default class Control extends EventEmitter {
             gc.translate(-_control.x, -_control.y)
         }
         this.style.renderControl(gc, this, fill)
+
+        if (this.isInspecting) {
+            gc.setFillStyle('white')
+            gc.fillRect(0, 0, 100, 8)
+            gc.setFillStyle('red')
+            gc.setStrokeStyle('red')
+            gc.strokeRect(0, 0, this.width, this.height)
+            gc.setFillStyle('black')
+            gc.fillText(
+                'id: ' + this.id + ' x: ' + this.x + ' y: ' + this.y + ' width:' + this.width + ' height:' + this.height,
+                0,
+                5
+            )
+        }
+
         gc.restore()        
         this.$hasBeenRendered = true
         
+
     }
     /**
      * @deprecated
@@ -474,33 +490,31 @@ export default class Control extends EventEmitter {
      */
 
     hover(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
         if (this.isMouseDown) this.buttonState = 'pressed'
         let foundControl = false
 
         if (this.resizeControl != null) {
-            this.resizeControl.control.width = relativeX + 2 - this.resizeControl.control.x
-            this.resizeControl.control.height = relativeY + 2 - this.resizeControl.control.y
+            this.resizeControl.control.width = x + 2 - this.resizeControl.control.x
+            this.resizeControl.control.height = y + 2 - this.resizeControl.control.y
             this.resizeControl.control.pack()
             this.yoghurt.render()
         }
 
         if (this.moveControl != null) {
-            this.moveControl.control.x = relativeX - this.moveControl.x
-            this.moveControl.control.y = relativeY - this.moveControl.y
+            this.moveControl.control.x = x - this.moveControl.x
+            this.moveControl.control.y = y - this.moveControl.y
             this.yoghurt.render()
             
         }
 
         for (let control of Object.values(this.controls)) {
-            if (control.inBounds(relativeX, relativeY)) {
+            if (control.inBounds(x, y)) {
                 control.isHovered = true
-                control.hover(relativeX, relativeY, button)
+                control.hover(x - control.x, y - control.y, button)
                 this.foundControl = true
             } else {
                 if (control.isHovered) {
-                    control.mouseLeave(relativeX, relativeY, button)
+                    control.mouseLeave(x - control.x, y - control.y, button)
                 }
                 control.isHovered = false
             }
@@ -510,7 +524,7 @@ export default class Control extends EventEmitter {
             y: y
         })
         if (!foundControl) {
-            this.hoverAction(relativeX, relativeY, button)
+            this.hoverAction(x, y, button)
             
         }
     }
@@ -538,12 +552,10 @@ export default class Control extends EventEmitter {
      * @param {String} button The button
      */
     click(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
         let foundControl =false
         for (let control of this.children) {
-            if (control.inBounds(relativeX, relativeY)) {
-                control.click(relativeX, relativeY, button)
+            if (control.inBounds(x, y)) {
+                control.click(x - control.x, y - control.y, button)
                 foundControl = true
             }
         }
@@ -568,12 +580,10 @@ export default class Control extends EventEmitter {
      * @param {String} button The button
      */
     mouseDown(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
         let foundControl = false
         for (let control of this.children) {
-            if (control.inBounds(relativeX, relativeY)) {
-                control.mouseDown(relativeX, relativeY, button)
+            if (control.inBounds(x, y)) {
+                control.mouseDown(x - control.left, y - control.top, button)
                 foundControl = true
             }
         }
@@ -589,12 +599,12 @@ export default class Control extends EventEmitter {
             if (parent != null)
             parent.focus()
             if (parent != null) parent.focus()
-            this.mouseDownAction(relativeX, relativeY, button)
-            if (this.canBeResized && relativeX > this.width - 6 && relativeY > this.height - 6) {
+            this.mouseDownAction(x, y, button)
+            if (this.canBeResized && x > this.width - 6 && y > this.height - 6) {
          
                 this.startResize({
-                    x: relativeX,
-                    y: relativeY,
+                    x: x,
+                    y: y,
                     control: this
                 })
             }
@@ -609,11 +619,9 @@ export default class Control extends EventEmitter {
     */
     mouseUp(x, y, button='left') {
         this.isMouseDown = false
-        let relativeX = x - this.left
-        let relativeY = y - this.top
         for (let control of this.children) {
-            if (control.inBounds(relativeX, relativeY)) {
-               control.mouseUp(relativeX, relativeY, button)
+            if (control.inBounds(x, y)) {
+               control.mouseUp(x - control.x, y - control.y, button)
             }
         }
         if (this.parent.stopMoveControl instanceof Function)
