@@ -105,7 +105,39 @@ export default class App extends Window {
             }    
             this.on('action', (actionId) => this.action(actionId))
             this.newDocument()     
-        }   
+        } else {
+            this.menus = {
+                file: {
+                    id: 'file',
+                    items: {
+                        new: {
+                            id: 'new'
+                        },
+                        open: {
+                            id: 'open'
+                        },
+                        save: {
+                            id: 'save'
+                        },
+                        print: {
+                            id: 'print'
+                        },
+                        exit: {
+                            id: 'exit'
+                        }
+                    }
+                },
+                help: {
+                    id: 'help',
+                    items: {
+                        about: {
+                            id: 'about'
+                        }
+                    }
+                }
+            }
+            console.log(this.menus)
+        }
     }
     newDocument() {
         let docId  = this.constructor.name.toLowerCase() + '.doc.' + this.views.length

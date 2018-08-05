@@ -16,6 +16,7 @@
      }
      mouseDownAction(relativeX, relativeY, button='left') {
         let left = 0
+        debugger
         for (let menuId of Object.keys(this.menus)) {
             let menu = this.menus[menuId]
             let width = this.paddingHorizontal * 2 + this.graphics.measureString(menu).width

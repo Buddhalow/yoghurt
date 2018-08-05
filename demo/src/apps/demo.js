@@ -7,6 +7,37 @@ export default class DemoApp extends App {
     constructor(parent, id) {
         super(parent, id)
         this.text = 'Welcome to Yoghurt!'
+        this.menus = {
+            file: {
+                id: 'file',
+                items: {
+                    new: {
+                        id: 'new'
+                    },
+                    open: {
+                        id: 'open'
+                    },
+                    save: {
+                        id: 'save'
+                    },
+                    print: {
+                        id: 'print'
+                    },
+                    exit: {
+                        id: 'exit'
+                    }
+                }
+            },
+            help: {
+                id: 'help',
+                items: {
+                    about: {
+                        id: 'about'
+                    }
+                }
+            }
+        }
+        console.log(this.menus)
     }
     load() {
         super.load()

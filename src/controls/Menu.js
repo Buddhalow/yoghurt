@@ -9,6 +9,7 @@ export default class Menu extends Control {
         this.borderStyle = 'bevel'
         this.alignSize()
     }
+
     click(x, y, button='left') {
         let item = this.items[this.selectedIndex]
         try {
