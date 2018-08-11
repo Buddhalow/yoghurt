@@ -1,3 +1,6 @@
+export * from './font'
+
+
 /**
  * Represents a graphics context
  */
