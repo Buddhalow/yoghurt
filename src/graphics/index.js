@@ -17,3 +17,7 @@ export default class GraphicsContext {
         this.yoghurt = yoghurt
     }
 } 
+
+
+export * from './font'
+

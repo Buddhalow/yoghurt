@@ -10,3 +10,7 @@ export default class Style {
 
     }
 } 
+
+export * from './windows1.0'
+export * from './windows10.0'
+export * from './windows95'

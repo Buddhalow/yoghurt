@@ -36,8 +36,8 @@ export default class ToolBar extends Control {
      * Add a button to the toolbar
      * @param {Object} button The x coordinate of the pointer
      */
-    addButton(button) {
-        let button = new Button(this, button.id)
+    addButton(btnData) {
+        let button = new Button(this, btnData.id)
         this.controls[button.id] = button
         button.on('click', (x, y, button) => {
             if (button.left) {

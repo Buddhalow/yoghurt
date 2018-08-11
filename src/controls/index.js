@@ -1,6 +1,20 @@
 import EventEmitter from 'events'
 import Font from '../graphics/font'
 import { resolve } from 'uri-js';
+
+export * from './Taskbar'
+export * from './Window'
+export * from './Menu'
+export * from './Menubar'
+export * from './Label'
+export * from './Button'
+export * from './Toolbar'
+export * from './ToolbarPanel'
+export * from './Tray'
+export * from './Header'
+export * from './ListView'
+export * from './TextBox'
+export * from './Window'
 /**
  * The {Control} class is the parent class of all graphical entities in the yoghurt user interface.
  * @class

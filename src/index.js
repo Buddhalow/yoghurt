@@ -1,12 +1,24 @@
-import Desktop from "./controls/Desktop";
+export { Desktop } from "./controls/Desktop";
 import { EventEmitter } from "events";
+
+export * from './controls'
+
+export * from './apps'
+export * from './graphics'
+export * from './graphics/font'
+export * from './graphics/graphicscontext'
+export * from './graphics/canvasgraphicscontext'
+export * from './services'
+export * from './styles'
+export * from './themes'
 
 /**
  * The entry point of the Yoghurt UI Framework
  */
 export default class Yoghurt extends EventEmitter {
-    constructor(graphics, theme, style) {
+    constructor(graphics, theme, style, isCrt=false) {
         super()
+        this.isCrt = isCrt
         this.graphics = graphics
         this._theme = theme
         this._style = style
@@ -58,6 +70,9 @@ export default class Yoghurt extends EventEmitter {
     }
     render() {
         this.desktop.render(this.graphics)
+        if (this.isCrt) {
+            this.graphics.crt()
+        }
     }
 }
 

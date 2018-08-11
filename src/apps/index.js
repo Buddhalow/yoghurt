@@ -1,6 +1,8 @@
 import Window from '../controls/Window'
 import Control from '../controls';
 
+export * from './document'
+export * from './view'
 
 /**
  * The Application class is a subclass of the {Window} class that will provide an starter kit for application windows.  

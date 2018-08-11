@@ -53,8 +53,8 @@
      mouseUp() {
          this.isActive = false
          this.selectedMenu = null
-         for (let control of this.parent.controls) {
-             
+         for (let menuId of Object.keys(this.parent.controls)) {
+            delete this.parent.controls['menu_' + menuId]
          }
          this.yoghurt.render()
      }
