@@ -1,4 +1,5 @@
 import Window from '../controls/Window'
+import AboutWindow from './about'
 import Control from '../controls';
 
 export * from './document'
@@ -119,7 +120,12 @@ export default class App extends Window {
                     id: 'help',
                     items: [
                         {
-                            id: 'about'
+                            id: 'about',
+                            command: (e) => {
+                                let aboutwindow = new AboutWindow(this.desktop, 'about').show()
+                                this.desktop.controls[aboutWindow.id] = aboutWindow
+                                debugger
+                            }
                         }
                     ]
                 }

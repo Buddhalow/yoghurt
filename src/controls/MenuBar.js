@@ -27,16 +27,16 @@
      selectMenu(x) {
         let left = 0
         if (this.selectedMenu) {
-            delete this.parent.controls['menu_' +this.selectedMenu.id]
+            delete this.parent.controls[this.selectedMenu.id]
             this.selectedMenu = null
-            
+            this.isActive = false
         }
         for (let menuId of Object.keys(this.menus)) {
             let menu = this.menus[menuId]
             let width = this.paddingHorizontal * 2 + this.graphics.measureText(menu.id || menu.text).width
             if (x > left && x < width + left) {
         
-                let menuControl = new Menu(this.parent, menuId, menu)
+                let menuControl = new Menu(this.parent, 'menu_' + menuId, menu)
                 this.parent.controls['menu_' + menuId] = menuControl
                 
                 menuControl.x = left + 3
@@ -52,10 +52,11 @@
      }
      mouseUp() {
          this.isActive = false
-         this.selectedMenu = null
          for (let menuId of Object.keys(this.parent.controls)) {
             delete this.parent.controls['menu_' + menuId]
          }
+         delete this.parent.controls[this.selectedMenu.id]
+         this.selectedMenu = null
          this.yoghurt.render()
      }
      mouseDownAction(x, y, button='left') {

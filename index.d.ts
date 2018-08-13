@@ -1,4 +1,4 @@
-declare module 'yoghurt' {
+  declare module 'yoghurt' {
 
     interface Yoghurt {
       /**

@@ -10,10 +10,22 @@ export default class Menu extends Control {
         this.alignSize()
     }
 
+    mouseUp(x, y, button='left') {
+        let item = this.menu.items[this.selectedIndex]
+        try {
+            item.command.call(this)
+            
+        } catch (e) {
+
+        }
+        this.parent.emit('action', item.id)
+        this.close()    
+    }
+
     click(x, y, button='left') {
         let item = this.menu.items[this.selectedIndex]
         try {
-            item.callback(this)
+            item.command.call(this)
             
         } catch (e) {
 

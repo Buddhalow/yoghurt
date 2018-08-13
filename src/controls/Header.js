@@ -1,6 +1,6 @@
 import Control from '.'
 import Button from './Button';
-import Font from '../graphics/font';
+import Font from '../graphics/Font';
 
 
 export default class Header extends Control {
@@ -36,12 +36,16 @@ export default class Header extends Control {
         button.y = 3
         this.controls[id] = button
         this.rightButtons.push(button)
+        return button
     }
     load() {
         super.load()
         this.closeButton = this.addRightButton('x', 'closeButton', 0)
         this.maximizeButton = this.addRightButton('o', 'maximizeButton', 1)
         this.minimizeButton = this.addRightButton('_', 'minimizeButton', 2)
+        this.closeButton.on('click', (e) => {
+            this.parent.close()
+        })
     }
     pack() {
         super.pack()

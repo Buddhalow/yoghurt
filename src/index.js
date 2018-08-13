@@ -1,13 +1,34 @@
-export { Desktop } from "./controls/Desktop";
+export { default as Desktop } from "./controls/Desktop";
+import Desktop from './controls/Desktop'
 import { EventEmitter } from "events";
 
-export * from './controls'
+export { default as Control } from './controls'
 
-export * from './apps'
-export * from './graphics'
-export * from './services'
-export * from './styles'
-export * from './themes'
+
+export { default as Taskbar }  from './controls/Taskbar'
+export { default as Window } from './controls/Window'
+export { default as Menu } from './controls/Menu'
+export { default as MenuBar } from './controls/MenuBar'
+export { default as Label } from './controls/Label'
+export { default as Button } from './controls/Button'
+export { default as ToolBar } from './controls/Toolbar'
+export { default as ToolbarPanel } from './controls/ToolbarPanel'
+export { default as Tray } from './controls/Tray'
+export { default as Header } from './controls/Header'
+export { default as ListView } from './controls/ListView'
+export { default as TextBox } from './controls/TextBox'
+
+export { default as App } from './apps'
+export { default as GraphicsContext } from './graphics'
+export { default as Service } from './services'
+
+export { default as Style } from './styles'
+
+export {default as windows1Style } from './styles/windows1.0'
+export {default as windows10Style } from './styles/windows10.0'
+export {default as windows95Style }from './styles/windows95'
+
+export { default as Theme } from './themes'
 
 /**
  * The entry point of the Yoghurt UI Framework

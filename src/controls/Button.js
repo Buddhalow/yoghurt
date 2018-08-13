@@ -1,5 +1,5 @@
 import Control from '.'
-import Font from '../graphics/font'
+import Font from '../graphics/Font'
 
 export default class Button extends Control {
     constructor(parent, id) {
