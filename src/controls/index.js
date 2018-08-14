@@ -270,7 +270,8 @@ export default class Control extends EventEmitter {
     }
     
     get children() {
-        return Object.values(this.controls)
+        let objects = Object.values(this.controls)
+        return objects
     }
     set width(value) {
         this.bounds.size.width = value
@@ -463,7 +464,7 @@ export default class Control extends EventEmitter {
      */
     pack() {
         // Pack children
-        for (let control of Object.values(this.controls)) {
+        for (let control of (this.children)) {
             control.pack()
         }
     }
@@ -509,7 +510,7 @@ export default class Control extends EventEmitter {
             
         }
 
-        for (let control of Object.values(this.controls)) {
+        for (let control of (this.children)) {
             if (control.inBounds(x, y)) {
                 control.isHovered = true
                 control.hover(x - control.x, y - control.y, button)
@@ -575,6 +576,15 @@ export default class Control extends EventEmitter {
         this.isMouseDown = true
 
     }
+    getControlAt(x, y) {
+        for (let control of this.children) {
+            if (control.inBounds(x, y) && control.parent == this) {
+                return control
+            }
+
+        }
+        return null
+    }
     /**
      * Invoked when the mouse press
      * @param {Int} x The x coordinate of the pointer
@@ -583,36 +593,48 @@ export default class Control extends EventEmitter {
      */
     mouseDown(x, y, button='left') {
         let foundControl = false
-        for (let control of this.children) {
-            if (control.inBounds(x, y)) {
-                control.mouseDown(x - control.left, y - control.top, button)
-                foundControl = true
-            }
-        }
-        this.emit('mousedown', {
-            x: x,
-            y: y
-        })
-        if (!foundControl) {
-            let parent = this
-            while (parent != null && parent.klass !== 'window')  {
-                parent = parent.parent
-            } 
-            if (parent != null)
-            parent.focus()
-            if (parent != null) parent.focus()
-            this.mouseDownAction(x, y, button)
-            if (this.canBeResized && x > this.width - 6 && y > this.height - 6) {
-         
-                this.startResize({
+        
+        let control = this
+        let ctrl = this
+        let relativeX = x
+        let relativeY = y
+        do {
+           control = control.getControlAt(relativeX,relativeY)
+           if (control != null) {
+               relativeX -= control.x
+               relativeY -= control.y
+            ctrl = control
+           }
+        } while(control != null)
+        console.log(ctrl)
+        if (ctrl != null) {
+            if (ctrl != this) {
+                ctrl.mouseDown(relativeX, relativeY, button)
+
+                let parent = ctrl
+                while (parent != null && parent.klass !== 'window')  {
+                    parent = parent.parent
+                } 
+                if (parent != null)
+                parent.focus()
+                if (parent != null) parent.focus()
+                ctrl.mouseDownAction(x, y, button)
+                if (this.canBeResized && x > this.width - 6 && y > this.height - 6) {
+             
+                    this.startResize({
+                        x: x,
+                        y: y,
+                        control: this
+                    })
+                }
+                this.emit('mousedown', {
+                    sender: this,
                     x: x,
-                    y: y,
-                    control: this
+                    y: y
                 })
             }
-        }
-    } 
-    
+        } 
+    }    
     /**
     * Invoked when the mouse up
     * @param {Int} x The x coordinate of the pointer
