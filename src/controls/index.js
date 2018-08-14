@@ -509,8 +509,15 @@ export default class Control extends EventEmitter {
             this.yoghurt.render()
             
         }
+        let bc = []
+        for (let control of this.children) {
+            if (control.inBounds(x, y)) {
+                bc.push(control)
+            }
 
-        for (let control of (this.children)) {
+        }
+        if (bc.length > 0) {
+            let control = bc[bc.length - 1]
             if (control.inBounds(x, y)) {
                 control.isHovered = true
                 control.hover(x - control.x, y - control.y, button)
@@ -521,6 +528,7 @@ export default class Control extends EventEmitter {
                 }
                 control.isHovered = false
             }
+            foundControl = true
         }
         this.emit('hover', {
             x: x,
@@ -565,12 +573,17 @@ export default class Control extends EventEmitter {
      * @param {String} button The button
      */
     click(x, y, button='left') {
-        let foundControl =false
+        let bc = []
         for (let control of this.children) {
             if (control.inBounds(x, y)) {
-                control.click(x - control.x, y - control.y, button)
-                foundControl = true
+                bc.push(control)
             }
+
+        }
+        if (bc.length > 0) {
+            let control = bc[bc.length - 1]
+            if (control.click(x - control.left, y - control.top, button)) return true
+            foundControl = true
         }
         this.emit('click', {
             x: x,
@@ -597,12 +610,17 @@ export default class Control extends EventEmitter {
         if (this.level > level) {
             level = this._level     
         }
+        let bc = []
         for (let control of this.children) {
             if (control.inBounds(x, y)) {
-                if (control.mouseDown(x - control.left, y - control.top, button, level)) return true
-                foundControl = true
+                bc.push(control)
             }
 
+        }
+        if (bc.length > 0) {
+            let control = bc[bc.length - 1]
+            if (control.mouseDown(x - control.left, y - control.top, button, level)) return true
+            foundControl = true
         }
             
         if (!foundControl) {
@@ -639,9 +657,10 @@ export default class Control extends EventEmitter {
     */
     mouseUp(x, y, button='left') {
         this.isMouseDown = false
+       let bc = []
         for (let control of this.children) {
             if (control.inBounds(x, y)) {
-               control.mouseUp(x - control.x, y - control.y, button)
+                control.mouseUp(x - control.left, y - control.top, button)
             }
         }
         if (this.parent.stopMoveControl instanceof Function)
