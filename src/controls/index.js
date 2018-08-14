@@ -595,11 +595,11 @@ export default class Control extends EventEmitter {
     mouseDown(x, y, button='left', level=0) {
         let foundControl = false
         if (this.level > level) {
-            level = this.level
+            level = this._level     
         }
         for (let control of this.children) {
             if (control.inBounds(x, y)) {
-                control.mouseDown(x - control.left, y - control.top, button, level)
+                if (control.mouseDown(x - control.left, y - control.top, button, level)) return true
                 foundControl = true
             }
 
@@ -628,6 +628,7 @@ export default class Control extends EventEmitter {
                 y: y
             })
         }
+        return foundControl
     } 
     
     /**
