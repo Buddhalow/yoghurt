@@ -17215,7 +17215,7 @@ webpackContext.id = "../node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../Example/node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../demo/node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
@@ -18640,6 +18640,274 @@ class Theme {
 
 /***/ }),
 
+/***/ "../src/apps/about.js":
+/*!****************************!*\
+  !*** ../src/apps/about.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AboutWindow; });
+/* harmony import */ var _controls_Window__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../controls/Window */ "../src/controls/Window.js");
+
+
+class AboutWindow extends _controls_Window__WEBPACK_IMPORTED_MODULE_0__["default"] {
+	constructor(parent, id) {
+		super(parent, id)
+		this.width = 320
+		this.height = 240
+
+	}
+}
+
+/***/ }),
+
+/***/ "../src/apps/document.js":
+/*!*******************************!*\
+  !*** ../src/apps/document.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Document; });
+
+class Document {
+    constructor(view, data) {
+        this.view = view
+        this.data = data
+    }
+    save() {
+
+    }
+    load() {
+
+    }
+}
+
+/***/ }),
+
+/***/ "../src/apps/index.js":
+/*!****************************!*\
+  !*** ../src/apps/index.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return App; });
+/* harmony import */ var _controls_Window__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../controls/Window */ "../src/controls/Window.js");
+/* harmony import */ var _about__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./about */ "../src/apps/about.js");
+/* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../controls */ "../src/controls/index.js");
+/* harmony import */ var _document__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./document */ "../src/apps/document.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./view */ "../src/apps/view.js");
+/* empty/unused harmony star reexport */
+
+
+
+
+
+
+/**
+ * The Application class is a subclass of the {Window} class that will provide an starter kit for application windows.  
+ * @extends {Window}
+ */
+class App extends _controls_Window__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    /**
+     * 
+     * @param {Control} parent The parent control
+     * @param {String} id 
+     * @param {String} type 
+     * @param {*} DocumentType 
+     * @param {*} ViewType 
+     */
+    constructor(parent, id, type='mdi', DocumentType, ViewType) {
+        super(parent, id)
+        this.view = null
+        this.views = []
+        this.type = type
+        if (DocumentType) {
+            this.DocumentType = DocumentType
+            this.ViewType = ViewType
+            this.menus = {
+                file: {
+                    id: 'file',
+                    items: [
+                        {
+                            id: 'new'
+                        },
+                        {
+                            id: 'open'
+                        },
+                        {
+                            id: 'save'
+                        },
+                        {
+                            id: 'print'
+                        },
+                        {
+                            id: 'exit'
+                        }
+                    ]
+                },
+                edit: {
+                    id: 'edit',
+                    items: [
+                        {
+                            id: 'undo'
+                        },
+                        {
+                            id: 'redo'
+                        },
+                        {
+                            id: '-'
+                        }
+                    ]
+                },
+                window: {
+                    id: 'window',
+                    items: []
+                },
+                help: {
+                    id: 'help',
+                    items: []
+                }
+            }
+            this.toolbars = {
+                file: {
+                    id: 'file',
+                    items: [
+                        {
+                            id: 'new'
+                        },
+                        {
+                            id: 'open'
+                        },
+                        {
+                            id: 'save'
+                        },
+                        {
+                            id: 'print'
+                        },
+                        {
+                            id: 'exit'
+                        }
+                    ]
+                }
+            }    
+            this.on('action', (actionId) => this.action(actionId))
+            this.newDocument()     
+        } else {
+            this.menus = {
+                file: {
+                    id: 'file',
+                    items: [
+                        {
+                            id: 'new'
+                        },
+                        {
+                            id: 'open'
+                        },
+                        {
+                            id: 'save'
+                        },
+                        {
+                            id: 'print'
+                        },
+                        {
+                            id: 'exit'
+                        }
+                    ]
+                },
+                help: {
+                    id: 'help',
+                    items: [
+                        {
+                            id: 'about',
+                            command: (e) => {
+                                let aboutwindow = new _about__WEBPACK_IMPORTED_MODULE_1__["default"](this.desktop, 'about').show()
+                                this.desktop.controls[aboutWindow.id] = aboutWindow
+                                debugger
+                            }
+                        }
+                    ]
+                }
+            }
+            console.log(this.menus)
+        }
+    }
+    newDocument() {
+        let docId  = this.constructor.name.toLowerCase() + '.doc.' + this.views.length
+        switch (this.type) {
+            case 'sdi': {
+                if (this.view != null) {
+                    let newApp = new App(this.parent, docId) // TODO Fix prototype
+                    this.parent.controls[docId] = newApp
+                    return
+                }
+                this.controls['content'] = new ViewType(this, 'content', new DocumentType())
+                this.view = this.controls['content']
+                break;
+            }
+            case 'mdi': {
+                let docId  ='doc-' + this.views.length
+                let view = new ViewType(this, docId, new DocumentType())
+                this.views.push(view)
+                this.content.controls[docId] = view
+                view.text = 'Document ' + this.views.length
+                break
+            }
+            default:
+                throw "Invalid application type"
+        }
+    }
+    action(actionId) {
+        switch (actionId) {
+            case 'new': {
+                this.newDocument()
+                
+                break;
+            }
+            case 'exit':
+                return this.close()
+        }
+        if (this.view) {
+            this.view.action(actionId)
+        }
+    }
+}
+
+/***/ }),
+
+/***/ "../src/apps/view.js":
+/*!***************************!*\
+  !*** ../src/apps/view.js ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return View; });
+/* harmony import */ var _controls_Window__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../controls/Window */ "../src/controls/Window.js");
+
+
+class View extends _controls_Window__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id, document) {
+        super(parent, id)
+        this.document = document
+    }
+    action(actionId) {
+        
+    }
+}
+
+/***/ }),
+
 /***/ "../src/controls/Button.js":
 /*!*********************************!*\
   !*** ../src/controls/Button.js ***!
@@ -18650,19 +18918,20 @@ class Theme {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Button; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-/* harmony import */ var _graphics_font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphics/font */ "../src/graphics/font.js");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+/* harmony import */ var _graphics_Font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphics/Font */ "../src/graphics/Font.js");
 
 
 
-class Button extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class Button extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(parent, id) {
         super(parent, id)
         this.buttonState = 'normal'
         this.buttonStyle = 'normal'
         this.enabled = true
         this.focused = false 
-        
+        this.isChecked = false    
+        this.isFocusable = true
         
     }
     mouseLeave(x, y, button='left') {
@@ -18689,10 +18958,983 @@ class Button extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
-/***/ "../src/controls/Control.js":
+/***/ "../src/controls/Desktop.js":
 /*!**********************************!*\
-  !*** ../src/controls/Control.js ***!
+  !*** ../src/controls/Desktop.js ***!
   \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Desktop; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+/* harmony import */ var _Taskbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Taskbar */ "../src/controls/Taskbar.js");
+/* harmony import */ var _Menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Menu */ "../src/controls/Menu.js");
+
+
+
+
+class Desktop extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+        this.backgroundColor = 'transparent'
+        this.graphics = parent.graphics
+        this.desktop = this
+        this.yoghurt = this.parent
+        this.windows = {}
+        this.activeWindow = null    
+        this.taskbar = new _Taskbar__WEBPACK_IMPORTED_MODULE_1__["default"](this, 'taskbar')
+        this.controls['taskbar'] = this.taskbar
+        this.focusedControl = null
+        this.icons = [
+            {
+                x: 12,
+                y: 12,
+                text: 'My Computer',
+                uri: '',
+
+            }
+        ]
+        this.selection = null
+
+    }
+
+    renderIcon(gc, icon) {
+        gc.setFillStyle('#fff')
+        if (icon.isSelected) {
+            gc.setFillStyle(this.style.highlight)
+            gc.fillRect(icon.x, icon.y + 30, 30, 18)
+        }
+        gc.fillText(
+            icon.text,
+            icon.x,
+            icon.y + 30
+        )
+    }
+
+    bringControlToFront(window) {
+        super.bringControlToFront(window)
+
+        delete this.controls['taskbar']
+        this.controls['taskbar'] = this.taskbar
+    }
+
+    addWindow(window) {
+        this.windows[window.id] = window
+        this.controls[window.id] = window
+        this.emit('windowadded')
+        window.focus()
+        return window
+    }
+
+    addMenu(id, items=[]) {
+        let menu = new _Menu__WEBPACK_IMPORTED_MODULE_2__["default"](this, id, items)
+        this.controls[id] = menu
+        this.emit('windowadded')
+        return menu
+    }
+    inactivateAllWindows() {
+        for (let window of Object.values(this.controls)) {
+            window.inactivate()
+        }
+        this.activeWindow = null
+    }
+    desktiop(x, y) {
+        if (this.selection) {
+            this.selection.width = x - this.selection.x
+            this.selection.height = y - this.selection.y 
+
+            for(let icon of this.icons) {
+               if (icon.x > this.selection.x - 50 && icon.y > this.selection.y - 50 && icon.x < this.selection.x + this.selection.width && icon.y < this.selection.y && this.selection.height) {
+                    console.log("Selected")
+                    icon.isSelected = true
+               }
+           }
+           this.yoghurt.render()
+        }
+    }
+    hover(x, y, button='left') {
+        this.desktiop(x, y)
+        super.hover(x, y, button)
+    }
+    mouseUp(x, y, button='left') {
+        this.selection = null
+           this.yoghurt.render()
+        super.mouseUp(x, y, button)
+
+    }
+    mouseDown(x, y, button='left') {
+        if (super.mouseDown(x, y, button)) return true
+        this.inactivateAllWindows()        
+
+        this.selection = {
+            x: x,
+            y: y,
+            width: 0,
+            height: 0
+        }
+
+        this.desktiop(x, y)
+        
+
+        this.parent.render()
+    }   
+    shadowedText(gc, text, x, y) {
+        gc.setFillStyle('#000')
+        gc.fillText(text, x + 2, y + 2)
+        gc.setFillStyle('#fff')
+        gc.fillText(text, x, y)
+
+    }
+    drawWarning(gc,text) {
+        this.shadowedText(gc, text, 22,22)
+        this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22,22)
+        this.shadowedText(gc, text, 22, this.height -22 - 22)
+        this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22, this.height -22 - 22)
+    }
+    render(gc) {
+        this.unrender()
+        gc.setFillStyle(this.theme.desktop)
+        gc.fillRect(0, 0, this.width, this.height)
+        this.drawWarning(gc, 'Alpha Version'.toUpperCase())
+        this.shadowedText(gc, 'Yoghurt UI Framework. (C) 2018 Alexander Forselius', this.width - 280, this.height - 82)
+        this.shadowedText(gc, 'Build 0.2.8. For testing purposes only.', this.width - 205, this.height - 62)
+
+        for (let icon of this.icons) {
+            gc.translate(icon.x, icon.y)
+            this.renderIcon(gc, icon)
+            gc.translate(-icon.x, -icon.y)
+        }
+        if (this.selection != null) {
+            gc.setFillStyle('black')
+            gc.strokeRect(this.selection.x, this.selection.y, this.selection.width, this.selection.height)
+            console.log(this.selection)
+        }
+
+        super.render(gc)
+    }
+
+
+    load() {
+        super.load()
+        this.emit('load') 
+    }
+    pack() {
+        super.pack()
+        this.taskbar.x = 0
+        this.taskbar.y = this.height - this.taskbar.height
+        this.taskbar.width = this.width
+        this.taskbar.height = 30
+    
+    }
+}
+
+/***/ }),
+
+/***/ "../src/controls/Header.js":
+/*!*********************************!*\
+  !*** ../src/controls/Header.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Header; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Button */ "../src/controls/Button.js");
+/* harmony import */ var _graphics_Font__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../graphics/Font */ "../src/graphics/Font.js");
+
+
+
+
+
+class Header extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent) {
+        super(parent)
+        this.rightButtons = []
+        this.backgroundColor = this.theme.highlight
+        this.font = new _graphics_Font__WEBPACK_IMPORTED_MODULE_2__["default"]('Tahoma', 11)
+        this.fill = true
+        this.klass = 'header'
+    }
+    mouseDownAction(x, y, button='left') {
+        if (super.mouseDownAction(x, y, button)) return true
+     
+        this.parent.startMove({
+            x: x,
+            y: y    
+        })
+    }
+    mouseUp(x, y, button='left') {
+        super.mouseUp(x, y, button)
+        this.parent.stopMoving()
+    }
+    addRightButton(text, id, pos) {
+        let button = new _Button__WEBPACK_IMPORTED_MODULE_1__["default"](this)
+        button.width = 13
+        button.height = 13
+        button.text = text
+        button.buttonStyle = 'tool'
+        button.isFocusable = false
+        button.x = this.width - 16 - pos * 16
+        
+        button.y = 3
+        this.controls[id] = button
+        this.rightButtons.push(button)
+        return button
+    }
+    load() {
+        super.load()
+        this.closeButton = this.addRightButton('x', 'closeButton', 0)
+        this.maximizeButton = this.addRightButton('o', 'maximizeButton', 1)
+        this.minimizeButton = this.addRightButton('_', 'minimizeButton', 2)
+        this.closeButton.on('click', (e) => {
+            this.parent.close()
+        })
+    }
+    pack() {
+        super.pack()
+        for (let i = 0; i < this.rightButtons.length; i++) {
+            let button = this.rightButtons[i]
+            button.x = this.width - 16 - i * 16
+
+        }
+    }
+    render(gc) {
+        let active = this.desktop.focusedControl  == this.parent 
+        this.backgroundColor = (active ? this.theme.highlight : '#888')
+  
+        super.render(gc, false)
+        this.style.renderHeader(gc, this, false)
+    }
+} 
+
+/***/ }),
+
+/***/ "../src/controls/Label.js":
+/*!********************************!*\
+  !*** ../src/controls/Label.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Label; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+
+
+class Label extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+    }
+    render(gc) {
+        super.render(gc)
+        gc.setFillStyle('black')
+        gc.fillText(this.text, 0, 0, this.width, this.height)
+    }
+}
+
+/***/ }),
+
+/***/ "../src/controls/ListView.js":
+/*!***********************************!*\
+  !*** ../src/controls/ListView.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ListView; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+
+
+/**
+ * Work in progress
+ */
+class ListView extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+        this.listViewStyle = 'details'
+        this.items = []
+        this.columnheaders = {}
+        this.selectedItems = []
+        this.scroll = {
+            x: 0,
+            y: 0
+        }
+        this.borderStyle = 'inset'
+        this.backgroundColor = 'white'
+    }
+
+    renderColumnHeaders() {
+        let left = 0
+        for (let columnheaderId of Object.keys(this.columnheaders)) {
+            let columnheader = this.columnheaders[columnheaderId]
+            let button = {
+                x: left,
+                top: 0,
+                width: columnheader.width,
+                height: 18,
+                text: columnheader.text
+            }
+            this.style.drawButton(
+                gc,
+                button
+            )
+        }
+    }
+    render(gc) {
+        super.render(gc)
+        if (this.listViewStyle === 'details') {
+            this.renderColumnHeaders()
+            gc.clip(0, this.top + 18, this.width, this.height - this.top + 28)
+            gc.translate(this.scroll.x, this.scroll.y)
+            let top = 0
+            for (let item of this.items) {
+                if (this.selectedItems.indexOf(item)) {
+                    gc.setFillStyle(this.style.highlight)
+                    gc.fillRectangle(0, top, this.width, 18)
+                    gc.setFillStyle(this.style.highlightText)
+                } else {
+                    gc.setFillStyle('black')
+                }
+                let left = 0
+                for (let columnheaderId of Object.keys(this.columnheaders)) {
+                    let columnheader = this.columnheaders[columnheaderId]
+                    let width = gc.measureText(columnheader.label) + 44
+                    gc.fillText(item.label, left + 22, top + 2, width, 18)
+                    left += width
+                }
+                top += 18
+            }
+            gc.translate(-this.scroll.x, -this.scroll.y)
+            
+        }
+    }
+}
+
+/***/ }),
+
+/***/ "../src/controls/Menu.js":
+/*!*******************************!*\
+  !*** ../src/controls/Menu.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Menu; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+
+
+class Menu extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id, menu) {
+        super(parent, id)
+        this.menu = menu
+        this.borderStyle = 'bevel'
+        this.selectedIndex = -1
+        this.borderStyle = 'bevel'
+        this.alignSize()
+    }
+
+    mouseUp(x, y, button='left') {
+        let item = this.menu.items[this.selectedIndex]
+        try {
+            item.command.call(this)
+            
+        } catch (e) {
+
+        }
+        this.parent.emit('action', item.id)
+        this.close()    
+    }
+
+    click(x, y, button='left') {
+        let item = this.menu.items[this.selectedIndex]
+        try {
+            item.command.call(this)
+            
+        } catch (e) {
+
+        }
+        this.parent.emit('action', item.id)
+        this.close()    
+    }
+    alignSize() {
+        let gc = this.graphics
+        let maxSize = 0
+        for (let item of this.menu.items) {
+            let width = gc.measureText(item.label).width + 22
+            if (width > maxSize) {
+                maxSize = width
+            }
+        }
+        this.width = maxSize + 12
+        this.height = this.menu.items.length * 18 + 4
+    }
+    render(gc) {
+        super.render(gc)
+        this.style.renderMenu(gc, this)
+        
+    }
+    hover(x, y, button='left') {
+        let itemHeight = 18
+        this.selectedIndex = -1
+        for (let i = 0; i < this.menu.items.length; i++) {
+            if (y > i * itemHeight && y < i * itemHeight + itemHeight) {
+                this.selectedIndex = i
+                this.yoghurt.render()
+            }
+        }
+    }
+}
+
+/***/ }),
+
+/***/ "../src/controls/MenuBar.js":
+/*!**********************************!*\
+  !*** ../src/controls/MenuBar.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MenuBar; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+/* harmony import */ var _Menu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Menu */ "../src/controls/Menu.js");
+ 
+ 
+
+ class MenuBar extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+     constructor(parent, id, menus={}) {
+        super(parent, id)
+        this.menus = menus
+        this.selectedMenu = null
+        this.paddingHorizontal = 8
+        this.on('action', (actionId) => {
+            this.parent.emit('action', actionId)
+        })
+        this.klass = 'menubar'
+        this.activeMenu = null
+     }
+     render(gc) {
+         super.render(gc)
+        this.style.renderMenuBar(gc, this)
+
+        
+     }
+     hover(x, y, button='left') {
+        if (this.isActive) {
+            this.selectMenu(x)
+        }
+     }
+     selectMenu(x) {
+        let left = 0
+        if (this.selectedMenu) {
+            delete this.parent.controls[this.selectedMenu.id]
+            this.selectedMenu = null
+            this.isActive = false
+        }
+        for (let menuId of Object.keys(this.menus)) {
+            let menu = this.menus[menuId]
+            let width = this.paddingHorizontal * 2 + this.graphics.measureText(menu.id || menu.text).width
+            if (x > left && x < width + left) {
+        
+                let menuControl = new _Menu__WEBPACK_IMPORTED_MODULE_1__["default"](this.parent, 'menu_' + menuId, menu)
+                this.parent.controls['menu_' + menuId] = menuControl
+                
+                menuControl.x = left + 3
+                menuControl.y = this.parent.header.height + this.height 
+                menuControl.show()
+                this.selectedMenu = menuControl
+                this.isActive = true
+            }
+            left += width
+
+        }
+        this.yoghurt.render()
+     }
+     mouseUp() {
+         this.isActive = false
+         for (let menuId of Object.keys(this.parent.controls)) {
+            delete this.parent.controls['menu_' + menuId]
+         }
+         delete this.parent.controls[this.selectedMenu.id]
+         this.selectedMenu = null
+         this.yoghurt.render()
+     }
+     mouseDownAction(x, y, button='left') {
+         this.isActive = true
+
+        this.selectMenu(x)
+     }
+
+ }
+
+/***/ }),
+
+/***/ "../src/controls/Taskbar.js":
+/*!**********************************!*\
+  !*** ../src/controls/Taskbar.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Taskbar; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Button */ "../src/controls/Button.js");
+/* harmony import */ var _Menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Menu */ "../src/controls/Menu.js");
+/* harmony import */ var _Tray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Tray */ "../src/controls/Tray.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "../node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+
+class Taskbar extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+        this.windowIds = []
+        this.parent.on('windowadded', () => {
+            this.renderWindowButtons.bind(this)()
+        })
+    }
+
+    render(gc) {
+        super.render(gc)
+        this.style.renderTaskbar(gc, this)
+    }
+
+    renderWindowButtons() {
+        for (let windowId of this.windowIds) {
+            delete this.controls[windowId]
+        }
+        let left = this.startButton.width + this.startButton.left + 6
+        for (let windowId of Object.keys(this.parent.controls)) {
+            let window = this.parent.controls[windowId]
+            if (window.klass === 'window' && window.showInTaskBar) {
+                let btnId = 'btn.window$' + windowId
+                let windowButton = new _Button__WEBPACK_IMPORTED_MODULE_1__["default"](this, btnId)
+                windowButton.buttonStyle = 'tool'
+                windowButton.width = this.graphics.measureText(window.text).width * 2 + 2
+                windowButton.height = this.height - 10
+                windowButton.top = 5
+                windowButton.left = left
+                windowButton.text = window.text
+                windowButton.isChecked = true
+                left += windowButton.width + 8
+                this.controls[btnId] = windowButton
+            }
+        }
+    }
+
+    load() {
+        super.load()
+        this.yoghurt.on('servicechanged', () => this.pack())
+        this.startButton = new _Button__WEBPACK_IMPORTED_MODULE_1__["default"](this)
+        this.startButton.text = 'Start'
+        this.startButton.buttonStyle = 'tool'
+        this.controls['start'] = this.startButton
+        this.startButton.on('mousedown', (event) => {
+            
+            let menu = this.parent.addMenu('startmenu', [
+                {
+                    label: 'Apps',
+                    items: [
+                        {
+                            label: "Welcome"
+                        }
+                    ]
+                },
+                {
+                    label: 'Settings'
+                },
+                {
+                    label: 'Find'
+                },
+                {
+                    label: 'Run'
+                },
+                {
+                    label: 'Exit'
+                }
+            ])
+            menu.bottom = 23
+            menu.x = 2
+            this.yoghurt.render()
+        })
+        let tray = new _Tray__WEBPACK_IMPORTED_MODULE_3__["default"](this, 'tray')
+        this.controls['tray'] = tray
+        tray.label = moment__WEBPACK_IMPORTED_MODULE_4___default()().format('LT')
+        setInterval(() => {
+            tray.label = moment__WEBPACK_IMPORTED_MODULE_4___default()().format('LT')
+        }, 60000)
+        this.tray = tray
+        this.pack()
+        this.yoghurt.render()
+    }
+    pack() {
+        super.pack()
+        if (this.startButton) {
+            this.startButton.left = 4
+            this.startButton.top = 5
+            this.startButton.width = 63
+            this.startButton.height = 20
+        
+        }
+        if (this.tray) {
+            let tray = this.tray
+            tray.height = 22
+            tray.width = (Object.values(this.yoghurt.services).length * 18) + 60
+            tray.right = 12
+            tray.bottom = 3
+        }
+    }
+}   
+
+/***/ }),
+
+/***/ "../src/controls/TextBox.js":
+/*!**********************************!*\
+  !*** ../src/controls/TextBox.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TextBox; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+
+
+/**
+ * Text Box Element. Currently using a quirk workaround with dom element involved to ease development for now
+ */
+class TextBox extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+        this.selection = {
+            start: 0,
+            end: 0
+        }
+        this.backgroundColor = 'white'
+    }
+    clickAction(x, y, button) {
+        let text = prompt(this.id)
+
+        if (text) {
+            this.text = text
+        }
+        this.yoghurt.render()
+    }
+    unrender() {
+        super.unrender()
+        this.$hasBeenRendered = false
+        
+    }
+
+    render(gc) {
+        super.render(gc)
+        this.style.renderTextBox(gc, this)
+       
+    }
+}
+
+/***/ }),
+
+/***/ "../src/controls/Toolbar.js":
+/*!**********************************!*\
+  !*** ../src/controls/Toolbar.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ToolBar; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Button */ "../src/controls/Button.js");
+
+
+
+/**
+ * Represents a toolbar component
+ * @extends {Control}
+ * @class
+ */
+class ToolBar extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    /**
+     * 
+     * @param {Control} parent 
+     * @param {String} id 
+     * @param {Object} toolbar 
+     */
+    constructor(parent, id, toolbar) {
+        super(parent, id)
+        this.buttonStyle = this.parent.buttonStyle
+        if (toolbar)
+        this.setToolbar(toolbar)
+        
+    }
+    setToolbar(toolbar) {
+        for (let k of this.controls) {
+            delete this.controls[k]
+        }
+        for (let item of toolbar.items) {
+            let button = new _Button__WEBPACK_IMPORTED_MODULE_1__["default"](this, item.id)
+            button = Object.assign(button, item)
+            button.buttonStyle = this.buttonStyle
+            this.addButton(button)
+        }
+    }
+
+     /**
+     * Add a button to the toolbar
+     * @param {Object} button The x coordinate of the pointer
+     */
+    addButton(btnData) {
+        let button = new _Button__WEBPACK_IMPORTED_MODULE_1__["default"](this, btnData.id)
+        this.controls[button.id] = button
+        button.on('click', (x, y, button) => {
+            if (button.left) {
+                this.parent.emit('command', button.id)
+            }
+        })
+        this.pack()
+    }
+
+    /**
+     * Orders the children
+     * @param {Int} x The x coordinate of the pointer
+     * @param {Int} y The y coordinate of the pointer
+     * @param {String} button The button
+     **/
+    pack() {
+        let i = 0
+        let left = 0
+        let buttonSize = 18
+        for (let buttonId of Object.keys(this.controls)) {
+            let button = this.controls[buttonId]
+            button.left = left
+            button.top = 0
+            button.width = this.graphics.measureText(button.text) + 18
+            button.height = buttonSize            
+            left += button.width
+        }
+        this.width = left
+        this.yoghurt.render()
+    }
+    render(gc) {
+        super.render(gc)
+        this.style.renderToolbar(gc, this)
+    }
+
+}
+
+/***/ }),
+
+/***/ "../src/controls/ToolbarPanel.js":
+/*!***************************************!*\
+  !*** ../src/controls/ToolbarPanel.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ToolbarPanel; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+
+
+class ToolbarPanel extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+        this.buttonStyle = 'default'        
+    }
+    pack() {
+        super.pack()
+    }
+
+}
+
+/***/ }),
+
+/***/ "../src/controls/Tray.js":
+/*!*******************************!*\
+  !*** ../src/controls/Tray.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Tray; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+
+
+class Tray extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+        this.parent.yoghurt.on('servicechanged', () => {
+            this.width = Object.values(this.parent.yoghurt.services).filter(s => s.isActive).length * 18 + 80
+        })
+    }
+    pack() {
+        
+    }
+    render(gc) {
+        this.style.renderTray(gc, this)
+    }
+}
+
+/***/ }),
+
+/***/ "../src/controls/Window.js":
+/*!*********************************!*\
+  !*** ../src/controls/Window.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Window; });
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/controls/index.js");
+/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header */ "../src/controls/Header.js");
+/* harmony import */ var _MenuBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBar */ "../src/controls/MenuBar.js");
+
+
+
+
+/**
+ * A window defines a window
+ */
+class Window extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id, width=640, height=480, menus=null, toolbars=null) {
+        super(parent, id, width, height)
+        this.menus = menus
+        this.top = 28
+        
+        this.borderStyle = 'bevel'
+        this.closeOnInactivate = false
+        this.showInTaskBar = true
+        
+        this.width = width
+        this.height = height
+        this.toolbars = toolbars
+        
+        this.canBeResized = true
+        this.klass = 'window'
+    }
+    get menus() {
+        return this._menus
+    }
+    set menus(value) {
+        this._menus = value
+        if (!this.menubar) return
+        this.menubar.menus = value
+        this.yoghurt.render()
+    }
+    close() {
+        delete this.parent.controls[this.id]
+        console.log('Closing ' + this.id)
+        this.unrender()
+        this.yoghurt.render()
+    }
+
+
+    show() {
+        super.show()
+    }
+
+    activate() {
+        this.zIndex = 0
+    }
+    pack() {
+        super.pack()
+        if (!this.header) {
+            this.header = new _Header__WEBPACK_IMPORTED_MODULE_1__["default"](this)
+            this.controls['header'] = this.header
+        }
+        if (!this.content) {
+        this.content = new ___WEBPACK_IMPORTED_MODULE_0__["default"](this, 'content')
+        this.controls['content'] = this.content
+        }
+        if (!this.menubar) {
+            this.menubar = new _MenuBar__WEBPACK_IMPORTED_MODULE_2__["default"](this, 'menubar', this.menus)
+            this.controls['menubar'] = this.menubar
+        }
+        let y = 0
+        this.header.x = 4
+        this.header.y = 4
+        y += 4
+        
+        this.header.height = 19
+        this.header.width = this.width - 8
+        this.header.pack()
+        y += this.header.height
+        this.menubar.width = this.width - 8
+        this.menubar.height = 20
+        this.menubar.x = 4
+        this.menubar.y = y
+        y += this.menubar.height
+        if (this.toolbars != null) {
+            if(!this.toolbarPanel) {
+                this.toolbarPanel = new ToolBarPanel(this, 'toolbarpanel')
+                this.controls['toolbarpanel'] = this.toolbarPanel
+            }
+            this.toolbarPanel.y = y
+            this.toolbarPanel.height = 18
+            this.toolbarPanel.width = this.width - 4
+            y += this.toolbarPanel.height
+        } 
+        this.content.left = 2
+        this.content.top = y
+        this.content.width = this.width - 4
+        this.content.height = this.height - y
+        super.pack()
+    }
+
+    load() {
+        if (this.isLoaded) return
+        this.header.load()
+        this.yoghurt.desktop.emit('windowadded', this)
+        this.focus()
+    }
+
+    mouseDownAction(x, y, button='left') {
+        if (super.mouseDownAction(x, y, button)) return true
+        this.desktop.activeWindow = this
+    }
+
+    /**
+     * Render the control
+     * @param {GraphicsContext} gc The Graphics Context
+     */
+    render(gc) {
+        super.render(gc)
+        this.style.renderWindow(gc, this)
+       
+
+    }
+}
+
+/***/ }),
+
+/***/ "../src/controls/index.js":
+/*!********************************!*\
+  !*** ../src/controls/index.js ***!
+  \********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18701,28 +19943,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Control; });
 /* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! events */ "./node_modules/node-libs-browser/node_modules/events/events.js");
 /* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _graphics_font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphics/font */ "../src/graphics/font.js");
-/* harmony import */ var _node_modules_uri_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/uri-js */ "../node_modules/uri-js/dist/es5/uri.all.js");
-/* harmony import */ var _node_modules_uri_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_uri_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _graphics_Font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphics/Font */ "../src/graphics/Font.js");
+/* harmony import */ var uri_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! uri-js */ "../node_modules/uri-js/dist/es5/uri.all.js");
+/* harmony import */ var uri_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(uri_js__WEBPACK_IMPORTED_MODULE_2__);
+
+
 
 
 
 /**
- * Control class
+ * The {Control} class is the parent class of all graphical entities in the yoghurt user interface.
+ * @class
+ * @extends {EventEmitter}
+ * 
  */
 class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
+    /**
+     * Creates a new instance of the control
+     * @param {Control} parent The parent control
+     * @param {String} id An unique id of the instance of the control
+     */
     constructor(parent, id) {
         super(parent)
         this.id = id
         this.parent = parent
-        this.font = new _graphics_font__WEBPACK_IMPORTED_MODULE_1__["default"]('Tahoma', 11)
+        this.font = new _graphics_Font__WEBPACK_IMPORTED_MODULE_1__["default"]('Tahoma', 11)
         this.isMoveable = false
+        this.focusedControl = null
         this.move = null
         this.resizePos = null
+        this.canBeResized = false
         this.controls = {}
         this.zIndex = 0
         this.borderStyle = 'none'
         this.isPressing = false
+        this.isLoaded = false
         this.bounds = {
             size: {
                 width: 0,
@@ -18746,21 +20001,66 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
         this.acceptButton = null
         this.cancelButton = null
         this.isResizing = false
+        this.$hasBeenRendered = false
+        
+        
+    }
+    /**
+     * Gets the text of the control
+     */
+    get text() {
+        if (this._text != null) {
+            return this._text
+        } else {
+            return this.id
+        }
     }
 
+    /**
+     * Sets the text of the control
+     * @param {String} value The string to set
+     */
+
+    set text(value) {
+        this._text = value
+    }
+
+    startMoveControl(obj) { 
+        this.moveControl = obj
+    }
+    startResizeControl(obj) {
+        this.resizeControl = obj
+    }
+    stopMoveControl() {
+        this.moveControl = null
+    }
+    stopResizeControl() {
+        this.resizeControl = null
+    }
     startResize(pos) {
-        this.resizePos = pos
+        console.log("Starting resizing")
+        this.parent.startResizeControl(pos)
     }
     stopResize() {
-        this.resizePos = null
+        this.parent.stopResizeControl()
     }
     stopMove() {
-        this.move = null
+        this.parent.stopMoveControl()
     }
     startMove(pos) {
-       this.move = pos
+        pos.control = this
+        this.parent.startMoveControl(pos)
     }
-    
+
+    bringToFront() {
+        this.parent.bringControlToFront(this)
+    }
+    bringControlToFront(window) {
+        if (window.klass != 'window') return
+        delete this.controls[window.id]
+        this.controls[window.id] = window
+        this.yoghurt.render()
+    }
 
     clickAction(x, y, button='left') {
         this.emit('click', x, y, button)
@@ -18798,13 +20098,25 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
     hide() {
         this.isVisible = false
         this.yoghurt.render()
+        this.unrender()
     }
+
+    /**
+     * Show the control
+     */
     show() {
         this.isVisible = true
         this.yoghurt.render()
+        if (!this.isLoaded) this.load()
     }
+
+    /**
+     * Focus the control
+     */
     focus() {
         this.desktop.focusedControl = this
+        this.bringToFront()
+        this.yoghurt.render()
     }
     set desktop(value) {
         this._desktop = value
@@ -18821,6 +20133,9 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
     get isFocused() {
         return this.desktop.focusedControl == this
     }
+    /**
+     * Get the underlying desktop of the tree this component belongs to
+     */
     get desktop() {
         let parent = this
         do {
@@ -18828,6 +20143,9 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
             parent = parent.parent
         } while (parent != null)
     }
+    /**
+     * Returns the {Yoghurt} instance that hosts the system
+     */
     get yoghurt() {
         let parent = this
         do {
@@ -18842,6 +20160,10 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
             parent = parent.parent
         } while (parent != null)
     }
+
+    /**
+     * Returns an instance of the {GraphicsContext} associated with the session
+     */
     get graphics() {
         let parent = this
         do {
@@ -18849,6 +20171,9 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
             parent = parent.parent
         } while (parent != null)
     }
+    /**
+     * Returns the {Theme} that is currently used
+     */
     get theme() {
         let parent = this
         do {
@@ -18856,19 +20181,29 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
             parent = parent.parent
         } while (parent != null)
     }
+
+    /**
+     * Gets the absolute X position in coordinates relative to the viewport (canvas)
+     */
     get absoluteX() {
         let parent = this
         let x = this.x
         do {
+            if (!isNaN(parent.x))
             x += parent.x
             parent = parent.parent
         } while (parent != null)
         return x
     }
+
+    /**
+     * Gets the absolute Y position in coordinates relative to the viewport (canvas)
+     */
     get absoluteY() {
         let parent = this
         let y = this.y
         do {
+            if (!isNaN(parent.y))
             y += parent.y
             parent = parent.parent
         } while( parent != null)
@@ -18876,13 +20211,15 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
     }
 
     load() {
+        if (this.isLoaded) return
         for (let control of Object.values(this.controls)) {
             control.load()
         }
     }
     
     get children() {
-        return Object.values(this.controls)
+        let objects = Object.values(this.controls)
+        return objects
     }
     set width(value) {
         this.bounds.size.width = value
@@ -18892,18 +20229,32 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
         this.bounds.size.height = value
         this.resize()
     }
+
+    /**
+     * Gets the width of the element
+     */
     get width() {
         return this.bounds.size.width
     }
 
+
+    /**
+     * Gets the height of the element
+     */
     get height() {
         return this.bounds.size.height
     }
     
+    /**
+     * Gets the relative x position of the element relative to the parent
+     */
     get x() {
         return this.bounds.position.x
     }
 
+    /**
+     * Gets the relative y position of the element relative to the parent
+     */
     get y() {
         return this.bounds.position.y 
     }
@@ -18921,26 +20272,51 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
     set top(value) {
         return this.bounds.position.y = value
     }
+
+    /**
+     * Gets the x position of the element relative to the parent's right side
+     */
     get right() {
         return this.x + this.width
     }
+
+    /**
+     * Gets the x position of the element relative to the parent's bottom side
+     */
     get bottom() {
         return this.y + this.height
     }
+
     get left() {
         return this.x
     }
     get top() {
         return this.y
     }
+
+    /**
+     * Sets the x position of the element relative to the parent's bottom side
+     */
     set bottom(value) {
         this.y = this.parent.height - value - this.height
     }
+
+    /**
+     * Sets the x position of the element relative to the parent's right side
+     */
+    
     set right(value) {
         this.x = this.parent.width - value - this.width
     }
+
+
+    /**
+     * Close the element
+     */
     close() {
         delete this.parent.controls[this.id] 
+        console.log('Closing ' + this.id)
+        this.unrender()
         this.yoghurt.render()
     }
     inactivate() {
@@ -18973,16 +20349,23 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
     inBounds(x, y) {
         return this.inBoundsX(x) && this.inBoundsY(y)
     }
+    unrender() {
+        this.$hasBeenRendered = false
+        for (let _control of Object.values(this.controls)) {
+           
+            _control.unrender()
+        }
+    }
     /**
-     * Render the control
+     * Renders the control
      * @param {GraphicsContext} gc The Graphics Context
      */
     render(gc, fill=true) {
         gc.save()
         gc.clip(0, 0, this.width, this.height)
-        let fillStyle =  this.backgroundColor || this.theme.btnFace
+        let fillStyle =  this.backgroundColor
         gc.setFillStyle(fillStyle)
-        if (fill) gc.fillRect(0, 0, this.width, this.height)
+        gc.fillRect(0, 0, this.width, this.height)
         for (let _control of Object.values(this.controls)) {
             gc.translate(_control.x, _control.y)
         
@@ -18990,8 +20373,29 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
             gc.translate(-_control.x, -_control.y)
         }
         this.style.renderControl(gc, this, fill)
+
+        if (this.isInspecting) {
+            gc.setFillStyle('white')
+            gc.fillRect(0, 0, 100, 8)
+            gc.setFillStyle('red')
+            gc.setStrokeStyle('red')
+            gc.strokeRect(0, 0, this.width, this.height)
+            gc.setFillStyle('black')
+            gc.fillText(
+                'id: ' + this.id + ' x: ' + this.x + ' y: ' + this.y + ' width:' + this.width + ' height:' + this.height,
+                0,
+                5
+            )
+        }
+
         gc.restore()        
+        this.$hasBeenRendered = true
+        
+
     }
+    /**
+     * @deprecated
+     */
     redraw() {
         let gc = this.graphics
         gc.setOrigo(this.absoluteX, this.absoluteY)
@@ -19008,77 +20412,132 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
      */
     pack() {
         // Pack children
-        for (let control of Object.values(this.controls)) {
+        for (let control of (this.children)) {
             control.pack()
         }
     }
+
+    /**
+     * Resizes the control
+     */
     resize() {
         this.pack()
         
     }
 
+    /**
+     * Invoked when the mouse leave
+     */
     mouseLeave(x, y, button) {
         this.emit('mouseleave', x, y, button)
     }
 
+    hoverAction() {
+
+    }
+
+    /**
+     * Invoked when the mouse pointer moves above the control
+     */
+
     hover(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
         if (this.isMouseDown) this.buttonState = 'pressed'
-        for (let control of Object.values(this.controls)) {
-            if (control.inBounds(relativeX, relativeY)) {
+        let foundControl = false
+
+        if (this.resizeControl != null) {
+            this.resizeControl.control.width = x + 2 - this.resizeControl.control.x
+            this.resizeControl.control.height = y + 2 - this.resizeControl.control.y
+            this.resizeControl.control.pack()
+            this.yoghurt.render()
+        }
+
+        if (this.moveControl != null) {
+            this.moveControl.control.x = x - this.moveControl.x
+            this.moveControl.control.y = y - this.moveControl.y
+            this.yoghurt.render()
+            
+        }
+        let bc = []
+        for (let control of this.children) {
+            if (control.inBounds(x, y)) {
+                bc.push(control)
+            }
+
+        }
+        if (bc.length > 0) {
+            let control = bc[bc.length - 1]
+            if (control.inBounds(x, y)) {
                 control.isHovered = true
-                control.hover(relativeX, relativeY, button)
+                control.hover(x - control.x, y - control.y, button)
+                this.foundControl = true
             } else {
                 if (control.isHovered) {
-                    control.mouseLeave(relativeX, relativeY, button)
+                    control.mouseLeave(x - control.x, y - control.y, button)
                 }
                 control.isHovered = false
             }
-        }
-        if (this.isMoving) {
-            if (!this.move) {
-                this.move = ({
-                    x: relativeX,
-                    y: relativeY
-                })
-            }
-            this.left = x - this.move.x
-            this.top = y - this.move.y
-            this.yoghurt.render()
+            foundControl = true
         }
         this.emit('hover', {
             x: x,
             y: y
         })
+        if (!foundControl) {
+            this.hoverAction(x, y, button)
+            
+        }
     }
+    
+
+    /**
+     * Invoked when the mouse button upe
+     */
     mouseUp(x, y, button='left') {
         this.stopMove()
+        this.stopResize()
         
+    }
+
+    get level() {
+        let parent = this
+        let _level = 0
+        while(parent != null) {
+            _level++
+            parent = parent.parent
+        }
+    }
+
+    stopResize() {
+        this.resizePos = null
     }
     stopMoving() {
         this.move = null
         this.isMoving = false
         }
     /**
-     * Click
-     * @param {*} x 
-     * @param {*} y 
+     * Invoked when the mouse clicks
+     * @param {Int} x The x coordinate of the pointer
+     * @param {Int} y The y coordinate of the pointer
+     * @param {String} button The button
      */
     click(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
-        let foundControl =false
+        let bc = []
         for (let control of this.children) {
-            if (control.inBounds(relativeX, relativeY)) {
-                control.click(relativeX, relativeY, button)
-                foundControl = true
+            if (control.inBounds(x, y)) {
+                bc.push(control)
             }
+
+        }
+        if (bc.length > 0) {
+            let control = bc[bc.length - 1]
+            if (control.click(x - control.left, y - control.top, button)) return true
+            foundControl = true
         }
         this.emit('click', {
             x: x,
             y: y
         })
+        
         if (!foundControl) {
             this.clickAction(x, y, button)
         }
@@ -19088,44 +20547,78 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
         this.isMouseDown = true
 
     }
-
     /**
-     * Click
-     * @param {*} x 
-     * @param {*} y 
+     * Invoked when the mouse press
+     * @param {Int} x The x coordinate of the pointer
+     * @param {Int} y The y coordinate of the pointer
+     * @param {String} button The button
      */
-    mouseDown(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
+    mouseDown(x, y, button='left', level=0) {
         let foundControl = false
+        if (this.level > level) {
+            level = this._level     
+        }
+        let bc = []
         for (let control of this.children) {
-            if (control.inBounds(relativeX, relativeY)) {
-                control.mouseDown(relativeX, relativeY, button)
-                foundControl = true
+            if (control.inBounds(x, y)) {
+                bc.push(control)
             }
+
         }
-        this.emit('mousedown', {
-            x: x,
-            y: y
-        })
+        if (bc.length > 0) {
+            let control = bc[bc.length - 1]
+            if (control.mouseDown(x - control.left, y - control.top, button, level)) return true
+            foundControl = true
+        }
+            
         if (!foundControl) {
-            this.mouseDownAction(relativeX, relativeY, button)
+            let parent = this   
+            while (parent != null && parent.klass !== 'window')  {
+                parent = parent.parent
+            } 
+            if (parent != null)
+            parent.focus()
+            if (parent != null) parent.focus()
+            this.mouseDownAction(x, y, button)
+            if (this.canBeResized && x > this.width - 6 && y > this.height - 6) {
+         
+                this.startResize({
+                    x: x,
+                    y: y,
+                    control: this
+                })
+            }
+            this.emit('mousedown', {
+                sender: this,
+                x: x,
+                y: y
+            })
         }
-    }
+        return foundControl
+    } 
+    
     /**
-     * Click
-     * @param {*} x 
-     * @param {*} y 
-     */
+    * Invoked when the mouse up
+    * @param {Int} x The x coordinate of the pointer
+    * @param {Int} y The y coordinate of the pointer
+    * @param {String} button The button
+    */
     mouseUp(x, y, button='left') {
         this.isMouseDown = false
-        let relativeX = x - this.left
-        let relativeY = y - this.top
+       let bc = []
         for (let control of this.children) {
-            if (control.inBounds(relativeX, relativeY)) {
-               control.mouseUp(relativeX, relativeY, button)
+            if (control.inBounds(x, y)) {
+                control.mouseUp(x - control.left, y - control.top, button)
             }
         }
+        if (this.parent.stopMoveControl instanceof Function)
+        this.parent.stopMoveControl()
+        if (this.parent.stopResizeControl instanceof Function)
+        this.parent.stopResizeControl()
+        if (this.stopMoveControl instanceof Function)
+        this.stopMoveControl()
+        if (this.stopResizeControl instanceof Function)
+        this.stopResizeControl()
         this.emit('mouseup', {
             x: x,
             y: y
@@ -19135,479 +20628,22 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
 
 /***/ }),
 
-/***/ "../src/controls/Desktop.js":
-/*!**********************************!*\
-  !*** ../src/controls/Desktop.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Desktop; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-/* harmony import */ var _Taskbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Taskbar */ "../src/controls/Taskbar.js");
-/* harmony import */ var _Menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Menu */ "../src/controls/Menu.js");
-
-
-
-
-class Desktop extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(parent, id) {
-        super(parent, id)
-        this.backgroundColor = this.theme.desktop
-        this.graphics = parent.graphics
-        this.desktop = this
-        this.yoghurt = this.parent
-        this.windows = {}
-        this.activeWindow = null    
-        this.taskbar = new _Taskbar__WEBPACK_IMPORTED_MODULE_1__["default"](this, 'taskbar')
-        this.controls['taskbar'] = this.taskbar
-        this.focusedControl = null
-
-    }
-
-    addWindow(id) {
-        let window = new Window(this, id)
-        this.windows[id] = window
-        this.controls[id] = window
-        this.emit('windowadded')
-        return window
-    }
-
-    addMenu(id, items=[]) {
-        let menu = new _Menu__WEBPACK_IMPORTED_MODULE_2__["default"](this, id, items)
-        this.controls[id] = menu
-        this.emit('windowadded')
-        return menu
-    }
-    inactivateAllWindows() {
-        for (let window of Object.values(this.controls)) {
-            window.inactivate()
-        }
-        this.activeWindow = null
-    }
-
-    mouseDown(x, y, button='left') {
-        if (super.mouseDown(x, y, button)) return true
-        this.inactivateAllWindows()        
-
-        this.parent.render()
-    }   
-    shadowedText(gc, text, x, y) {
-        gc.setFillStyle('#000')
-        gc.fillText(text, x + 2, y + 2)
-        gc.setFillStyle('#fff')
-        gc.fillText(text, x, y)
-
-    }
-    drawWarning(gc,text) {
-        this.shadowedText(gc, text, 22,22)
-        this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22,22)
-        this.shadowedText(gc, text, 22, this.height -22 - 22)
-        this.shadowedText(gc, text, this.width - gc.measureText(text).width - 22, this.height -22 - 22)
-    }
-    render(gc) {
-        super.render(gc)
-        this.drawWarning(gc, 'Alpha Version'.toUpperCase())
-        this.shadowedText(gc, 'Yoghurt UI Framework. (C) 2018 Alexander Forselius', this.width - 280, this.height - 82)
-        this.shadowedText(gc, 'Build 0.2.8. For testing purposes only.', this.width - 205, this.height - 62)
-    }
-
-
-    load() {
-        super.load()
-        this.emit('load') 
-    }
-    pack() {
-        super.pack()
-        this.taskbar.x = 0
-        this.taskbar.y = this.height - this.taskbar.height
-        this.taskbar.width = this.width
-        this.taskbar.height = 30
-    
-    }
-}
-
-/***/ }),
-
-/***/ "../src/controls/Header.js":
-/*!*********************************!*\
-  !*** ../src/controls/Header.js ***!
-  \*********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Header; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Button */ "../src/controls/Button.js");
-/* harmony import */ var _graphics_font__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../graphics/font */ "../src/graphics/font.js");
-
-
-
-
-
-class Header extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(parent) {
-        super(parent)
-        this.rightButtons = []
-        this.backgroundColor = this.theme.highlight
-        this.font = new _graphics_font__WEBPACK_IMPORTED_MODULE_2__["default"]('Tahoma', 11)
-    }
-    mouseDownAction(x, y, button='left') {
-        if (super.mouseDownAction(x, y, button)) return true
-        this.parent.isMoving = true
-    }
-    mouseUp(x, y, button='left') {
-        super.mouseUp(x, y, button)
-        this.parent.stopMoving()
-    }
-    addRightButton(text, id, pos) {
-        let button = new _Button__WEBPACK_IMPORTED_MODULE_1__["default"](this)
-        button.width = 20
-        button.height = 20
-        button.text = text
-        button.x = this.width - 25 - pos * 22
-  
-        button.y = 4
-        this.controls[id] = button
-        this.rightButtons.push(button)
-    }
-    load() {
-        super.load()
-        this.closeButton = this.addRightButton('x', 'closeButton', 0)
-        this.maximizeButton = this.addRightButton('O', 'maximizeButton', 1)
-        this.minimizeButton = this.addRightButton('_', 'minimizeButton', 2)
-    }
-    render(gc) {
-        this.style.renderHeader(gc, this, false)
-        super.render(gc, false)
-    }
-} 
-
-/***/ }),
-
-/***/ "../src/controls/Label.js":
-/*!********************************!*\
-  !*** ../src/controls/Label.js ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Label; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-
-
-class Label extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(parent, id) {
-        super(parent, id)
-    }
-    render(gc) {
-        super.render(gc)
-        gc.setFillStyle('black')
-        gc.fillText(this.text, 0, 0, this.width, this.height)
-    }
-}
-
-/***/ }),
-
-/***/ "../src/controls/Menu.js":
+/***/ "../src/graphics/Font.js":
 /*!*******************************!*\
-  !*** ../src/controls/Menu.js ***!
+  !*** ../src/graphics/Font.js ***!
   \*******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Menu; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-
-
-class Menu extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(parent, id, items) {
-        super(parent, id)
-        this.items = items || []
-        this.borderStyle = 'bevel'
-        this.selectedIndex = -1
-        this.borderStyle = 'bevel'
-        this.alignSize()
-    }
-    click(x, y, button='left') {
-        try {
-            this.items[this.selectedIndex].callback(this)
-        } catch (e) {
-
-        }
-        this.close()    
-    }
-    alignSize() {
-        let gc = this.graphics
-        let maxSize = 0
-        for (let item of this.items) {
-            let width = gc.measureText(item.label).width + 22
-            if (width > maxSize) {
-                maxSize = width
-            }
-        }
-        this.width = maxSize + 12
-        this.height = this.items.length * 18 + 4
-    }
-    render(gc) {
-        super.render(gc)
-        this.style.renderMenu(gc, this)
-        
-    }
-    hover(x, y, button='left') {
-        let relativeX = x - this.left
-        let relativeY = y - this.top
-        let itemHeight = 18
-        this.selectedIndex = -1
-        for (let i = 0; i < this.items.length; i++) {
-            if (relativeY > i * itemHeight && relativeY < i * itemHeight + itemHeight) {
-                this.selectedIndex = i
-                this.yoghurt.render()
-            }
-        }
-    }
-}
-
-/***/ }),
-
-/***/ "../src/controls/MenuBar.js":
-/*!**********************************!*\
-  !*** ../src/controls/MenuBar.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MenuBar; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
- 
-
- class MenuBar extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-     constructor(parent, id, menus={}) {
-        super(parent, id)
-        this.menus = menus
-        this.selectedMenu = null
-        this.paddingHorizontal = 28
-     }
-     render(gc) {
-        super.render(gc)
-        this.style.renderMenuBar(gc, this)
-     }
-     mouseDownAction(relativeX, relativeY, button='left') {
-        let left = 0
-        for (let menuId of Object.keys(this.menus)) {
-            let menu = this.menus[menuId]
-            let width = this.paddingHorizontal * 2 + this.graphics.measureString(menu).width
-            if (relativeX > left && relativeX < width + left) {
-                let menuControl = new Menu(this.parent, menuId)
-                this.parent.controls['menu_' + menuId] = menuControl
-                menuControl.x = left
-                menuControl.y = this.parent.y + this.parent.header.height + this.height -2
-                menuControl.show()
-            }
-            left += width
-
-        }
-     }
-
- }
-
-/***/ }),
-
-/***/ "../src/controls/Taskbar.js":
-/*!**********************************!*\
-  !*** ../src/controls/Taskbar.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Taskbar; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Button */ "../src/controls/Button.js");
-/* harmony import */ var _Menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Menu */ "../src/controls/Menu.js");
-/* harmony import */ var _Tray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Tray */ "../src/controls/Tray.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "../node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
-
-
-
-
-
-
-class Taskbar extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(parent, id) {
-        super(parent, id)
-    }
-
-    render(gc) {
-        super.render(gc)
-        this.style.renderTaskbar(gc, this)
-    }
-
-    load() {
-        super.load()
-
-        this.startButton = new _Button__WEBPACK_IMPORTED_MODULE_1__["default"](this)
-        this.startButton.text = 'Start'
-        this.startButton.left = 4
-        this.startButton.top = 5
-        this.startButton.width = 63
-        this.startButton.height = 20
-        this.controls['start'] = this.startButton
-        this.startButton.on('mousedown', (event) => {
-            
-            let menu = this.parent.addMenu('startmenu', [
-                {
-                    label: 'Programs',
-                    items: [
-                        {
-                            label: "Welcome"
-                        }
-                    ]
-                },
-                {
-                    label: 'Settings'
-                },
-                {
-                    label: 'Find'
-                },
-                {
-                    label: 'Run'
-                },
-                {
-                    label: 'Exit'
-                }
-            ])
-            menu.bottom = 28
-            menu.x = 2
-            this.yoghurt.render()
-        })
-        let tray = new _Tray__WEBPACK_IMPORTED_MODULE_3__["default"](this, 'tray')
-        this.controls['tray'] = tray
-        tray.label = moment__WEBPACK_IMPORTED_MODULE_4___default()().format('LT')
-        setInterval(() => {
-            tray.label = moment__WEBPACK_IMPORTED_MODULE_4___default()().format('LT')
-        }, 60000)
-        tray.width = 55
-        tray.height = 22
-        tray.right = 12
-        tray.bottom = 3
-        this.yoghurt.render()
-    }
-}   
-
-/***/ }),
-
-/***/ "../src/controls/Tray.js":
-/*!*******************************!*\
-  !*** ../src/controls/Tray.js ***!
-  \*******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Tray; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-
-
-class Tray extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(parent, id) {
-        super(parent, id)
-    }
-    render(gc) {
-        this.style.renderTray(gc, this)
-    }
-}
-
-/***/ }),
-
-/***/ "../src/controls/Window.js":
-/*!*********************************!*\
-  !*** ../src/controls/Window.js ***!
-  \*********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Window; });
-/* harmony import */ var _Control__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control */ "../src/controls/Control.js");
-/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header */ "../src/controls/Header.js");
-/* harmony import */ var _MenuBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MenuBar */ "../src/controls/MenuBar.js");
-
-
-
-
-class Window extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(parent, id, width=640, height=480, menus={}) {
-        super(parent, id)
-        this.menus = menus
-        this.top = 28
-        this.header = new _Header__WEBPACK_IMPORTED_MODULE_1__["default"](this)
-        this.controls['header'] = this.header
-        this.borderStyle = 'bevel'
-        this.closeOnInactivate = false
-        this.showInTaskbar = false
-        this.content = new _Control__WEBPACK_IMPORTED_MODULE_0__["default"](this, 'content')
-        this.controls['content'] = this.content
-        this.width = width
-        this.height = height
-        this.controls['menubar'] = this.menubar
-    }
-    close() {
-        delete this.parent.controls[this.id]
-        this.yoghurt.render()
-    }
-
-
-    activate() {
-        this.zIndex = 0
-    }
-    pack() {
-        super.pack()
-        this.header.x = 4
-        this.header.y = 4
-        this.header.height = 28
-        this.header.width = this.width - 8
-        this.header.pack()
-        this.menubar = new _MenuBar__WEBPACK_IMPORTED_MODULE_2__["default"](this, 'menubar', this.menus)
-        this.menubar.top = this.header.height
-        this.content.left = 2
-        this.content.top = 52
-        this.content.width = this.width - 4
-        this.content.height = this.height - 4
-    }
-
-    load() {
-        this.header.load()
-    }
-
-    mouseDownAction(x, y, button='left') {
-        if (super.mouseDownAction(x, y, button)) return true
-        this.desktop.activeWindow = this
-    }
-
-    /**
-     * Render the control
-     * @param {GraphicsContext} gc The Graphics Context
-     */
-    render(gc) {
-        super.render(gc)
-        this.style.renderWindow(gc, this)
-       
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Font; });
+class Font {
+    constructor(name, size, bold=false, italic=false) {
+        this.name = name
+        this.size = size
+        this.bold = bold
+        this.italic = italic
     }
 }
 
@@ -19623,27 +20659,59 @@ class Window extends _Control__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CanvasGraphicsContext; });
-/* harmony import */ var _graphicscontext__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./graphicscontext */ "../src/graphics/graphicscontext.js");
-/* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "../src/graphics/font.js");
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/graphics/index.js");
+/* harmony import */ var _Font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Font */ "../src/graphics/Font.js");
+
 
 
 /**
  * Represents a graphics context
  */
-class CanvasGraphicsContext extends _graphicscontext__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(canvas) {
-        super()
+class CanvasGraphicsContext extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(yoghurt, canvas) {
+        super(yoghurt)
         this.canvas = canvas
-        
+        this.canvas.style.position = 'relative'
         this.context2d = canvas.getContext('2d')
         this.context2d.lineWidth = 1
-        this.font = new _font__WEBPACK_IMPORTED_MODULE_1__["default"]('Tahoma', 11, false, false)
+        this.context2d.imageSmoothingEnabled = false
+        this.canvas.style.webkitFontSmoothing = 'none'
+        this.font = new _Font__WEBPACK_IMPORTED_MODULE_1__["default"]('Tahoma', 11, false, false)
         this.matrix = {
             x: 0,
             y: 0
         }
         this.context2d.webkitImageSmoothingEnabled = false  
         this.context2d.translate(0.5, 0.5)
+    }
+    drawImage(image, x, y, width, height, x2, y2, w2, h2) {
+        this.context2d.drawImage(image, this.matrix.x + x, this.matrix.y + y, width, height, x2, y2, w2, h2)
+    }   
+    load() {
+        this.canvas.addEventListener('click', (e) => {
+            this.yoghurt.click(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.yoghurt.mouseDown(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
+        this.canvas.addEventListener('mousemove', (e) => {
+            this.yoghurt.hover(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
+        this.canvas.addEventListener('mouseup', (e) => {
+            this.yoghurt.mouseUp(
+                e.pageX - e.target.offsetLeft,
+                e.pageY - e.target.offsetTop
+            )
+        })
     }
     resetClip() {
         this.context2d.resetClip()
@@ -19693,7 +20761,7 @@ class CanvasGraphicsContext extends _graphicscontext__WEBPACK_IMPORTED_MODULE_0_
     }
 
     fillText(text, x, y, width=0, height=0) {
-        this.context2d.fillText(text, this.matrix.x + Math.floor(x), this.matrix.y + Math.floor(y))
+        this.context2d.fillText(text, this.matrix.x + (x), this.matrix.y + (y))
     }
 
     /**
@@ -19753,17 +20821,18 @@ class Font {
 
 /***/ }),
 
-/***/ "../src/graphics/graphicscontext.js":
-/*!******************************************!*\
-  !*** ../src/graphics/graphicscontext.js ***!
-  \******************************************/
+/***/ "../src/graphics/index.js":
+/*!********************************!*\
+  !*** ../src/graphics/index.js ***!
+  \********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GraphicsContext; });
-/**
+/* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "../src/graphics/font.js");
+/* empty/unused harmony star reexport *//**
  * Represents a graphics context
  */
 class GraphicsContext {
@@ -19775,7 +20844,18 @@ class GraphicsContext {
     translate(x, y) {
 
     }
+    init() {
+        
+    }
+    constructor(yoghurt) {
+        this.yoghurt = yoghurt
+    }
 } 
+
+
+
+
+
 
 /***/ }),
 
@@ -19783,26 +20863,142 @@ class GraphicsContext {
 /*!***********************!*\
   !*** ../src/index.js ***!
   \***********************/
-/*! exports provided: default */
+/*! exports provided: Desktop, Control, Taskbar, Window, Menu, MenuBar, Label, Button, ToolBar, ToolbarPanel, Tray, Header, ListView, TextBox, App, GraphicsContext, Service, Style, windows1Style, windows10Style, windows95Style, Theme, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Yoghurt; });
 /* harmony import */ var _controls_Desktop__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controls/Desktop */ "../src/controls/Desktop.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Desktop", function() { return _controls_Desktop__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! events */ "./node_modules/node-libs-browser/node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _controls__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controls */ "../src/controls/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Control", function() { return _controls__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _controls_Taskbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./controls/Taskbar */ "../src/controls/Taskbar.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Taskbar", function() { return _controls_Taskbar__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _controls_Window__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./controls/Window */ "../src/controls/Window.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Window", function() { return _controls_Window__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _controls_Menu__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./controls/Menu */ "../src/controls/Menu.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Menu", function() { return _controls_Menu__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
+/* harmony import */ var _controls_MenuBar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./controls/MenuBar */ "../src/controls/MenuBar.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MenuBar", function() { return _controls_MenuBar__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+
+/* harmony import */ var _controls_Label__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./controls/Label */ "../src/controls/Label.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Label", function() { return _controls_Label__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+
+/* harmony import */ var _controls_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./controls/Button */ "../src/controls/Button.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return _controls_Button__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+
+/* harmony import */ var _controls_Toolbar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./controls/Toolbar */ "../src/controls/Toolbar.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ToolBar", function() { return _controls_Toolbar__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+
+/* harmony import */ var _controls_ToolbarPanel__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./controls/ToolbarPanel */ "../src/controls/ToolbarPanel.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ToolbarPanel", function() { return _controls_ToolbarPanel__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+
+/* harmony import */ var _controls_Tray__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./controls/Tray */ "../src/controls/Tray.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Tray", function() { return _controls_Tray__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+
+/* harmony import */ var _controls_Header__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./controls/Header */ "../src/controls/Header.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Header", function() { return _controls_Header__WEBPACK_IMPORTED_MODULE_12__["default"]; });
+
+/* harmony import */ var _controls_ListView__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./controls/ListView */ "../src/controls/ListView.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ListView", function() { return _controls_ListView__WEBPACK_IMPORTED_MODULE_13__["default"]; });
+
+/* harmony import */ var _controls_TextBox__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./controls/TextBox */ "../src/controls/TextBox.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TextBox", function() { return _controls_TextBox__WEBPACK_IMPORTED_MODULE_14__["default"]; });
+
+/* harmony import */ var _apps__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./apps */ "../src/apps/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "App", function() { return _apps__WEBPACK_IMPORTED_MODULE_15__["default"]; });
+
+/* harmony import */ var _graphics__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./graphics */ "../src/graphics/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphicsContext", function() { return _graphics__WEBPACK_IMPORTED_MODULE_16__["default"]; });
+
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./services */ "../src/services/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Service", function() { return _services__WEBPACK_IMPORTED_MODULE_17__["default"]; });
+
+/* harmony import */ var _styles__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./styles */ "../src/styles/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Style", function() { return _styles__WEBPACK_IMPORTED_MODULE_18__["default"]; });
+
+/* harmony import */ var _styles_windows1_0__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./styles/windows1.0 */ "../src/styles/windows1.0.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "windows1Style", function() { return _styles_windows1_0__WEBPACK_IMPORTED_MODULE_19__["default"]; });
+
+/* harmony import */ var _styles_windows10_0__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./styles/windows10.0 */ "../src/styles/windows10.0.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "windows10Style", function() { return _styles_windows10_0__WEBPACK_IMPORTED_MODULE_20__["default"]; });
+
+/* harmony import */ var _styles_windows95__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./styles/windows95 */ "../src/styles/windows95.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "windows95Style", function() { return _styles_windows95__WEBPACK_IMPORTED_MODULE_21__["default"]; });
+
+/* harmony import */ var _themes__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./themes */ "../src/themes/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Theme", function() { return _themes__WEBPACK_IMPORTED_MODULE_22__["default"]; });
 
 
-class Yoghurt {
-    constructor(graphics, theme, style) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * The entry point of the Yoghurt UI Framework
+ */
+class Yoghurt extends events__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"] {
+    constructor(graphics, theme, style, isCrt=false) {
+        super()
+        this.isCrt = isCrt
         this.graphics = graphics
         this._theme = theme
         this._style = style
         this.desktop = new _controls_Desktop__WEBPACK_IMPORTED_MODULE_0__["default"](this)
         this.desktop.width = graphics.bounds.width
         this.desktop.height = graphics.bounds.height
+        this.services = {}
+        this.on('servicechanged', () => {
+            this.render()
+        })
         
     }
+    registerService(service) {
+        this.services[service.id] = service
+        service.on('started', () => {
+            this.emit('servicechanged')
+        })
+        service.on('stopped', () => {
+            this.emit('servicechanged')
+        })
+    }
     load() {
+        this.graphics.load()
         this.desktop.load()
     }
     pack() {
@@ -19831,10 +21027,65 @@ class Yoghurt {
     }
     render() {
         this.desktop.render(this.graphics)
+        if (this.isCrt) {
+            this.graphics.crt()
+        }
     }
 }
 
   
+
+/***/ }),
+
+/***/ "../src/services/index.js":
+/*!********************************!*\
+  !*** ../src/services/index.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Service; });
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! events */ "./node_modules/node-libs-browser/node_modules/events/events.js");
+/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_0__);
+
+
+/**
+ * A service is a background worker that can intercept with the Yoghurt operating system and will
+ * also be shown in the 
+ */
+class Service extends events__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"] {
+    constructor(yoghurt, id, iconUrl, text=null) {
+        super()
+        this.id = id
+        this.yoghurt = yoghurt
+        this.icon = new Image()
+        this.icon.src = iconUrl
+        this.text = text
+        this.isActive = false
+    }
+    get isActive() {
+        return this._isActive
+    }
+    set isActive(value) {
+        this._isActive = value
+        this.emit(value ? 'started' : 'stopped', this)
+    }
+    /**
+     * Calls when the service starts
+     */
+    start() {
+        this.isActive = true
+    }
+
+    /**
+     * Calls to stop the service
+     */
+    stop() {
+        this.isActive = false
+    }
+}
 
 /***/ }),
 
@@ -19860,6 +21111,7 @@ class Style {
 
     }
 } 
+
 
 /***/ }),
 
@@ -20003,10 +21255,10 @@ class Windows95Style extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
-/***/ "../src/styles/windows95.js":
-/*!**********************************!*\
-  !*** ../src/styles/windows95.js ***!
-  \**********************************/
+/***/ "../src/styles/windows10.0.js":
+/*!************************************!*\
+  !*** ../src/styles/windows10.0.js ***!
+  \************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -20028,6 +21280,219 @@ class Windows95Style extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
         gc.drawLine(control.width , control.height, 0, control.height)
         gc.drawLine(control.width, control.height, control.width, 0)
         gc.fillText(control.label, textPositionX, textPositionY)
+    }
+    renderButton(gc, control) {
+        // Draws button
+        gc.setFont(control.font)
+        let textPositionX = (control.width / 2) - (gc.measureText(control.text).width / 2)
+        let textPositionY = (control.height / 2) - (control.font.size / 2) + 8
+
+        if (control.buttonState == 'pressed') {
+            textPositionX += 2
+            textPositionY += 2
+        }
+
+        gc.setStrokeStyle('#000')
+        gc.strokeRect(0, 0, control.width, control.height)
+        if (control.buttonStyle == 'normal') {
+            if (control.buttonState == 'normal') {
+                gc.strokeRect(0, 0, this.width, this.height)
+            }
+            gc.setFillStyle('#000')
+            if (control.buttonState == 'pressed') {
+                gc.fillRect(0, 0, this.width, this.height)
+                gc.setFillStyle('white')
+                
+            } 
+            gc.fillText(control.text, textPositionX, textPositionY)
+        }
+
+        if (control.isFocused) {
+            gc.setLineDash([2])
+            gc.setStrokeStyle('#000')
+            gc.setLineDash([2])
+            if (control.buttonState == 'pressed') {
+                gc.strokeRect(4, 4, control.width - 7, control.height - 7)
+
+            } else {
+                gc.strokeRect(3, 3, control.width - 6, control.height - 6)
+            }
+            gc.setLineDash([1])
+            gc.strokeRect(-1, -1, control.width + 2, control.height + 2)
+            gc.setLineDash([1])
+        }
+    } 
+    renderWindow(gc, control, fill=true) {
+
+    }
+    renderTaskbar(gc, control, fill=true) {
+        gc.setStrokeStyle(control.theme.btnHighlight)
+        gc.drawLine(0, 2, control.width, 1)
+    }
+    renderMenu(gc, control, fill=true) {
+        let itemHeight = 18
+        let i = 0
+        
+        gc.setFillStyle('#000')
+        for (let menuitem of control.items) {
+            if (control.selectedIndex == i) {
+                gc.setFillStyle(control.theme.highlight)
+                gc.fillRect(3, i * itemHeight + 4, control.width - 6, itemHeight - 4)
+                gc.setFillStyle('#fff')
+            } else {
+                gc.setFillStyle('#000')
+            }
+            gc.fillText(menuitem.label,12, 12 + i * itemHeight, control.width, itemHeight )
+            i ++
+        }
+    } 
+    renderHeader(gc, control, fill=true) {
+        control.backgroundColor = (control.desktop.activeWindow  == control.parent ? control.theme.highlight : control.theme.inactive)
+        gc.setFillStyle(control.backgroundColor)
+        gc.fillRect(0, 0, control.width, control.height)
+        gc.setFillStyle(control.theme.highlightText)
+        gc.setFont(control.font) 
+        gc.fillText(control.label, 25, 16)
+    }
+    renderMenuBar(gc, control) {
+        let left = 0
+        for (let menuId of Object.keys(control.menus)) {
+            let menu = control.menus[menuId]
+            if (control.selectedMenu === menu) {
+                gc.setFillStyle(control.style.highlightText)
+                gc.fillRect(left , 0, gc.measureText(menu.label).width + control.paddingHorizontal, control.height)
+                gc.setFillStyle(control.style.highlight)
+            } else {
+                gc.setFillStyle('black')
+            }
+            gc.fillText(
+                menu.label,
+                left + control.paddingHorizontal,
+                0,
+                gc.measureText(menu.label).width + control.paddingHorizontal * 2,
+                this.height
+            )
+            left += c.measureText(menu.label).width + control.paddingHorizontal
+        }
+    }
+    renderControl(gc, control, fill=true) {
+        let fillStyle =  control.backgroundColor || control.theme.btnFace
+        gc.setFillStyle(fillStyle)
+        if (fill) gc.fillRect(0, 0, control.width, control.height)
+        for (let _control of Object.values(control.controls)) {
+            gc.translate(_control.x, _control.y)
+        
+            _control.render(gc)
+            gc.translate(-_control.x, -_control.y)
+        }
+        if (control.borderStyle === 'bevel') {
+            gc.setStrokeStyle('black')
+            gc.strokeRect(0, 0, this.width, this.height)
+        }
+    }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (new Windows95Style());
+
+/***/ }),
+
+/***/ "../src/styles/windows95.js":
+/*!**********************************!*\
+  !*** ../src/styles/windows95.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var ___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! . */ "../src/styles/index.js");
+
+
+class Windows95Style extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
+    renderTray(gc, control) {
+
+        let services = Object.values(control.yoghurt.services).filter(s => s.isActive)
+        let left = 0
+        let iconSize = 18
+        for (let service of services) {
+            gc.drawImage(service.icon, left, 2, iconSize, iconSize, 0, 0, service.icon.width, service.icon.height) 
+          
+            left += iconSize
+            left++
+        }
+
+        gc.setFont(control.font)
+        let textPositionX = left + (gc.measureText(control.text).width / 2)
+        let textPositionY = (control.height / 2)
+        gc.setStrokeStyle(control.theme.btnShadow)
+        gc.setFillStyle(control.theme.buttonText)
+        gc.drawLine(0, 0, control.width, 0)
+        gc.drawLine(0, 0, 0, control.height)
+        gc.setStrokeStyle(control.theme.btnHighlight)
+        gc.drawLine(control.width , control.height, 0, control.height)
+        gc.drawLine(control.width, control.height, control.width, 0)
+        gc.fillText(control.label, textPositionX, textPositionY)
+    }
+
+    drawBevel(gc, control) {
+        gc.setStrokeStyle(control.theme.btnHighlight)
+        gc.drawLine(0, 0, control.width, 0)
+        gc.drawLine(0, 0, 0, control.height)
+        gc.setStrokeStyle(control.theme.btnLight)
+        gc.drawLine(1, 1, control.width, 1)
+        gc.drawLine(1, 1, 1, control.height - 1)
+        gc.setStrokeStyle(control.theme.btnShadow)
+        gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+        gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+        gc.setStrokeStyle(control.theme.btnDarkShadow)
+        gc.drawLine(control.width , control.height, 0, control.height)
+        gc.drawLine(control.width, control.height, control.width, 0)
+    }
+    drawInset(gc, control) {
+        gc.drawLine(0, 0, control.width, 0)
+        gc.drawLine(0, 0, 0, control.height)
+        gc.setStrokeStyle(control.theme.btnShadow)
+        gc.drawLine(1, 1, control.width, 1)
+        gc.drawLine(1, 1, 1, control.height - 1)
+        gc.setStrokeStyle(control.theme.btnLight)
+        gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+        gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+        gc.setStrokeStyle(control.theme.btnHighlight)
+        gc.drawLine(control.width , control.height, 0, control.height)
+        gc.drawLine(control.width, control.height, control.width, 0)
+    }
+
+    renderTextBox(gc, control) {
+        this.drawInset(gc, control)
+        gc.setFont(control.font)
+        let x = 0
+        let y = 0
+        let left =  2
+        let top = 12
+        let textSize = control.font.size
+        for (let char of control.text) {
+            let width = gc.measureText(char).width
+            if (x >= control.selection.start && x <= control.selection.end && control.selection.end != control.selection.start ) {
+                gc.setFillStyle(control.style.highlight)
+                gc.fillRect(left, top, width, textSize) // Fill mark
+                gc.setFillStyle(control.style.highlightText)
+            } else {
+                gc.setFillStyle(control.style.text)
+            }
+            gc.fillText(char, left, top)
+            if (x == control.selection.end) {
+                gc.setStrokeStyle(control.style.text)
+                if (control.isBlink) {
+                    gc.drawLine(left, top, left, control.height - 2)
+                }
+            }
+
+            left += width
+            if (left > control.width) {
+                left = 0
+                top += textSize
+            }
+        }        
     }
     renderButton(gc, control) {
         // Draws button
@@ -20074,42 +21539,112 @@ class Windows95Style extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
                 gc.fillText(control.text, textPositionX, textPositionY)
 
             }
-        }
+        
 
-        if (control.isFocused) {
+            
+        }
+        
+        if (control.buttonStyle == 'tool') {
+            if (control.buttonState == 'normal') {
+                if (control.isChecked) {
+                    gc.setFillStyle('white')
+                    gc.fillRect(0, 0, control.width, control.height)
+                    gc.setStrokeStyle(control.theme.btnDarkShadow)
+                    gc.drawLine(0, 0, control.width, 0)
+                    gc.drawLine(0, 0, 0, control.height)
+                    gc.setStrokeStyle(control.theme.btnShadow)
+                    gc.drawLine(1, 1, control.width, 1)
+                    gc.drawLine(1, 1, 1, control.height - 1)
+                    gc.setStrokeStyle(control.theme.btnLight)
+                    gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+                    gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+                    gc.setStrokeStyle(control.theme.btnHighlight)
+                    gc.drawLine(control.width , control.height, 0, control.height)
+                    gc.drawLine(control.width, control.height, control.width, 0)
+                } else {
+                    gc.setStrokeStyle(control.theme.btnHighlight)
+                    gc.drawLine(0, 0, control.width, 0)
+                    gc.drawLine(0, 0, 0, control.height)
+                    gc.setStrokeStyle(control.theme.btnLight)
+                    gc.drawLine(1, 1, control.width, 1)
+                    gc.drawLine(1, 1, 1, control.height - 1)
+                    gc.setStrokeStyle(control.theme.btnShadow)
+                    gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+                    gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+                    gc.setStrokeStyle(control.theme.btnDarkShadow)
+                    gc.drawLine(control.width , control.height, 0, control.height)
+                    gc.drawLine(control.width, control.height, control.width, 0)
+                }
+            }
+            if (control.buttonState == 'pressed') {
+                gc.setStrokeStyle(control.theme.btnDarkShadow)
+                gc.drawLine(0, 0, control.width, 0)
+                gc.drawLine(0, 0, 0, control.height)
+                gc.setStrokeStyle(control.theme.btnShadow)
+                gc.drawLine(1, 1, control.width, 1)
+                gc.drawLine(1, 1, 1, control.height - 1)
+                gc.setStrokeStyle(control.theme.btnLight)
+                gc.drawLine(control.width - 1, control.height - 1, 0, control.height - 1)
+                gc.drawLine(control.width - 1, control.height - 1, control.width - 1, 0)
+                gc.setStrokeStyle(control.theme.btnHighlight)
+                gc.drawLine(control.width , control.height, 0, control.height)
+                gc.drawLine(control.width, control.height, control.width, 0)
+            }
+            if (control.enabled) {
+                gc.setFillStyle(control.theme.buttonText)
+                gc.fillText(control.text, textPositionX, textPositionY)
+            } else {
+                gc.setFont(new Font('Tahoma', 8))
+                gc.setFillStyle(control.theme.btnHilight)
+                gc.fillText(control.text, textPositionX - 1, textPositionY - 1)
+                gc.setFillStyle(control.theme.btnShadow)
+                gc.fillText(control.text, textPositionX, textPositionY)
+
+            }
+        }
+        if (control.isFocused && control.isFocusable) {
             gc.setLineDash([2])
             gc.setStrokeStyle('#000')
             gc.setLineDash([1, 2    ])
             if (control.buttonState == 'pressed') {
-                gc.strokeRect(4, 4, control.width - 7, control.height - 7)
+                gc.strokeRect(4, 4, control.width - 8, control.height - 8)
 
             } else {
-                gc.strokeRect(3, 3, control.width - 6, control.height - 6)
+                gc.strokeRect(3, 3, control.width - 7, control.height - 7)
             }
             gc.setLineDash([1])
-            gc.strokeRect(-1, -1, control.width + 2, control.height + 2)
+            if (control.buttonStyle === 'normal')
+                gc.strokeRect(-1, -1, control.width + 2, control.height + 2)
             gc.setLineDash([1])
         }
     } 
+    renderToolBar(gc, control) {
+    }
     renderMenuBar(gc, control) {
         let left = 0
+        console.log(control)
+        if (control.menus)
         for (let menuId of Object.keys(control.menus)) {
             let menu = control.menus[menuId]
-            if (control.selectedMenu === menu) {
-                gc.setFillStyle(control.style.highlightText)
-                gc.fillRect(left , 0, gc.measureText(menu.label).width + control.paddingHorizontal, control.height)
-                gc.setFillStyle(control.style.highlight)
+            if (control.selectedMenu)
+            console.log(control.selectedMenu.menu.id, menu.id, control.selectedMenu.menu.id === menu.id)
+            if (control.selectedMenu && control.selectedMenu.menu.id === menu.id) {
+                gc.setFillStyle(control.theme.highlightText)
+                gc.fillRect(left , 0, gc.measureText(menu.label || menu.id).width + control.paddingHorizontal * 2, control.height)
+                gc.setFillStyle(control.theme.highlight)
+                gc.fillRect(left, 0, gc.measureText(menu.label || menu.id).width + control.paddingHorizontal * 2, control.height)
+                gc.setFillStyle('#fff')
             } else {
                 gc.setFillStyle('#000')
             }
             gc.fillText(
-                menu.label,
+                menu.label || menu.id,
                 left + control.paddingHorizontal,
-                22,
-                gc.measureText(menu.label).width + control.paddingHorizontal * 2,
-                this.height
+                12,
+                gc.measureText(menu.label || menu.id).width + control.paddingHorizontal,
+                control.height
             )
-            left += gc.measureText(menu.label).width + control.paddingHorizontal
+            left +=  control.paddingHorizontal + gc.measureText(menu.label || menu.id).width + control.paddingHorizontal
         }
     }
     renderWindow(gc, control, fill=true) {
@@ -20124,7 +21659,7 @@ class Windows95Style extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
         let i = 0
         
         gc.setFillStyle('#000')
-        for (let menuitem of control.items) {
+        for (let menuitem of control.menu.items) {
             if (control.selectedIndex == i) {
                 gc.setFillStyle(control.theme.highlight)
                 gc.fillRect(3, i * itemHeight + 4, control.width - 6, itemHeight - 4)
@@ -20132,17 +21667,15 @@ class Windows95Style extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
             } else {
                 gc.setFillStyle('#000')
             }
-            gc.fillText(menuitem.label,12, 12 + i * itemHeight, control.width, itemHeight )
+            gc.fillText(menuitem.label || menuitem.id,12, 12 + i * itemHeight, control.width, itemHeight )
             i ++
         }
     } 
     renderHeader(gc, control, fill=true) {
-        control.backgroundColor = (control.desktop.activeWindow  == control.parent ? control.theme.highlight : control.theme.inactive)
-        gc.setFillStyle(control.backgroundColor)
-        gc.fillRect(0, 0, control.width, control.height)
+        
         gc.setFillStyle(control.theme.highlightText)
         gc.setFont(control.font) 
-        gc.fillText(control.label, 25, 16)
+        gc.fillText(control.text || control.parent.text, 25, 12)
     }
     renderControl(gc, control, fill=true) {
         
@@ -20157,10 +21690,31 @@ class Windows95Style extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
             gc.drawLine(control.width, 0, control.width, control.height)
             gc.drawLine(0, control.height, control.width, control.height)
         }
+        if (control.borderStyle === 'inset') {
+            this.drawInset(gc, control)
+            
+        }
     }
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (new Windows95Style());
+
+/***/ }),
+
+/***/ "../src/themes/index.js":
+/*!******************************!*\
+  !*** ../src/themes/index.js ***!
+  \******************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _windows1_0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./windows1.0 */ "../src/themes/windows1.0.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _windows95__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./windows95 */ "../src/themes/windows95.js");
+/* empty/unused harmony star reexport */
+
+
 
 /***/ }),
 
@@ -20212,8 +21766,10 @@ __webpack_require__.r(__webpack_exports__);
     btnDarkShadow: '#000000',
     highlight: '#0000bb',
     highlightText: '#ffffff',
-    inactive: '#888',
-    desktop: '#208c71'
+    inactive: '#394dcd',
+    desktop: '#208c71',
+    backgroundColor: '#fff',
+    color: '#000'
 }));
 
 /***/ }),
@@ -20564,6 +22120,68 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./src/apps/demo.js":
+/*!**************************!*\
+  !*** ./src/apps/demo.js ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DemoApp; });
+/* harmony import */ var _src_apps__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../src/apps */ "../src/apps/index.js");
+/* harmony import */ var _src_controls_Label__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../src/controls/Label */ "../src/controls/Label.js");
+/* harmony import */ var _src_controls_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../src/controls/Button */ "../src/controls/Button.js");
+/* harmony import */ var _src_controls_TextBox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../src/controls/TextBox */ "../src/controls/TextBox.js");
+
+
+
+
+
+class DemoApp extends _src_apps__WEBPACK_IMPORTED_MODULE_0__["default"] {
+    constructor(parent, id) {
+        super(parent, id)
+        this.text = 'Welcome to Yoghurt!'
+    }
+    load() {
+        super.load()
+        this.left = 200
+        this.top = 200
+        
+        this.content.controls['start'] = new _src_controls_Label__WEBPACK_IMPORTED_MODULE_1__["default"](this.content, 'label')
+        this.content.controls['start'].text = 'Welcome to Yoghurt OS Demo!'
+        this.content.controls['start'].width = 320
+        this.content.controls['start'].width = 120
+        this.content.controls['start'].x = 12
+        this.content.controls['start'].y = 52  
+        this.content.controls['ok'] = new _src_controls_Button__WEBPACK_IMPORTED_MODULE_2__["default"](this.content, 'ok')
+        this.content.controls['ok'].top= 220
+        this.content.controls['ok'].left = 82
+        this.content.controls['ok'].width = 122
+        this.content.controls['ok'].height = 28
+        this.content.controls['ok'].text = 'OK'
+        this.content.backgroundColor = 'white'
+        this.content.controls['ok'].on('click', (e) => {
+            this.close()
+        })
+
+        this.content.controls['textbox'] = new _src_controls_TextBox__WEBPACK_IMPORTED_MODULE_3__["default"](this, 'textbox')
+        this.content.controls['textbox'].width = 100
+        this.content.controls['textbox'].height = 38
+        this.content.controls['textbox'].left = 28
+        this.content.controls['textbox'].top =  28
+        this.content.controls['textbox'].text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut interdum quam.'
+        this.content.controls['textbox'].show()
+        this.x = 222
+        this.y = 111
+        this.width = 321  
+        this.height = 321
+    }
+}
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -20582,6 +22200,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_styles_windows1_0__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../src/styles/windows1.0 */ "../src/styles/windows1.0.js");
 /* harmony import */ var _src_controls_Label__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../src/controls/Label */ "../src/controls/Label.js");
 /* harmony import */ var _src_controls_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../src/controls/Button */ "../src/controls/Button.js");
+/* harmony import */ var _apps_demo__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./apps/demo */ "./src/apps/demo.js");
+
 
 
 
@@ -20602,72 +22222,23 @@ document.body.appendChild(canvas)
 document.body.style.display = 'flex'
 document.body.style.alignItems = 'center'
 document.body.style.justifyContent = 'center'
-let gc = new _src_graphics_canvasgraphicscontext__WEBPACK_IMPORTED_MODULE_1__["default"](canvas)
+let gc = new _src_graphics_canvasgraphicscontext__WEBPACK_IMPORTED_MODULE_1__["default"](null, canvas)
 let yoghurt = new _src__WEBPACK_IMPORTED_MODULE_0__["default"](gc, _src_themes_windows95__WEBPACK_IMPORTED_MODULE_2__["default"], _src_styles_windows95__WEBPACK_IMPORTED_MODULE_5__["default"])
+gc.yoghurt = yoghurt
 
-canvas.addEventListener('click', (e) => {
-    yoghurt.click(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
-canvas.addEventListener('mousedown', (e) => {
-    yoghurt.mouseDown(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
-canvas.addEventListener('mousemove', (e) => {
-    yoghurt.hover(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
-canvas.addEventListener('mouseup', (e) => {
-    yoghurt.mouseUp(
-        e.pageX - e.target.offsetLeft,
-        e.pageY - e.target.offsetTop
-    )
-})
 setInterval(() => {
     yoghurt.resize()
 }, 100)
 
 canvas.style.imageRendering = 'pixelated'
 
-let window = new _src_controls_Window__WEBPACK_IMPORTED_MODULE_4__["default"](yoghurt.desktop, 'window', 640, 480, {
-    'file': {
-        label: 'Test'
-    }
-})
-window.title = 'Welcome to Yoghurt!'
-yoghurt.desktop.controls['window'] = window
+let demoApp = new _apps_demo__WEBPACK_IMPORTED_MODULE_9__["default"](yoghurt.desktop, 'demo')
 
-window.content.controls['start'] = new _src_controls_Label__WEBPACK_IMPORTED_MODULE_7__["default"](window.content, 'label')
-window.content.controls['start'].text = 'Welcome to Yoghurt OS Demo!'
-window.content.controls['start'].width = 320
-window.content.controls['start'].width = 120
-window.content.controls['start'].x = 12
-window.content.controls['start'].y = 52  
-window.content.controls['ok'] = new _src_controls_Button__WEBPACK_IMPORTED_MODULE_8__["default"](window.content, 'ok')
-window.content.controls['ok'].top= 220
-window.content.controls['ok'].left = 82
-window.content.controls['ok'].width = 122
-window.content.controls['ok'].height = 28
-window.content.controls['ok'].text = 'OK'
-window.content.backgroundColor = 'white'
-window.content.controls['ok'].on('click', (e) => {
-    window.close()
-})
-
-window.x = 222
-window.y = 111
-window.width = 321  
-window.height = 321
-
+yoghurt.desktop.controls['demo'] = demoApp
 yoghurt.resize()
 yoghurt.pack()
 yoghurt.load()
+demoApp.load()
 yoghurt.render()
 
 /***/ }),

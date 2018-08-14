@@ -56,7 +56,8 @@ export default class Header extends Control {
         }
     }
     render(gc) {
-        this.backgroundColor = (this.desktop.activeWindow  == this.parent ? this.theme.highlight : this.theme.inactive)
+        let active = this.desktop.focusedControl  == this.parent 
+        this.backgroundColor = (active ? this.theme.highlight : '#888')
   
         super.render(gc, false)
         this.style.renderHeader(gc, this, false)
