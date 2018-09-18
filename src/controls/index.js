@@ -573,6 +573,7 @@ export default class Control extends EventEmitter {
      * @param {String} button The button
      */
     click(x, y, button='left') {
+        let foundControl = false
         let bc = []
         for (let control of this.children) {
             if (control.inBounds(x, y)) {

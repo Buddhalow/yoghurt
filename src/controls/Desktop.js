@@ -56,7 +56,7 @@ export default class Desktop extends Control {
     }
 
     addMenu(id, items=[]) {
-        let menu = new Menu(this, id, items)
+        let menu = new Menu(this, id, {items: items})
         this.controls[id] = menu
         this.emit('windowadded')
         return menu

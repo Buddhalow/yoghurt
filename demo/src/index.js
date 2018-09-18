@@ -34,6 +34,5 @@ let demoApp = new DemoApp(yoghurt.desktop, 'demo')
 yoghurt.desktop.controls['demo'] = demoApp
 yoghurt.resize()
 yoghurt.pack()
-yoghurt.load()
-demoApp.load()
+yoghurt.load()	
 yoghurt.render()
