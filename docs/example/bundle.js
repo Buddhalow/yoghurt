@@ -19029,7 +19029,7 @@ class Desktop extends ___WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
 
     addMenu(id, items=[]) {
-        let menu = new _Menu__WEBPACK_IMPORTED_MODULE_2__["default"](this, id, items)
+        let menu = new _Menu__WEBPACK_IMPORTED_MODULE_2__["default"](this, id, {items: items})
         this.controls[id] = menu
         this.emit('windowadded')
         return menu
@@ -20521,6 +20521,7 @@ class Control extends events__WEBPACK_IMPORTED_MODULE_0___default.a {
      * @param {String} button The button
      */
     click(x, y, button='left') {
+        let foundControl = false
         let bc = []
         for (let control of this.children) {
             if (control.inBounds(x, y)) {
@@ -22237,8 +22238,7 @@ let demoApp = new _apps_demo__WEBPACK_IMPORTED_MODULE_9__["default"](yoghurt.des
 yoghurt.desktop.controls['demo'] = demoApp
 yoghurt.resize()
 yoghurt.pack()
-yoghurt.load()
-demoApp.load()
+yoghurt.load()	
 yoghurt.render()
 
 /***/ }),
