@@ -25,6 +25,7 @@ gc.yoghurt = yoghurt
 
 setInterval(() => {
     yoghurt.resize()
+	yoghurt.render()
 }, 100)
 
 canvas.style.imageRendering = 'pixelated'
